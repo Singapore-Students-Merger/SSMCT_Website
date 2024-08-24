@@ -71,7 +71,7 @@ All dependencies and environment configurations are handled within the Docker co
 - (TBC)
 
 ## Contributing
-To Contribute
+To Contribute, first assign yourself to one of the issues in the github issues tab, then:
 
 1. Create a new branch:
    ```bash
