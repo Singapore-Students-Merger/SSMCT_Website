@@ -73,20 +73,19 @@ All dependencies and environment configurations are handled within the Docker co
 ## Contributing
 To Contribute
 
-1. Fork the repository.
-2. Create a new branch:
+1. Create a new branch:
    ```bash
    git checkout -b feature/my-feature
    ```
-3. Make your changes and commit them:
+2. Make your changes and commit them:
    ```bash
    git commit -m "Add my new feature"
    ```
-4. Push to the branch:
+3. Push to the branch:
    ```bash
    git push origin feature/my-feature
    ```
-5. Open a pull request.
+4. Open a pull request.
 
 Please read our contributing guidelines for more details.
 
