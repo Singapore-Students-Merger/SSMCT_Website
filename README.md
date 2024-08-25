@@ -40,7 +40,7 @@ This project is the official website for SSMCT, designed to advertise the group 
 ### Running the Project
 1. Clone the repository:
    ```bash
-   git clone [https://your-private-repo-link.git](https://github.com/Singapore-Students-Merger/SSMCT_Website)
+   git clone https://github.com/Singapore-Students-Merger/SSMCT_Website
    cd SSMCT_Website
    ```
 
