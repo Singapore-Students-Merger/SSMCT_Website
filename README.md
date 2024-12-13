@@ -27,13 +27,38 @@ This project is the official website for SSMCT, designed to advertise the group 
    - Updates on our activities or events, etc.
 5. **Writeups**
    - Allow members to upload and share their own writeups
+6. **Image Gallery**
+   - To store images of our past events and activities
+7. **Login and Signup**
+   - To allow members to login and access member-only features. Uses Discord OAuth.
+8. **Uplaod Writeups/Post**
+   - To allow members to upload their writeups/blogs
 
 ## Features that may be added (To be discussed)
-1. Sign-in and upload feature (Can be simplified to uploading through GitHub)
-2. Challenge Hosting & Creation Feature
-3. Comment & Kudo Feature
+1. Challenge Hosting & Creation Feature
+2. Comment & Kudo Feature
 
-## Setup Instructions
+## Setup Instructions (Local Development)
+### Prerequisites
+- Node.js and npm installed on your machine.
+
+### Running the Project (Backend/Frontend Team)
+1. Clone the repository:
+   ```bash
+    git clone https://github.com/Singapore-Students-Merger/SSMCT_Website
+   cd SSMCT_Website
+   ```
+2. Install the dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+4. Open your browser and navigate to `http://localhost:3000`.
+
+## Setup Instructions (Docker, For Integration Testing)
 ### Prerequisites
 - Docker and Docker Compose installed on your machine.
 
