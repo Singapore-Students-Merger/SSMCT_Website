@@ -1,4 +1,5 @@
 type BlogDetails = {
+    id: number;
     title: string;
     description: string;
     author: string;
