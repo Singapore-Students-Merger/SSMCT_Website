@@ -1,39 +1,51 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from "@/components/Button";
 import GradientBg from "@/components/GradientBg";
 import TextInput from "@/components/TextInput";
 import Select from "@/components/Select";
 import SelectChip from "@/components/SelectChip";
+import Category from '@/types/category';
+import toast, { Toaster } from 'react-hot-toast';
 
-const options = [
-    { value: "None", label: "None" },
-    { value: "Web Expliotation", label: "Web Exploitation" },
-    { value: "Pwn", label: "Pwn" },
-    { value: "Crypto", label: "Crypto" },
-    { value: "Reverse Engineering", label: "Reverse Engineering" },
-    { value: "Forensics", label: "Forensics" },
-    { value: "Misc", label: "Misc" },
-    { value: "OSINT", label: "OSINT" },
-    { value: "Hardware", label: "Hardware" },
-    { value: "Mobile", label: "Mobile" },
-    { value: "Cloud", label: "Cloud" },
-    { value: "Networking", label: "Networking" },
-    { value: "IOT", label: "IOT" },
-    { value: "AI", label: "AI" },
-    { value: "BlockChain", label: "BlockChain" },
-];
+interface UserFormProps {
+    name: string | undefined | null;
+    categories: Category[];
+}
 
-export default function UserForm({ name } : { name: string | undefined | null }) {
+interface Option {
+    value: number;
+    label: string;
+}
+
+export default function UserForm({ name, categories } : UserFormProps) {
     const [displayName, setDisplayName] = useState(name || '');
     const [realName, setRealName] = useState('');
-    const [mainCategory, setMainCategory] = useState('');
-    const [interests, setInterests] = useState<string[]>([]);
+    const [mainCategoryId, setMainCategoryId] = useState<string>("-1");
+    const [interests, setInterests] = useState<number[]>([]);
+    const options: Option[] = categories.map((category) => ({
+        value: category.id,
+        label: category.name,
+    }));
+    useEffect(() => {
+        if (categories.length == 0){
+            toast.error('Failed to fetch categories');
+        }
+    },[categories]);
 
+    options.unshift({ value: -1, label: 'None' });
     const handleSubmit = async () => {
-        try {
-            const response = await fetch('/api/update-user', {
+        if (!displayName.trim()) {
+            toast.error('Display Name is required');
+            return;
+        }
+        if (realName != '' && !realName.trim()) {
+            toast.error('Did you think I wouldn\'t validate this :C? Please input your real name or leave it empty.');
+            return;
+        }
+        toast.promise(
+            fetch('/api/users/update-user', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -41,19 +53,32 @@ export default function UserForm({ name } : { name: string | undefined | null })
                 body: JSON.stringify({
                     displayName,
                     realName,
-                    mainCategory,
+                    mainCategoryId: mainCategoryId=="-1" ? null : parseInt(mainCategoryId),
                     interests,
                 }),
-            });
-
-            if (response.ok) {
-                // window.location.href = '/home'; // Redirect after successful update
-            } else {
-                console.error('Failed to update user');
+            })
+                .then(async (response) => {
+                    if (response.ok) {
+                        window.location.href = '/'; 
+                        return Promise.resolve('User updated successfully');
+                    } else {
+                        const errorData = await response.json();
+                        return Promise.reject(
+                            errorData.error || 'Failed to update user'
+                        );
+                    }
+                })
+                .catch((err) => {
+                    console.error('Error:', err);
+                    throw new Error(err || 'A network error occurred. Please try again.');
+                }),
+            {
+                loading: 'Updating user...',
+                success: (message) => message, // Use the resolved message
+                error: (err) => err.message || 'An error occurred', // Use the error message
             }
-        } catch (err) {
-            console.error('Error:', err);
-        }
+        );
+        
     };
 
     return (
@@ -80,24 +105,24 @@ export default function UserForm({ name } : { name: string | undefined | null })
                     className="rounded-xl"
                     label="Main Category"
                     options={options}
-                    onChange={(e) => setMainCategory(e!.value)}
+                    onChange={(e) => setMainCategoryId(e!.value)}
                 />
             </div>
             <div>
                 <div className="border-2 border-secondary-tier2 w-full min-h-72 rounded-lg flex flex-wrap gap-4 items-start content-start px-4 py-4">
-                    {options.map((record, idx) => (
+                    {categories.map((record, idx) => (
                         <SelectChip
                             key={idx}
                             onClick={() => {
                                 setInterests((prev) =>
-                                    prev.includes(record.value)
-                                        ? prev.filter((item) => item !== record.value)
-                                        : [...prev, record.value]
+                                    prev.includes(record.id)
+                                        ? prev.filter((item) => item !== record.id)
+                                        : [...prev, record.id]
                                 );
                             }}
-                            selected={interests.includes(record.value)}
+                            selected={interests.includes(record.id)}
                         >
-                            {record.label}
+                            {record.name}
                         </SelectChip>
                     ))}
                 </div>
@@ -106,6 +131,7 @@ export default function UserForm({ name } : { name: string | undefined | null })
             <Button className="px-10" onClick={handleSubmit}>
                 Continue
             </Button>
+            <Toaster />
         </GradientBg>
     );
 }

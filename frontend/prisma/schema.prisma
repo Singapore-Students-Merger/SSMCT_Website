@@ -8,7 +8,7 @@ datasource db {
 }
 
 model account {
-  id                String  @id
+  id                String  @id @default(cuid())
   userId            String
   type              String
   provider          String
@@ -27,14 +27,14 @@ model account {
 }
 
 model categories {
-  categoryId     Int              @id @default(autoincrement())
-  categoryName   String           @db.Text
+  id             Int              @id @default(autoincrement())
+  name           String           @db.Text
   user           user[]
   usercategories usercategories[]
 }
 
 model session {
-  id           String   @id
+  id           String   @id @default(cuid())
   sessionToken String   @unique(map: "Session_sessionToken_key")
   userId       String
   expires      DateTime
@@ -44,9 +44,11 @@ model session {
 }
 
 model user {
-  id             String           @id
+  id             String           @id @default(cuid())
   name           String?
   realName       String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt @default(now())
   discordId      String?          @unique(map: "User_discordId_key")
   image          String?
   mainCategoryId Int?
@@ -54,7 +56,7 @@ model user {
   emailVerified  Boolean?
   account        account[]
   session        session[]
-  categories     categories?      @relation(fields: [mainCategoryId], references: [categoryId], map: "user_ibfk_1")
+  categories     categories?      @relation(fields: [mainCategoryId], references: [id], map: "user_ibfk_1")
   usercategories usercategories[]
 
   @@index([mainCategoryId], map: "mainCategoryId")
@@ -64,7 +66,7 @@ model usercategories {
   userId     String
   categoryId Int
   user       user       @relation(fields: [userId], references: [id], onDelete: Cascade, map: "usercategories_ibfk_1")
-  categories categories @relation(fields: [categoryId], references: [categoryId], onUpdate: Restrict, map: "usercategories_ibfk_2")
+  categories categories @relation(fields: [categoryId], references: [id], onUpdate: Restrict, map: "usercategories_ibfk_2")
 
   @@id([userId, categoryId])
   @@index([categoryId], map: "categoryId")

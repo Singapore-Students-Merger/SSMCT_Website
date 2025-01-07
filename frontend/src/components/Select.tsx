@@ -45,6 +45,8 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     focus:ring-2
     focus:ring-primary
     min-w-72
+    relative 
+    z-10
   `;
 
   const versionClass =
@@ -80,6 +82,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     menuList: (provided) => ({
       ...provided,
       padding: 0,
+      zIndex:10,
     }),
     option: (provided, state) => ({
       ...provided,

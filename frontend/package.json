@@ -16,6 +16,7 @@
     "prisma": "^6.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hot-toast": "^2.5.1",
     "react-select": "^5.9.0",
     "tailwind-merge": "^2.5.5"
   },
