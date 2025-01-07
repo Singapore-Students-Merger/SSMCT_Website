@@ -36,7 +36,7 @@ const GradientBg: React.FC<GradientBgProps> = ({ className, gradientPosition = '
         gradientPosition === 'right' ? 'bg-gradient-to-r from-secondary-tier3/80 to-background' : '';
 
     return (
-        <div className={twMerge('w-full h-full ', gradientClass, className)} >
+        <div className={twMerge('w-full h-full', gradientClass, className)} >
             {children}
         </div>
     );

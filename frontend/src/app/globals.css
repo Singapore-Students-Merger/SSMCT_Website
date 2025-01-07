@@ -39,3 +39,21 @@ body {
   background: rgb(var(--background));
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Add this to your global styles (e.g., styles/globals.css) */
+.scrollbar-custom::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.5); /* Customize the thumb color */
+  border-radius: 9999px; /* Rounded scrollbar */
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.8); /* Thumb hover color */
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  background-color: transparent; /* Track color */
+}
