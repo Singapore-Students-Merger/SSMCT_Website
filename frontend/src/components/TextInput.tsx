@@ -9,19 +9,25 @@ interface TextInputProps {
     version?: 'primary' | 'secondary';
     shadow?: boolean;
     border?: boolean;
+    label?: string;
+    value?: string;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 // Button component
 // This component is a button that can have an icon before and after the text.
 // It has a primary and secondary version. The secondary version is the one used for tags in the create post and view post pages.
 
 const TextInput: React.FC<TextInputProps> = ({
+    value,
     placeholder,
     onInput,
     beforeIcon,
     afterIcon,
     className,
     version = 'primary',
-    shadow = true
+    shadow = true,
+    label,
+    onChange
 }) => {
     const baseClass = `
         text-primary
@@ -39,25 +45,30 @@ const TextInput: React.FC<TextInputProps> = ({
         focus:ring-primary
         flex 
         justify-between
+        min-w-72
     `;
 
     const versionClass = version === 'primary' 
-        ? 'bg-secondary-tier3' 
-        : 'bg-secondary-tier1/50';
+        ? 'bg-secondary-tier1/50' 
+        : 'bg-secondary-tier3';
     
     const borderClass = 'border-2 border-secondary-tier2';
     return (
+        <div className='flex flex-col gap-2'>
         <div className={twMerge(baseClass, versionClass,borderClass, className)}>
             {beforeIcon && <span className="mr-2">{beforeIcon}</span>}
             <input
-                className='bg-transparent w-full'
+                className='bg-transparent w-full placeholder:text-primary placeholder:font-normal'
                 onInput={onInput}
+                onChange={onChange}
                 placeholder={placeholder}
                 type="text"
+                value={value??''}
             ></input>
             {afterIcon && <span className="ml-2">{afterIcon}</span>}
         </div>
-                    
+        {label && <label className="text-primary text-lg md:text-md ml-2">{label}</label>}
+        </div>      
     );
 };
 

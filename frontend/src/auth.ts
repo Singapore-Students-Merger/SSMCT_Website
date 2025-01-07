@@ -6,21 +6,37 @@ import type {
 import type { NextAuthOptions } from "next-auth"
 import { getServerSession } from "next-auth"
 import DiscordProvider from "next-auth/providers/discord";
-
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import prisma from "@/lib/prisma";
 // You'll need to import and pass this
 // to `NextAuth` in `app/api/auth/[...nextauth]/route.ts`
 export const config = {
+  adapter: PrismaAdapter(prisma),
   pages: {
     signIn: '/auth/signin',
     signOut: '/auth/signout',
     error: '/auth/signin', // Error code passed in query string as ?error=
-    newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)
+    newUser: '/auth/new_user' // New users will be directed here on first sign in (leave the property out if not of interest)
+  },
+  session: {
+    strategy: "database"
   },
   providers: [
     DiscordProvider({
       clientId: process.env.DISCORD_CLIENT_ID!,
       clientSecret: process.env.DISCORD_CLIENT_SECRET!,
-      authorization: { params: { scope: 'identify guilds' }} 
+      authorization: { params: { scope: 'identify guilds' }},
+      token: "https://discord.com/api/oauth2/token",
+      userinfo: "https://discord.com/api/users/@me",
+      profile: (profile) => {
+        return {
+          id: profile.id,
+          name: profile.username,
+          image: profile.avatar
+            ? `https://cdn.discordapp.com/avatars/${profile.id}/${profile.avatar}.png`
+            : null,
+        }
+      } 
     }),
   ],
   callbacks: {
@@ -52,16 +68,14 @@ export const config = {
 
       return true; // Allow sign-in
     },
-    async jwt({ token, account }) {
-      if (account?.access_token) {
-        token.accessToken = account.access_token;
+    async session({ session, user }) {
+      if (session?.user) {
+        session.user.id = user.id;
+        session.user.discordId = user.discordId; // Include Discord ID in the session
       }
-      return token;
-    },
-    async session({ session, token }) {
-      session.accessToken = token.accessToken;
       return session;
     },
+    
   },
 } satisfies NextAuthOptions
 
