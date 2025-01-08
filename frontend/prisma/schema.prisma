@@ -47,13 +47,13 @@ model user {
   id             String           @id @default(cuid())
   name           String?
   realName       String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt @default(now())
   discordId      String?          @unique(map: "User_discordId_key")
   image          String?
   mainCategoryId Int?
   email          String?          @unique(map: "User_email_key")
   emailVerified  Boolean?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @default(now()) @updatedAt
   account        account[]
   session        session[]
   categories     categories?      @relation(fields: [mainCategoryId], references: [id], map: "user_ibfk_1")

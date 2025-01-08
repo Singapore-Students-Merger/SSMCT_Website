@@ -18,6 +18,8 @@ interface CustomSelectProps {
   shadow?: boolean;
   border?: boolean;
   label?: string;
+  name?: string;
+  value?: Option | null;
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({
@@ -30,6 +32,8 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   shadow = true,
   border = true,
   label,
+  name,
+  value,
 }) => {
   const baseClass = `
     text-primary
@@ -133,6 +137,8 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
           components={{
             DropdownIndicator,
           }}
+          name={name}
+          value={value}
         />
       </div>
       {label && <label className="text-primary text-lg md:text-md ml-2">{label}</label>}
