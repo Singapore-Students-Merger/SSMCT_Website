@@ -7,7 +7,7 @@ type BlogDetails = {
     topics: string[];
     categories: string[];
     level: "None" | "Easy" | "Medium" | "Hard";
-    date: Date;
+    date: string;
     thumbnail?: string;
 }
 
