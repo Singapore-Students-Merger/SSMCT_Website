@@ -1,0 +1,29 @@
+/* Import a Prism.js theme */
+@import "prismjs/themes/prism-tomorrow.css";
+
+/* Optional: Import the line numbers plugin styles */
+@import "prismjs/plugins/line-numbers/prism-line-numbers.css";
+
+/* Add custom styles for code blocks */
+pre {
+  background-color: #2d2d2d; /* Dark background */
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-family: "Fira Code", monospace;
+}
+
+code {
+  font-size: 0.875rem;
+  color: #f8f8f2;
+}
+
+/* Adjust line numbers */
+pre.line-numbers {
+  padding-left: 3.5rem;
+}
+
+pre[class*="language-"] {
+  margin-bottom: 1.5rem;
+  border: 1px solid #444;
+}

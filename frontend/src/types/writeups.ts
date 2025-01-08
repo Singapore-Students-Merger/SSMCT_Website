@@ -7,7 +7,6 @@ type WriteupDetails = {
     topics: string[];
     categories: string[];
     difficulty: "Easy" | "Medium" | "Hard";
-    length: string;
     date: Date;
     ctf?: string;
     source?: string;
