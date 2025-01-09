@@ -3,18 +3,17 @@ import fs from 'fs';
 import path from 'path';
 import { processMarkdown } from "@/utils/processMarkdown";
 import "@/app/styles/prism-vsc-dark-plus.css";
-import { WriteupDetails } from "@/types/writeups";
-import DetailsSection from "@/components/DetailsSection";
+import ChallengeDetailSection from "@/components/DetailsSection";
 import sanitizeFilePath from "@/utils/sanitizeFilePath";
-import CommentsSection from "@/components/CommentsSection";
+import { BlogDetails } from "@/types/blogs";
 
-export default async function WriteupView({ params }: { params: { id: string } }) {
+export default async function BlogView({ params }: { params: { id: string } }) {
     params = await params;
     const id = params.id;
     let data;
 
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/writeups/view/${id}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/blogs/view/${id}`);
         if (!response.ok) {
             const error = (await response.json()).message;
             return <div>{error}</div>;
@@ -29,9 +28,10 @@ export default async function WriteupView({ params }: { params: { id: string } }
         return <div>An error occurred while reading the markdown file.</div>;
     }
 
-    const writeupDetails: WriteupDetails = data.data;
-    const basePath = path.resolve(process.cwd(), 'uploads/writeups');
-    const filename = writeupDetails.contentFile;
+    const blogDetails: BlogDetails = data.data;
+    console.log(blogDetails);
+    const basePath = path.resolve(process.cwd(), 'uploads/blogs');
+    const filename = blogDetails.contentFile;
     let content, estimatedReadTime;
 
     try {
@@ -39,7 +39,7 @@ export default async function WriteupView({ params }: { params: { id: string } }
         if (!fullPath) {
             throw new Error("Invalid file path");
         }
-        const markdownPath = path.join(process.cwd(), 'uploads/writeups', writeupDetails.contentFile);
+        const markdownPath = path.join(process.cwd(), 'uploads/blogs', blogDetails.contentFile);
         const markdownContent = fs.readFileSync(markdownPath, "utf-8").toString();
         content = await processMarkdown(markdownContent);
         estimatedReadTime = Math.ceil(content.split(' ').length / 200);
@@ -54,17 +54,14 @@ export default async function WriteupView({ params }: { params: { id: string } }
 
     return (
         <>
-            <div>
-                <DetailsSection details={writeupDetails} estimatedReadTime={estimatedReadTime} />
-                <div>
-                    <h2 className="text-3xl font-bold text-white border-b-2 border-tertiary mx-16 my-4">Writeup</h2>
-                    <div
-                        className="prose max-w-none mx-auto px-10 md:px-32 my-8"
-                        dangerouslySetInnerHTML={{ __html: content.toString() }}>
-                    </div>
+            <ChallengeDetailSection details={blogDetails} estimatedReadTime={estimatedReadTime} />
+            <section>
+                <h2 className="text-3xl font-bold text-white border-b-2 border-tertiary mx-16 my-4">Writeup</h2>
+                <div
+                    className="prose max-w-none mx-auto px-10 md:px-32 my-8"
+                    dangerouslySetInnerHTML={{ __html: content.toString() }}>
                 </div>
-                <CommentsSection id={id} blogOrWriteup="writeup" />
-            </div>
+            </section>
         </>
     );
 }

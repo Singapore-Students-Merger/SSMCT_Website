@@ -1,31 +1,62 @@
 import { WriteupDetails } from "@/types/writeups";
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+import prisma from "@/lib/prisma";
 
-export function GET(req: NextRequest) {
-  const date = new Date();
-    const writeupDetail: WriteupDetails = {
-        id:1,
-        title: "Introduction to Web Exploits",
-        description: "A beginner-friendly guide to understanding web application vulnerabilities.",
-        author: "John Doe",
-        topics: ["XSS", "SQL Injection", "CSRF"],
-        categories: ["Web", "CTF", "Beginner"],
-        difficulty: "Easy",
-        date: date.toLocaleDateString('en-GB', {
-          day: '2-digit',
-          month: 'long',
-          year: 'numeric',
-        }),
-        ctf: "HackTheBox",
-        thumbnail: "https://example.com/thumbnail1.png",
-        contentFile: "test.md", // Placeholder URL for the content
-        source: "https://example.com/writeups/introduction-to-web-exploits",        // Placeholder URL for the source
-      };
-      
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const resolvedParams = await params; // Await params
+    const id = parseInt(resolvedParams.id);
 
+    if (isNaN(id)) {
+      return NextResponse.json(
+        { error: true, message: "Invalid ID provided" },
+        { status: 400 }
+      );
+    }
 
-  
-  return NextResponse.json(writeupDetail);
-      
+    const data = await prisma.writeups.findUnique({
+      where: { id },
+      include: {
+        categories: true,
+        topics: {
+          include: {
+            topics: true,
+          },
+        },
+        events: true,
+        user: true,
+      },
+    });
+    if (!data) {
+      return NextResponse.json(
+        { error: true, message: "No writeup found with that ID" },
+        { status: 404 }
+      );
+    }
 
+    const writeupDetails: WriteupDetails = {
+      id: data.id,
+      title: data.title,
+      description: data.description,
+      author: data.user?.name || "Unknown",
+      contentFile: data.contentFile,
+      topics: data.topics ? data.topics.map((topic) => topic.topics.title) : [],
+      category: data.categories?.name || "Uncategorized",
+      difficulty: data.difficulty as "Easy" | "Medium" | "Hard",
+      date: data.date.toLocaleDateString(undefined,{
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }),
+      ctf: data.events?.title,
+    };
+
+    return NextResponse.json({ data: writeupDetails });
+  } catch (error : any) {
+    console.error("Unexpected error:", error.message);
+    return NextResponse.json(
+      { error: true, message: "An unexpected error occurred" },
+      { status: 500 }
+    );
+  }
 }

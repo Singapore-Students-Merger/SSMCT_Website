@@ -25,7 +25,8 @@
     "remark": "^15.0.1",
     "remark-html": "^16.0.1",
     "remark-rehype": "^11.1.1",
-    "tailwind-merge": "^2.5.5"
+    "tailwind-merge": "^2.5.5",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

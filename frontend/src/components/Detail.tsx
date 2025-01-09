@@ -7,7 +7,7 @@ interface ChallengeDetailProps {
     children: React.ReactNode;
     className?: string;
 }
-export default function ChallengeDetail({ title, children, icon, className }: ChallengeDetailProps) {
+export default function Detail({ title, children, icon, className }: ChallengeDetailProps) {
     const isString = typeof children === 'string';
   return (
     <div className={twMerge(`flex flex-col`,className)}>
