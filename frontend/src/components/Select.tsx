@@ -20,6 +20,7 @@ interface CustomSelectProps {
   label?: string;
   name?: string;
   value?: Option | null;
+  required?: boolean;
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({
@@ -34,6 +35,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   label,
   name,
   value,
+  required = false,
 }) => {
   const baseClass = `
     text-primary
@@ -139,6 +141,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
           }}
           name={name}
           value={value}
+          required={required}
         />
       </div>
       {label && <label className="text-primary text-lg md:text-md ml-2">{label}</label>}

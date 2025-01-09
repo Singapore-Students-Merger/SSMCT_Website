@@ -12,6 +12,7 @@ interface TextInputProps {
     label?: string;
     value?: string;
     name?: string;
+    required?: boolean;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 // Button component
@@ -29,6 +30,7 @@ const TextInput: React.FC<TextInputProps> = ({
     shadow = true,
     label,
     name,
+    required = false,
     onChange
 }) => {
     const baseClass = `
@@ -67,6 +69,7 @@ const TextInput: React.FC<TextInputProps> = ({
                 type="text"
                 value={value??''}
                 name={name}
+                required={required}
             ></input>
             {afterIcon && <span className="ml-2">{afterIcon}</span>}
         </div>
