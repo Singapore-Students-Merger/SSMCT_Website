@@ -64,8 +64,7 @@ model user {
   usercategories   usercategories[]
   events           events[]
   gallery          gallery[]
-  acheivements     acheivements[]
-  userachievements userachievements[]
+  ctfs         userctfs[]
   blogs            blogs[]
   writeups         writeups[]
   comments         comments[]
@@ -93,13 +92,13 @@ model verificationtoken {
 
 model events {
   id            Int      @id @default(autoincrement())
-  userId        String
+  userId        String?
   title         String
   description   String?
   isCompetition Boolean  @default(false)
   isBonding     Boolean  @default(false)
   date          DateTime @default(now())
-  user          user     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Events_userId_fkey")
+  user          user?     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Events_userId_fkey")
   writeups      writeups[]
   blogs         blogs[]
   gallery       gallery[]
@@ -120,24 +119,14 @@ model gallery {
   categoriesId Int?
 }
 
-model acheivements {
-  id               Int                @id @default(autoincrement())
-  userId           String
-  title            String
-  date             DateTime           @default(now())
-  image            String
-  points           Int?
-  user             user               @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Acheivements_userId_fkey")
-  userachievements userachievements[]
-}
 
-model userachievements {
+
+model userctfs {
   userId        String
-  acheivementId Int
+  ctfId Int
   user          user         @relation(fields: [userId], references: [id], onDelete: Cascade, map: "UserAchievements_userId_fkey")
-  acheivements  acheivements @relation(fields: [acheivementId], references: [id], onDelete: Cascade, map: "UserAchievements_acheivementId_fkey")
-
-  @@id([userId, acheivementId])
+  ctf           ctf          @relation(fields: [ctfId], references: [eventId], onDelete: Cascade, map: "UserAchievements_ctfId_fkey")
+  @@id([userId, ctfId])
 }
 
 model blogs {
@@ -221,7 +210,12 @@ model comments {
 
 model ctf {
   eventId    Int      @id
-  points     Int?
+  ctfId      Int?     @unique
+  points     Float?
   placing    Int?
+  link       String?
+  participants Int?
+  logo       String?
   event      events   @relation(fields: [eventId], references: [id], onDelete: Cascade, map: "CTF_eventId_fkey")
+  members   userctfs[]
 }

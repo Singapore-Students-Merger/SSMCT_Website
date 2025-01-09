@@ -6,6 +6,7 @@ type AchievementDetails = {
     thumbnail?: string;
     members: string[];
     points: number;
+    participants: number;
 }
 
 export type { AchievementDetails };
