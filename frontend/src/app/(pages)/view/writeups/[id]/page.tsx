@@ -7,8 +7,10 @@ import { WriteupDetails } from "@/types/writeups";
 import DetailsSection from "@/components/DetailsSection";
 import sanitizeFilePath from "@/utils/sanitizeFilePath";
 import CommentsSection from "@/components/CommentsSection";
-
+import toast, { Toaster } from 'react-hot-toast';
+import { auth } from "@/auth";
 export default async function WriteupView({ params }: { params: { id: string } }) {
+    const loggedIn = await auth()?true:false;
     params = await params;
     const id = params.id;
     let data;
@@ -51,6 +53,19 @@ export default async function WriteupView({ params }: { params: { id: string } }
         }
         return <div>An error occurred while reading the markdown file.</div>;
     }
+    let comments 
+    let commentsError = false;
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/writeups/comment/${id}`);
+        if (!response.ok) {
+            const error = (await response.json()).message;
+            return <div>{error}</div>;
+        }
+        comments = (await response.json()).data;
+    } catch (error: unknown) {
+        console.error("Fetch Error:", error instanceof Error ? error.message : error);
+        commentsError = true;
+    }
 
     return (
         <>
@@ -63,8 +78,9 @@ export default async function WriteupView({ params }: { params: { id: string } }
                         dangerouslySetInnerHTML={{ __html: content.toString() }}>
                     </div>
                 </div>
-                <CommentsSection id={id} blogOrWriteup="writeup" />
+                <CommentsSection comments = {comments} id={id} type="writeups" loggedIn={loggedIn} />
             </div>
+            <Toaster />
         </>
     );
 }

@@ -41,7 +41,7 @@ export default function DetailsSection({ details, estimatedReadTime }: DetailsSe
                         <div className="flex flex-wrap gap-2 items-start justify-start overflow-auto h-full">
                             {details.topics.map((topic, index) => (
                                 <Chip
-                                    className="text-sm font-semibold rounded-lg px-4 py-1 text-center"
+                                    className="text-sm font-semibold rounded-lg px-4 py-1 text-center "
                                     key={index}
                                 >
                                     {topic}

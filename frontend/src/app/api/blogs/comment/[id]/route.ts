@@ -9,6 +9,7 @@ const commentSchema = z.object({
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
     try {
+        params = await params;
         const id = parseInt(params.id);
 
         if (isNaN(id)) {
@@ -19,7 +20,8 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
         }
 
         const comments = await prisma.comments.findMany({
-            where: { writeupId: id },
+            where: { blogId: id },
+            include : {user: {select: {name: true, image: true}}},
             orderBy: { date: "desc" }, // Add ordering if necessary
         });
 
@@ -38,6 +40,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
 
 export async function POST(req: Request, { params }: { params: { id: string } }) {
     try {
+        params = await params;
         const id = parseInt(params.id);
         const session = await auth();
 
@@ -69,10 +72,11 @@ export async function POST(req: Request, { params }: { params: { id: string } })
 
         const comment = await prisma.comments.create({
             data: {
-                writeupId: id,
+                blogId: id,
                 comment: parsedData.data.content,
                 userId,
             },
+            include: { user: { select: { name: true, image: true } } },
         });
 
         return NextResponse.json({ data: comment });

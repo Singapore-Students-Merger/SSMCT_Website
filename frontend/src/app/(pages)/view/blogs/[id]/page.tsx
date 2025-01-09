@@ -6,8 +6,12 @@ import "@/app/styles/prism-vsc-dark-plus.css";
 import ChallengeDetailSection from "@/components/DetailsSection";
 import sanitizeFilePath from "@/utils/sanitizeFilePath";
 import { BlogDetails } from "@/types/blogs";
+import {auth} from "@/auth";
+import CommentsSection from "@/components/CommentsSection";
 
 export default async function BlogView({ params }: { params: { id: string } }) {
+    const loggedIn = await auth()?true:false;
+
     params = await params;
     const id = params.id;
     let data;
@@ -29,7 +33,6 @@ export default async function BlogView({ params }: { params: { id: string } }) {
     }
 
     const blogDetails: BlogDetails = data.data;
-    console.log(blogDetails);
     const basePath = path.resolve(process.cwd(), 'uploads/blogs');
     const filename = blogDetails.contentFile;
     let content, estimatedReadTime;
@@ -52,6 +55,20 @@ export default async function BlogView({ params }: { params: { id: string } }) {
         return <div>An error occurred while reading the markdown file.</div>;
     }
 
+    let comments = []
+    let commentsError = false;
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/blogs/comment/${id}`);
+        if (!response.ok) {
+            const error = (await response.json()).message;
+            return <div>{error}</div>;
+        }
+        comments = (await response.json()).data;
+    } catch (error: unknown) {
+        console.error("Fetch Error:", error instanceof Error ? error.message : error);
+        commentsError = true;
+    }
+
     return (
         <>
             <ChallengeDetailSection details={blogDetails} estimatedReadTime={estimatedReadTime} />
@@ -61,6 +78,7 @@ export default async function BlogView({ params }: { params: { id: string } }) {
                     className="prose max-w-none mx-auto px-10 md:px-32 my-8"
                     dangerouslySetInnerHTML={{ __html: content.toString() }}>
                 </div>
+                <CommentsSection commentsError = {commentsError} comments = {comments} id={id} type="blogs" loggedIn={loggedIn} />
             </section>
         </>
     );
