@@ -6,11 +6,17 @@ import Select from "@/components/Select";
 import Button from "@/components/Button";
 import Image from 'next/image'
 import toast, { Toaster } from 'react-hot-toast';
+import Category from "@/types/category";
 
 import { useState, useEffect } from 'react';
 import { useRef } from 'react';
+import UploadFileComponent from "./UploadFileComponent";
+interface Topic {
+    id: number;
+    name: string;
+}
 
-export default function createWriteupsPage(){
+export default function CreateWriteupsPage(){
     //Initialisation of data for the page
     const difficultyOptions = [
         { value: '', label: 'Select Difficulty'},
@@ -22,12 +28,16 @@ export default function createWriteupsPage(){
       ];
 
     const [categories, setCategories] = useState([]);
-    const [topics, setTopics] = useState([]);
+    const [topics, setTopics] = useState<Topic>([]);
   
     useEffect(() => {
         async function getCategories() {
             const res = await fetch("/api/categories");
-            const cats = await res.json();
+            if (!res.ok) {
+                console.error('Failed to fetch data:', res.status, res.statusText);
+                toast.error('Failed to fetch categories');
+            }
+            const cats:Category[] = await res.json();
             const mappedCats = cats.map((cat: { name: string }) => ({
                 value: cat.name,
                 label: cat.name
@@ -64,6 +74,9 @@ export default function createWriteupsPage(){
 
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const fileInputRef2 = useRef<HTMLInputElement | null>(null);
+    const [topicSearch, setTopicSearch] = useState<string>('');
+
+    
     const [formData, setFormData] = useState({
         Title: "",
         Difficulty: '',
@@ -77,19 +90,19 @@ export default function createWriteupsPage(){
     });
 
     
-
+    const onTopicSearchChange = (e: any) => {
+        setTopicSearch(e.target.value);
+    }
     //making it appear
-    const UploadThumbnailHandler = () => {
-        if (fileInputRef.current?.files?.[0]) {
-            setOpacity('opacity-100');
-            setWriteupThumbnail(fileInputRef.current.files[0]); // Store file separately
+    const uploadThumbnailHandler = (file: null|File) => {
+        if (file) {
+            setWriteupThumbnail(file); // Store file separately
         }
     };
     
-    const UploadWriteupHandler = () => {
-        if (fileInputRef2.current?.files?.[0]) {
-            setOpacity2('opacity-100')
-            setWriteupFile(fileInputRef2.current.files[0]); // Store file separately
+    const uploadWriteupHandler = (file:null|File) => {
+        if (file) {
+            setWriteupFile(file); // Store file separately
         }
     };
     
@@ -123,11 +136,11 @@ export default function createWriteupsPage(){
     };
 
     //changing formData value for select tags on change
-    const handleDifficultyChange = (selectedOption: Option | null) => {
+    const handleDifficultyChange = (selectedOption: { value: string; }) => {
         if (selectedOption) {
             setFormData((prev) => ({
                 ...prev,
-                Difficulty: selectedOption, // Store the whole object (with value and label)
+                Difficulty: selectedOption.value, // Store the whole object (with value and label)
             }));
         } else {
             setFormData((prev) => ({
@@ -137,11 +150,11 @@ export default function createWriteupsPage(){
         }
     };
 
-    const handleCategoryChange = (selectedOption: Option | null) => {
+    const handleCategoryChange = (selectedOption: { value: string; }) => {
         if (selectedOption) {
             setFormData((prev) => ({
                 ...prev,
-                Category: selectedOption, // Store the whole object (with value and label)
+                Category: selectedOption.value, // Store the whole object (with value and label)
             }));
         } else {
             setFormData((prev) => ({
@@ -158,51 +171,48 @@ export default function createWriteupsPage(){
         try {
             const formDataToSubmit = new FormData();
             formDataToSubmit.append("Title", formData.Title);
-            formDataToSubmit.append("Difficulty", formData.Difficulty.value || ""); // Assuming Difficulty has value and label
+            formDataToSubmit.append("Difficulty", formData.Difficulty || ""); // Assuming Difficulty has value and label
             formDataToSubmit.append("Link", formData.Link);
-            formDataToSubmit.append("Category", formData.Category.value || "");
+            formDataToSubmit.append("Category", formData.Category || "");
             formDataToSubmit.append("Topics", JSON.stringify(formData.Topics));
             formDataToSubmit.append("CTF", formData.CTF);
             formDataToSubmit.append("Description", formData.Description);
             if (writeupThumbnail) formDataToSubmit.append('WriteupThumbnail', writeupThumbnail);
             if (writeupFile) formDataToSubmit.append('WriteupFile', writeupFile);
 
-            for (const [key, value] of formDataToSubmit.entries()) {
-                console.log(key, value);
-              }
-
-            const response = await fetch("/api/create/writeup", {
+            const submitPromise = fetch("/api/create/writeup", {
                 method: "POST",
-                // headers: {
-                //     "Content-Type": "multipart/form-data",
-                // },
                 body: formDataToSubmit,
-            });
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data['status'] == 'success') {
+                    // Reset form data if successful
+                    setFormData({
+                        Title: "",
+                        Difficulty: "",
+                        Link: "",
+                        Category: "",
+                        Topics: [],
+                        WriteupThumbnail: "",
+                        CTF: "",
+                        Description: "",
+                        WriteupFile: ""
+                    });
+                } else if (data['status'] == 'error') {
+                    throw new Error(data['error']);
+                }
+            })
+            toast.promise(submitPromise, {
+                loading: 'Creating writeup...',
+                success: 'Writeup successfully created',
+                error: (error) => `Failed to create writeup: ${error.message}`,
+            })
 
-            console.log('Response Status:', response.status); // Log the status
-            console.log('RESPONSERESPONSERESPONSE')
-            const responseData = await response.json();
-            console.log("Response Data:", responseData);
+            
 
-            if (responseData['status'] == 'success') {
-                // Reset form data if successful
-                console.log('success')
-                setFormData({
-                    Title: "",
-                    Difficulty: "",
-                    Link: "",
-                    Category: "",
-                    Topics: [],
-                    WriteupThumbnail: "",
-                    CTF: "",
-                    Description: "",
-                    WriteupFile: ""
-                });
-                toast.success('Writeup successfully created');
-            } else if (responseData['status'] == 'error') {
-                toast.error(responseData['error']);
-                console.log('Error:', responseData['message']);
-            }
+            
+            
         } catch (error) {
             // Catch and log the error
             console.error('Error during submit:', error);
@@ -220,7 +230,7 @@ export default function createWriteupsPage(){
         // Return null or a loading state during server-side rendering
         return null;
     }
-    
+
 
     return(
         <GradientBg gradientPosition="center" className = 'p-10'>
@@ -234,7 +244,7 @@ export default function createWriteupsPage(){
                 </div>
 
                 <div className = 'flex flex-col gap-2'>
-                    <Select className = 'rounded-xl h-[3rem] text-left' placeholder = 'Select Difficulty' name = 'Difficulty' options = {difficultyOptions} value = {formData.Difficulty} onChange={handleDifficultyChange} required = {true}/>
+                    <Select className = 'rounded-xl h-[3rem] text-left' placeholder = 'Select Difficulty' name = 'Difficulty' options = {difficultyOptions} onChange={handleDifficultyChange} required = {true}/>
                     <label>Difficulty</label>
                 </div>
                 
@@ -244,18 +254,18 @@ export default function createWriteupsPage(){
                 </div> 
 
                 <div className = 'flex flex-col gap-2'>
-                    <Select className = 'rounded-xl h-[3rem] text-left' placeholder = 'Select Category' options = {categories} name = 'Category' value = {formData.Category} onChange = {handleCategoryChange} required = {true}/>
+                    <Select className = 'rounded-xl h-[3rem] text-left' placeholder = 'Select Category' options = {categories} name = 'Category' onChange = {handleCategoryChange} required = {true}/>
                     <label>Category</label>
                 </div>
 
                 <div className = 'flex flex-col gap-2 row-span-5'>
-                    <div className = 'rounded-xl h-[calc(28rem+2px)] bg-secondary-tier1/50 border-2 border-secondary-tier2'>
-                        <div className = 'h-[3rem] items-center px-4 text-primary flex text-lg'>Search Topics</div>
-                        <div className = 'text-primary h-[calc(25rem-2px)] rounded-none rounded-bl-xl rounded-br-xl w-[100%] bg-secondary-tier3 resize-none'>
+                    <div className = 'rounded-xl h-[calc(28rem+2px)]  bg-secondary-tier1/50 border-2 border-secondary-tier2'>
+                        <TextInput onChange={onTopicSearchChange} value = {topicSearch} className = 'h-[3rem] items-center px-4 text-primary flex text-lg rounded-b-none rounded-t-xl' placeholder="Search Topics" />
+                        <div className = 'overflow-auto text-primary h-[calc(25rem-2px)] rounded-none rounded-bl-xl rounded-br-xl w-[100%] bg-secondary-tier3 resize-none'>
                         {topics.map((topic, index) => {
                             // const isSelected = selected.includes(topic.name); // Check if the topic is in the selected array
                             // const brightness = isSelected ? 'brightness-125' : 'brightness-100'; // Set the background color based on selection
-
+                            if (!topic.name.toLowerCase().includes(topicSearch.toLowerCase())) return null;
                             return (
                                 <span
                                     key={index}
@@ -266,7 +276,7 @@ export default function createWriteupsPage(){
                                       }`}
                                       onClick={() => topicSelector(topic.id)}
                                 >
-                                    {topic.id}: {topic.name}
+                                    {topic.name}
                                 </span>
                             );
                         })}
@@ -275,18 +285,7 @@ export default function createWriteupsPage(){
                     <label>Topics</label>
                 </div>
 
-                <div className = 'flex flex-col gap-2 row-span-2'>
-                    <div className = 'rounded-xl h-[calc(9rem+2px)] bg-secondary-tier1/50 z-10 border-2 border-secondary-tier2'>
-                        <div className = 'flex flex-rol h-[3rem]'>
-                            <div className = 'items-center px-4 text-primary flex text-lg'>Writeup Thumbnail</div>
-                            <Image src = '/assets/record.png' className = 'h-[1.5rem] w-[1.5rem] m-auto mr-3 block' height = {3} width = {3}  alt = 'upload'/>
-                        </div>
-                        <div className = 'text-primary h-[calc(6rem-2px)] rounded-none rounded-bl-xl rounded-br-xl w-[100%] bg-secondary-tier3 resize-none'>
-                            <input type = 'file' className = {`opacity-0 w-[100%] rounded-none rounded-bl-xl rounded-br-xl h-[calc(6rem-2px)] ${opacity}`} onChange = {UploadThumbnailHandler} name = 'WriteupThumbnail'ref={fileInputRef}  required/>
-                        </div>
-                    </div>
-                    <label>Thumbnail</label>
-                </div>
+                <UploadFileComponent accept = "image/*" onFileUpload = {uploadThumbnailHandler} label = "Writeup Thumbnail" file = {writeupThumbnail}/>
 
                 <div className = 'flex flex-col gap-2'>
                     <TextInput placeholder = 'CTF' version = 'secondary' className = 'rounded-xl' name = 'CTF' value = {formData.CTF} onChange = {handleChange} required = {true}/>
@@ -298,18 +297,7 @@ export default function createWriteupsPage(){
                     <label>Description</label>
                 </div>
 
-                <div className = 'flex flex-col gap-2 row-span-2'>
-                    <div className = 'rounded-xl h-[calc(9rem+2px)] bg-secondary-tier1/50 z-10 border-2 border-secondary-tier2'>
-                        <div className = 'flex flex-rol h-[3rem]'>
-                            <p className = 'items-center px-4 text-primary flex text-lg'>Writeup File</p>
-                            <Image src = '/assets/record.png' className = 'h-[1.5rem] w-[1.5rem] m-auto mr-3 block' height = {3} width = {3} alt = 'upload'/>
-                        </div>
-                        <div className = 'text-primary h-[calc(6rem-2px)] rounded-none rounded-bl-xl rounded-br-xl w-[100%] bg-secondary-tier3 resize-none'>
-                            <input type = 'file' className = {`opacity-0 w-[100%] rounded-none rounded-bl-xl rounded-br-xl h-[calc(6rem-2px)] ${opacity2}`} onChange = {UploadWriteupHandler} name = 'WriteupFile' ref={fileInputRef2} required/>
-                        </div>
-                    </div>
-                    <label>Writeup file</label>
-                </div>
+                <UploadFileComponent accept = ".md,.markdown" onFileUpload = {uploadWriteupHandler} label = "Writeup File" file = {writeupFile}/>
                 
                 <Button type = 'submit' className = 'row-span-1 h-[3rem] rounded-xl mt-[1rem]'>Create</Button>
             </form>

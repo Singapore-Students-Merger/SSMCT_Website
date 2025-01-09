@@ -1,4 +1,4 @@
-import CreateWriteupPage from "@/components/create-writeup";
+import CreateWriteupPage from "@/components/CreateWriteupPage";
 import { auth } from "@/auth"
 import { redirect } from 'next/navigation'
 

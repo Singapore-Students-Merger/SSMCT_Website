@@ -144,7 +144,7 @@ model blogs {
   level       String?
   description String
   date        DateTime      @default(now())
-  link        String
+  contentFile        String
   kudos       Int           @default(0)
   user        user          @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Blogs_userId_fkey")
   blogstopics blogstopics[]
@@ -163,7 +163,7 @@ model writeups {
   description    String
   date           DateTime         @default(now())
   kudos          Int              @default(0)
-  link           String
+  contentFile           String
   user           user             @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Writeups_userId_fkey")
   writeupstopics writeupstopics[]
   comments       comments[]

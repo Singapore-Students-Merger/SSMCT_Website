@@ -6,7 +6,6 @@ import { writeFile } from "fs/promises";
 import { auth } from "@/auth"
 import { redirect } from 'next/navigation'
 
-console.log('INITIAL RESPONSE SAY SMT')
 
 // export const config = {
 //     api: {
@@ -100,7 +99,7 @@ export const POST = async(req, res) => {
             data: {
                 title: Title,
                 difficulty: Difficulty,
-                link: Link,
+                contentFile: Link,
                 description: Description,
                 categoryId: categoryId ? categoryId.id : null,
                 eventId: eventId.id,
