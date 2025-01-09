@@ -4,16 +4,23 @@ import Comment from "../types/comment";
 import CommentComp from "./CommentComponent";
 import {auth} from "@/auth";
 import Link from "next/link";
-import { useState } from "react";
+import { useState,useEffect } from "react";
+import toast from "react-hot-toast";
 interface CommentsSectionProps {
     comments: Comment[];
     id: string;
     type: "blogs"| "writeups";
     loggedIn:boolean
+    commentError: boolean;
 }
 
-export default function CommentsSection({ comments,id,type,loggedIn } : CommentsSectionProps) {
+export default function CommentsSection({ comments,id,type,loggedIn,commentsError } : CommentsSectionProps) {
     const [commentsState, setComments] = useState<Comment[]>(comments);
+    useEffect(() => {
+        if(commentsError){
+            toast.error("Error fetching comments");
+        }
+    }, [commentsError]);
     return (
         <>
             <section className="px-16 mt-4 mb-32">

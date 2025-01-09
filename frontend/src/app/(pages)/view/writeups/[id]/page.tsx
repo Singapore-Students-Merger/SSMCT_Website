@@ -54,7 +54,7 @@ export default async function WriteupView({ params }: { params: { id: string } }
         return <div>An error occurred while reading the markdown file.</div>;
     }
     let comments 
-    let commentsError = false;
+    let commentError = false;
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/writeups/comment/${id}`);
         if (!response.ok) {
@@ -64,7 +64,7 @@ export default async function WriteupView({ params }: { params: { id: string } }
         comments = (await response.json()).data;
     } catch (error: unknown) {
         console.error("Fetch Error:", error instanceof Error ? error.message : error);
-        commentsError = true;
+        commentError = true;
     }
 
     return (
@@ -78,7 +78,7 @@ export default async function WriteupView({ params }: { params: { id: string } }
                         dangerouslySetInnerHTML={{ __html: content.toString() }}>
                     </div>
                 </div>
-                <CommentsSection comments = {comments} id={id} type="writeups" loggedIn={loggedIn} />
+                <CommentsSection commentError = {commentError} comments = {comments} id={id} type="writeups" loggedIn={loggedIn} />
             </div>
             <Toaster />
         </>

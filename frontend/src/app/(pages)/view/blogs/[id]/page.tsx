@@ -56,7 +56,7 @@ export default async function BlogView({ params }: { params: { id: string } }) {
     }
 
     let comments = []
-    let commentsError = false;
+    let commentError = false;
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/blogs/comment/${id}`);
         if (!response.ok) {
@@ -66,19 +66,19 @@ export default async function BlogView({ params }: { params: { id: string } }) {
         comments = (await response.json()).data;
     } catch (error: unknown) {
         console.error("Fetch Error:", error instanceof Error ? error.message : error);
-        commentsError = true;
+        commentError = true;
     }
 
     return (
         <>
             <ChallengeDetailSection details={blogDetails} estimatedReadTime={estimatedReadTime} />
             <section>
-                <h2 className="text-3xl font-bold text-white border-b-2 border-tertiary mx-16 my-4">Writeup</h2>
+                <h2 className="text-3xl font-bold text-white border-b-2 border-tertiary mx-10 md:mx-16 my-4">Writeup</h2>
                 <div
                     className="prose max-w-none mx-auto px-10 md:px-32 my-8"
                     dangerouslySetInnerHTML={{ __html: content.toString() }}>
                 </div>
-                <CommentsSection commentsError = {commentsError} comments = {comments} id={id} type="blogs" loggedIn={loggedIn} />
+                <CommentsSection commentError = {commentError} comments = {comments} id={id} type="blogs" loggedIn={loggedIn} />
             </section>
         </>
     );

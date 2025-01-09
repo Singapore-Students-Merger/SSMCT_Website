@@ -13,7 +13,7 @@ import prisma from "@/lib/prisma";
 export const config = {
   adapter: PrismaAdapter(prisma),
   pages: {
-    signIn: '/auth/signin',
+    signIn: '/',
     signOut: '/auth/signout',
     error: '/auth/signin', // Error code passed in query string as ?error=
     newUser: '/auth/new_user' // New users will be directed here on first sign in (leave the property out if not of interest)

@@ -102,6 +102,8 @@ model events {
   user          user     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Events_userId_fkey")
   writeups      writeups[]
   blogs         blogs[]
+  gallery       gallery[]
+  ctf           ctf?
 }
 
 model gallery {
@@ -114,6 +116,7 @@ model gallery {
   description  String?
   user         user        @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Gallery_userId_fkey")
   categories   categories? @relation(fields: [categoriesId], references: [id])
+  events       events?     @relation(fields: [eventId], references: [id], map: "Gallery_eventId_fkey")
   categoriesId Int?
 }
 
@@ -214,4 +217,11 @@ model comments {
   user      user      @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Comments_userId_fkey")
   blogs     blogs?    @relation(fields: [blogId], references: [id], onDelete: Cascade, map: "Comments_blogId_fkey")
   writeups  writeups? @relation(fields: [writeupId], references: [id], onDelete: Cascade, map: "Comments_writeupId_fkey")
+}
+
+model ctf {
+  eventId    Int      @id
+  points     Int?
+  placing    Int?
+  event      events   @relation(fields: [eventId], references: [id], onDelete: Cascade, map: "CTF_eventId_fkey")
 }
