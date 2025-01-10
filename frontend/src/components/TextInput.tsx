@@ -14,6 +14,8 @@ interface TextInputProps {
     name?: string;
     required?: boolean;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+    onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 // Button component
 // This component is a button that can have an icon before and after the text.
@@ -31,7 +33,9 @@ const TextInput: React.FC<TextInputProps> = ({
     label,
     name,
     required = false,
-    onChange
+    onChange,
+    onBlur,
+    onFocus
 }) => {
     const baseClass = `
         text-primary
@@ -65,6 +69,8 @@ const TextInput: React.FC<TextInputProps> = ({
                 className='bg-transparent w-full placeholder:text-primary placeholder:font-normal'
                 onInput={onInput}
                 onChange={onChange}
+                onBlur={onBlur}
+                onFocus={onFocus}
                 placeholder={placeholder}
                 type="text"
                 value={value??''}

@@ -4,18 +4,20 @@ import GradientBg from "@/components/GradientBg";
 import TextInput from "@/components/TextInput";
 import Select from "@/components/Select";
 import Button from "@/components/Button";
-import Image from 'next/image'
 import toast, { Toaster } from 'react-hot-toast';
 import Category from "@/types/category";
 
 import { useState, useEffect } from 'react';
-import { useRef } from 'react';
 import UploadFileComponent from "./UploadFileComponent";
+import SearchableSelect  from "@/components/SearchableSelect";
 interface Topic {
     id: number;
     name: string;
 }
-
+interface Event {
+    id: number | null;
+    title: string;
+}
 export default function CreateWriteupsPage(){
     //Initialisation of data for the page
     const difficultyOptions = [
@@ -28,8 +30,8 @@ export default function CreateWriteupsPage(){
       ];
 
     const [categories, setCategories] = useState([]);
-    const [topics, setTopics] = useState<Topic>([]);
-  
+    const [topics, setTopics] = useState<Topic[]>([]);
+    const [ctfs, setCtfs] = useState<Event[]>([]);
     useEffect(() => {
         async function getCategories() {
             const res = await fetch("/api/categories");
@@ -55,7 +57,6 @@ export default function CreateWriteupsPage(){
                 id: topic.id,
                 name: topic.title
             }))
-            console.log("TOPICS", mappedTopics)
             setTopics(mappedTopics);
         }
         
@@ -63,17 +64,22 @@ export default function CreateWriteupsPage(){
         getTopics();
     }, []);
 
+    useEffect(() => {
+        fetch("/api/acheivements?fields=names")
+        .then((response) => response.json())
+        .then((data) => {
+            setCtfs(data);
+        })
+        .catch((error) => {
+            toast.error('Failed to fetch CTFs');
+            console.error('Failed to fetch data:', error);
+        })
+    },[])
     //defining variables
-    const [category, setCategory] = useState('');
-    const [opacity, setOpacity] = useState('opacity-0');
-    const [opacity2, setOpacity2] = useState('opacity-0');
     const [writeupThumbnail, setWriteupThumbnail] = useState<File | null>(null);
     const [writeupFile, setWriteupFile] = useState<File | null>(null);
-
-    const [selected, setSelected] = useState([]);
-
-    const fileInputRef = useRef<HTMLInputElement | null>(null);
-    const fileInputRef2 = useRef<HTMLInputElement | null>(null);
+    const [ctf, setCTF] = useState<Event | null>(null);
+    const [selected, setSelected] = useState<number[]>([]);
     const [topicSearch, setTopicSearch] = useState<string>('');
 
     
@@ -82,11 +88,8 @@ export default function CreateWriteupsPage(){
         Difficulty: '',
         Link: "",
         Category: "",
-        Topics: [selected],
-        WriteupThumbnail: "",
-        CTF: "",
+        Topics: [] as number[],
         Description: "",
-        WriteupFile: "",
     });
 
     
@@ -105,7 +108,13 @@ export default function CreateWriteupsPage(){
             setWriteupFile(file); // Store file separately
         }
     };
-    
+    const eventChangeHandler = (selectedOption: {label:string, id: number|null}) => {
+        if (selectedOption) {
+            setCTF({title: selectedOption.label, id: selectedOption.id});
+        } else {
+            setCTF(null);
+        }
+    }
 
     //handling selection of topics
     const topicSelector = (topicId: number) => {
@@ -175,7 +184,7 @@ export default function CreateWriteupsPage(){
             formDataToSubmit.append("Link", formData.Link);
             formDataToSubmit.append("Category", formData.Category || "");
             formDataToSubmit.append("Topics", JSON.stringify(formData.Topics));
-            formDataToSubmit.append("CTF", formData.CTF);
+            formDataToSubmit.append("CTF", JSON.stringify(ctf));
             formDataToSubmit.append("Description", formData.Description);
             if (writeupThumbnail) formDataToSubmit.append('WriteupThumbnail', writeupThumbnail);
             if (writeupFile) formDataToSubmit.append('WriteupFile', writeupFile);
@@ -194,10 +203,7 @@ export default function CreateWriteupsPage(){
                         Link: "",
                         Category: "",
                         Topics: [],
-                        WriteupThumbnail: "",
-                        CTF: "",
                         Description: "",
-                        WriteupFile: ""
                     });
                 } else if (data['status'] == 'error') {
                     throw new Error(data['error']);
@@ -231,7 +237,7 @@ export default function CreateWriteupsPage(){
         return null;
     }
 
-
+    console.log(ctf)
     return(
         <GradientBg gradientPosition="center" className = 'p-10'>
             <h1 className = 'text-[3rem] font-bold'>Create Writeup</h1>
@@ -288,8 +294,12 @@ export default function CreateWriteupsPage(){
                 <UploadFileComponent accept = "image/*" onFileUpload = {uploadThumbnailHandler} label = "Writeup Thumbnail" file = {writeupThumbnail}/>
 
                 <div className = 'flex flex-col gap-2'>
-                    <TextInput placeholder = 'CTF' version = 'secondary' className = 'rounded-xl' name = 'CTF' value = {formData.CTF} onChange = {handleChange} required = {true}/>
-                    <label>Related CTF</label>
+                    {/* <TextInput placeholder = 'CTF' version = 'secondary' className = 'rounded-xl' name = 'CTF' value = {formData.CTF} onChange = {handleChange} required = {true}/> */}
+                    <SearchableSelect options = {
+                        ctfs.map((ctf:Event)=>{return {label:ctf.title, id: ctf.id}})} 
+                        setSelectedOption = {eventChangeHandler}
+                        placeholder="CTF"/>
+                    <label>Related CTF {!(ctf?.id) && <span className="text-red-500 text-sm">(CTF not found. It will be created.)</span>}</label>
                 </div>
 
                 <div className = 'flex flex-col gap-2 row-span-3 justify-start items-start'>

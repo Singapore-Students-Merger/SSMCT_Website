@@ -13,8 +13,8 @@ import { redirect } from 'next/navigation'
 //     },
 // };
 
-export const POST = async(req, res) => {
-    try{
+export const POST = async (req, res) => {
+    try {
         // console.log(req);
         const formData = await req.formData();
 
@@ -23,15 +23,15 @@ export const POST = async(req, res) => {
         if (!writeupThumbnail || !writeupFile) {
             return NextResponse.json({ error: "Not all files received." }, { status: 400 });
         }
-        
+
         const buffer = Buffer.from(await writeupThumbnail.arrayBuffer());
-        let filename =  writeupThumbnail.name.replaceAll(" ", "_");
+        let filename = writeupThumbnail.name.replaceAll(" ", "_");
         path.normalize(filename).replace(/^(\.\.(\/|\\|$))+/, ''); //filter
         let name = filename.substring(0, filename.lastIndexOf('.'))
-        if (!(['.jpg', '.jpeg', '.png', '.webp', '.svg'].includes(path.extname(filename)))){
-            return NextResponse.json({ status: 'error', 'error': 'Invalid thumbnail type, we only accept jpg, jpeg, png, webp or svg'})
+        if (!(['.jpg', '.jpeg', '.png', '.webp', '.svg'].includes(path.extname(filename)))) {
+            return NextResponse.json({ status: 'error', 'error': 'Invalid thumbnail type, we only accept jpg, jpeg, png, webp or svg' })
         }
-        while (fs.existsSync(path.join(process.cwd(), '/uploads/writeups/images/', filename))){ //prevent clashing filenames
+        while (fs.existsSync(path.join(process.cwd(), '/uploads/writeups/images/', filename))) { //prevent clashing filenames
             name += '1';
             filename = name + path.extname(filename);
             console.log('ALREADY EXISTING FILENAME, ATTEMPTING TO CHANGE FILENMAEEEEEE');
@@ -39,13 +39,13 @@ export const POST = async(req, res) => {
         console.log(filename);
 
         const buffer2 = Buffer.from(await writeupFile.arrayBuffer());
-        let filename2 =  writeupFile.name.replaceAll(" ", "_");
+        let filename2 = writeupFile.name.replaceAll(" ", "_");
         path.normalize(filename2).replace(/^(\.\.(\/|\\|$))+/, '');
         let name2 = filename2.substring(0, filename2.lastIndexOf('.'))
-        if (!(['.md', '.markdown'].includes(path.extname(filename2)))){
-            return NextResponse.json({ status: 'error', 'error': 'Invalid file type, we only accept markdown'})
+        if (!(['.md', '.markdown'].includes(path.extname(filename2)))) {
+            return NextResponse.json({ status: 'error', 'error': 'Invalid file type, we only accept markdown' })
         }
-        while (fs.existsSync(path.join(process.cwd(), '/uploads/writeups/writeup/', filename2))){ //prevent clashing filenames
+        while (fs.existsSync(path.join(process.cwd(), '/uploads/writeups/writeup/', filename2))) { //prevent clashing filenames
             name2 += '1';
             filename2 = name2 + path.extname(filename2);
             console.log('FOR THE MD FILE FOR THE MD FILE ALREADY EXISTING FILENAME, ATTEMPTING TO CHANGE FILENMAEEEEEE #####')
@@ -57,14 +57,14 @@ export const POST = async(req, res) => {
         await writeFile(path.join(process.cwd(), "/uploads/writeups/images/" + filename), buffer);
         console.log('Uploading file: ', path.join(process.cwd(), "/uploads/writeups/writeup/" + filename2));
         await writeFile(path.join(process.cwd(), "/uploads/writeups/writeup/" + filename2), buffer2);
-          
+
         //retrieve data
         const Title = formData.get('Title')
         const Difficulty = formData.get('Difficulty')
         const Link = formData.get('Link')
         const Category = formData.get('Category')
-        const Topics = formData.get('Topics')
-        const CTF = formData.get('CTF')
+        const Topics = JSON.parse(formData.get('Topics'))
+        const CTF = JSON.parse(formData.get('CTF'))
         const Description = formData.get('Description')
         // const WriteupThumbnail = formData.get('WriteupThumbnail')
         // const WriteupFile = formData.get('WriteupFile')
@@ -78,19 +78,21 @@ export const POST = async(req, res) => {
         const categories = await prisma.categories.findMany();
         const categoryId = categories.find(cat => cat.name === Category);
 
-        // Search for eventId
-        let eventId = await prisma.events.findFirst({
-            select: { id: true },
-            where: { title: CTF },
-        });
+        let eventId = CTF.id
 
-        if (!eventId) {
-            eventId = await prisma.events.create({
+        if (!CTF.id) {
+            const event = await prisma.events.create({
                 data: {
                     userId: userId,
-                    title: CTF,
+                    title: CTF.title,
                     isCompetition: true,
                 },
+            });
+            eventId = event.id;
+            await prisma.ctf.create({
+                data: {
+                    eventId: event.id,
+                }
             });
         }
 
@@ -115,24 +117,23 @@ export const POST = async(req, res) => {
         //create a record for topics in database
         console.log('Topics', Topics);
 
-        for (const topic of Topics.slice(1, -1).split(',')) {
-            console.log('topic', topic);
-            if (topic != '') {
+        for (const topicId of Topics) {
+            if (topicId)
                 // console.log(topic); // This will log each topic in the array
                 await prisma.writeupstopics.create({
-                    data:{
+                    data: {
                         writeupId: id['id'],
-                        topicId: parseInt(topic.split(':')[0]),
+                        topicId: topicId,
                     }
                 })
-            };
-        }
+        };
+
 
 
         console.log('Success');
         return NextResponse.json({ status: "success" });
     } catch (error) {
         console.error(error.message)
-        return NextResponse.json({ status: "error", message: error.message || error.toString() });
+        return NextResponse.json({ status: "error", message: "Internal Server Error" });
     }
 }

@@ -33,6 +33,8 @@ model categories {
   user           user[]
   usercategories usercategories[]
   gallery        gallery[]
+  writeups       writeups[]
+  blogs          blogs[]
 }
 
 model session {
@@ -98,6 +100,10 @@ model events {
   isBonding     Boolean  @default(false)
   date          DateTime @default(now())
   user          user     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Events_userId_fkey")
+  writeups      writeups[]
+  blogs         blogs[]
+  gallery       gallery[]
+  ctf           ctf?
 }
 
 model gallery {
@@ -110,6 +116,7 @@ model gallery {
   description  String?
   user         user        @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Gallery_userId_fkey")
   categories   categories? @relation(fields: [categoriesId], references: [id])
+  events       events?     @relation(fields: [eventId], references: [id], map: "Gallery_eventId_fkey")
   categoriesId Int?
 }
 
@@ -141,14 +148,16 @@ model blogs {
   categoryId  Int?
   title       String
   type        String        @default("Misc")
-  level       String?
+  difficulty       String?
   description String
   date        DateTime      @default(now())
-  contentFile        String
+  contentFile String
   kudos       Int           @default(0)
   user        user          @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Blogs_userId_fkey")
-  blogstopics blogstopics[]
+  topics blogstopics[]
   comments    comments[]
+  categories  categories?   @relation(fields: [categoryId], references: [id], map: "blogs_ibfk_1")
+  events      events?       @relation(fields: [eventId], references: [id], map: "blogs_ibfk_2")
 }
 
 model writeups {
@@ -163,10 +172,12 @@ model writeups {
   description    String
   date           DateTime         @default(now())
   kudos          Int              @default(0)
-  contentFile           String
+  contentFile    String
   user           user             @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Writeups_userId_fkey")
-  writeupstopics writeupstopics[]
+  topics writeupstopics[]
   comments       comments[]
+  categories     categories?      @relation(fields: [categoryId], references: [id], map: "writeups_ibfk_1")
+  events         events?          @relation(fields: [eventId], references: [id], map: "writeups_ibfk_2")
 }
 
 model topics {
@@ -174,8 +185,8 @@ model topics {
   title          String
   icon           String?
   description    String?
-  writeupstopics writeupstopics[]
-  blogstopics    blogstopics[]
+  writeups writeupstopics[]
+  blogs    blogstopics[]
 }
 
 model writeupstopics {
@@ -206,4 +217,11 @@ model comments {
   user      user      @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Comments_userId_fkey")
   blogs     blogs?    @relation(fields: [blogId], references: [id], onDelete: Cascade, map: "Comments_blogId_fkey")
   writeups  writeups? @relation(fields: [writeupId], references: [id], onDelete: Cascade, map: "Comments_writeupId_fkey")
+}
+
+model ctf {
+  eventId    Int      @id
+  points     Int?
+  placing    Int?
+  event      events   @relation(fields: [eventId], references: [id], onDelete: Cascade, map: "CTF_eventId_fkey")
 }
