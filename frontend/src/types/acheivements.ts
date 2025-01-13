@@ -6,6 +6,11 @@ type AchievementDetails = {
     thumbnail?: string;
     members: string[];
     points: number;
+    participants: number;
 }
 
-export type { AchievementDetails };
+type Event = {
+    name: string;
+    id: number | null;
+}
+export type { AchievementDetails,Event };

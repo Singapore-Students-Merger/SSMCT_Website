@@ -1,25 +1,62 @@
-import { BlogDetails } from "@/types/blogs";
-import { NextRequest, NextResponse } from 'next/server';
+import { WriteupDetails } from "@/types/writeups";
+import { NextResponse } from 'next/server';
+import prisma from "@/lib/prisma";
 
-export function GET(req: NextRequest) {
-    const blogDetails: BlogDetails = {
-        id: 1,
-        title: "Understanding JavaScript Closures",
-        description: "A comprehensive guide to mastering closures in JavaScript.",
-        author: "Jane Doe",
-        contentFile: "https://example.com/content/javascript-closures.md", // Path or URL to the content file
-        topics: ["JavaScript", "Functional Programming"],
-        categories: ["Programming", "Web Development", "Intermediate"],
-        level: "Medium",
-        date: new Date("2024-01-15"),
-        thumbnail: "https://example.com/thumbnail1.png",
-      };
-      
-      
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const resolvedParams = await params; // Await params
+    const id = parseInt(resolvedParams.id);
 
+    if (isNaN(id)) {
+      return NextResponse.json(
+        { error: true, message: "Invalid ID provided" },
+        { status: 400 }
+      );
+    }
 
-  
-  return NextResponse.json(blogDetails);
-      
+    const data = await prisma.blogs.findUnique({
+      where: { id },
+      include: {
+        categories: true,
+        topics: {
+          include: {
+            topics: true,
+          },
+        },
+        events: true,
+        user: true,
+      },
+    });
+    if (!data) {
+      return NextResponse.json(
+        { error: true, message: "No blog found with that ID" },
+        { status: 404 }
+      );
+    }
 
+    const writeupDetails: WriteupDetails = {
+      id: data.id,
+      title: data.title,
+      description: data.description,
+      author: data.user?.name || "Unknown",
+      contentFile: data.contentFile,
+      topics: data.topics ? data.topics.map((topic) => topic.topics.title) : [],
+      category: data.categories?.name || "Uncategorized",
+      difficulty: data.difficulty as "Easy" | "Medium" | "Hard",
+      date: data.date.toLocaleDateString(undefined,{
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }),
+      ctf: data.events?.title,
+    };
+
+    return NextResponse.json({ data: writeupDetails });
+  } catch (error : any) {
+    console.error("Unexpected error:", error.message);
+    return NextResponse.json(
+      { error: true, message: "An unexpected error occurred" },
+      { status: 500 }
+    );
+  }
 }

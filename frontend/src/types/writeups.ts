@@ -5,10 +5,9 @@ type WriteupDetails = {
     author: string;
     contentFile: string;
     topics: string[];
-    categories: string[];
+    category: string;
     difficulty: "Easy" | "Medium" | "Hard";
-    length: string;
-    date: Date;
+    date: string;
     ctf?: string;
     source?: string;
     thumbnail?: string;

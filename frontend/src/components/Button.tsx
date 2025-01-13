@@ -45,7 +45,7 @@ const Button: React.FC<ButtonProps> = ({
 
     const versionClass = version === 'primary' 
         ? 'bg-secondary-tier3' 
-        : 'bg-secondary-tier1/50';
+        : 'bg-secondary-tier2/50';
     
     const borderClass = 'border-2 border-secondary-tier2';
     return (

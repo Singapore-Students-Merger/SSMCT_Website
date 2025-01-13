@@ -18,6 +18,9 @@ interface CustomSelectProps {
   shadow?: boolean;
   border?: boolean;
   label?: string;
+  name?: string;
+  value?: Option | null;
+  required?: boolean;
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({
@@ -30,6 +33,9 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   shadow = true,
   border = true,
   label,
+  name,
+  value,
+  required = false,
 }) => {
   const baseClass = `
     text-primary
@@ -45,6 +51,8 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     focus:ring-2
     focus:ring-primary
     min-w-72
+    relative 
+    z-10
   `;
 
   const versionClass =
@@ -80,6 +88,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     menuList: (provided) => ({
       ...provided,
       padding: 0,
+      zIndex:10,
     }),
     option: (provided, state) => ({
       ...provided,
@@ -130,6 +139,9 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
           components={{
             DropdownIndicator,
           }}
+          name={name}
+          value={value}
+          required={required}
         />
       </div>
       {label && <label className="text-primary text-lg md:text-md ml-2">{label}</label>}

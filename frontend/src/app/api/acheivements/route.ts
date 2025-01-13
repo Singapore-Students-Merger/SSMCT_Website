@@ -1,7 +1,7 @@
 import { AchievementDetails } from "@/types/acheivements";
 import { NextRequest, NextResponse } from 'next/server';
-
-export function GET(req: NextRequest) {
+import prisma from "@/lib/prisma";
+export async function GET(req: NextRequest) {
     const achievementDetails: AchievementDetails[] = [
         {
           ctf: "HackTheBox - Cyber Apocalypse",
@@ -11,6 +11,7 @@ export function GET(req: NextRequest) {
           thumbnail: "https://example.com/thumbnail1.png",
           members: ["Alice", "Bob", "Charlie"],
           points: 5000,
+          participants:1
         },
         {
           ctf: "PicoCTF 2024",
@@ -20,6 +21,7 @@ export function GET(req: NextRequest) {
           thumbnail: "https://example.com/thumbnail2.png",
           members: ["David", "Eve", "Frank"],
           points: 3500,
+          participants:1
         },
         {
           ctf: "DefCon Qualifiers",
@@ -29,6 +31,7 @@ export function GET(req: NextRequest) {
           thumbnail: "https://example.com/thumbnail3.png",
           members: ["Grace", "Hank", "Ivy"],
           points: 4200,
+          participants:1
         },
         {
           ctf: "NahamCon CTF",
@@ -37,6 +40,7 @@ export function GET(req: NextRequest) {
           date: new Date("2024-02-20"),
           members: ["Jack", "Kara", "Liam"],
           points: 4000,
+          participants:1
         },
         {
           ctf: "RUCTF Finals",
@@ -46,11 +50,40 @@ export function GET(req: NextRequest) {
           thumbnail: "https://example.com/thumbnail4.png",
           members: ["Maya", "Noah", "Olivia"],
           points: 3800,
+          participants:1
         },
       ];
+      const { searchParams } = new URL(req.url);
+      const fields = searchParams.get("fields");
+      const showAll = searchParams.get("all");
+      try{
+        if (fields === "names") {
+          // Fetch only eventId and eventName
+          const ctfs = await prisma.ctf.findMany({
+            select: {
+              eventId: true,
+              event: {
+                select: {
+                  title: true,
+                },
+              },
+            },
+          });
+          const formattedCtfs = ctfs.map(ctf => ({
+            id: ctf.eventId,
+            title: ctf.event.title, 
+          }));
+          
+          return NextResponse.json(formattedCtfs);
+        }
+        return NextResponse.json(achievementDetails);
+      }
+      catch (error){
+        console.error(error.message);
+        return NextResponse.json({ error: "Failed to fetch event names" }, { status: 500 });
+      }
       
       
   
   
-  return NextResponse.json(achievementDetails);
 }
