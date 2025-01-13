@@ -19,7 +19,7 @@ interface Event {
     id: number | null;
     title: string;
 }
-interface FormData {
+interface FormDataProps {
     title: string;
     image: File | null;
     event: Event | null;
@@ -40,7 +40,7 @@ export default function CreateImagesPage(){
     const [events, setEvents] = useState<Option[]>([]);
     
 
-    const [formData, setFormData] = useState<FormData>({
+    const [formData, setFormData] = useState<FormDataProps>({
         title: "",
         image: null,
         event: null,
@@ -68,11 +68,11 @@ export default function CreateImagesPage(){
         const {name, value} = e.target;
         setFormData((old)=>{return {...old,[name]:value}});
     }
-    const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formDataObj = new FormData();
         for (const key in formData) {
-            const value = formData[key as keyof FormData];
+            const value = formData[key as keyof FormDataProps];
             if (value === null) {
                 toast.error("Please fill in all the fields");
                 return;
@@ -91,6 +91,17 @@ export default function CreateImagesPage(){
             method: 'POST',
             body: formDataObj
         })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status == "error") {
+                toast.error(data.error);
+            } else {
+                toast.success("Image uploaded successfully");
+            }
+        })
+        .catch(err => {
+            toast.error("Failed to upload image: " + err.message);
+        });
     }
 
     useEffect(() => {

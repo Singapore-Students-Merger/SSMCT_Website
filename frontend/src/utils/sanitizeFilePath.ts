@@ -4,7 +4,8 @@ import path from "path";
 export default function sanitizeFilePath(
   basePath: string,
   filename: string,
-  extensions: string[]
+  extensions: string[],
+  checkExists = true
 ): string {
   // Validate extensions
   if (!Array.isArray(extensions) || extensions.length === 0) {
@@ -28,7 +29,7 @@ export default function sanitizeFilePath(
   }
 
   // Check if the file exists
-  if (!fs.existsSync(fullPath)) {
+  if (checkExists && !fs.existsSync(fullPath)) {
     throw new Error("File not found");
   }
 

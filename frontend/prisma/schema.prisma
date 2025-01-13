@@ -32,7 +32,6 @@ model categories {
   name           String           @db.Text
   user           user[]
   usercategories usercategories[]
-  gallery        gallery[]
   writeups       writeups[]
   blogs          blogs[]
 }
@@ -109,14 +108,13 @@ model gallery {
   id           Int         @id @default(autoincrement())
   userId       String
   image        String
+  title        String
   type         String
   eventId      Int?
   date         DateTime    @default(now())
   description  String?
   user         user        @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Gallery_userId_fkey")
-  categories   categories? @relation(fields: [categoriesId], references: [id])
   events       events?     @relation(fields: [eventId], references: [id], map: "Gallery_eventId_fkey")
-  categoriesId Int?
 }
 
 
