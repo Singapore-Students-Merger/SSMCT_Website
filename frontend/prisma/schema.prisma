@@ -211,7 +211,7 @@ model comments {
 model ctf {
   eventId    Int      @id
   ctfId      Int?     @unique
-  points     Float?
+  points     Int?
   placing    Int?
   link       String?
   participants Int?

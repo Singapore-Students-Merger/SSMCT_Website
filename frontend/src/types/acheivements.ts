@@ -9,4 +9,8 @@ type AchievementDetails = {
     participants: number;
 }
 
-export type { AchievementDetails };
+type Event = {
+    name: string;
+    id: number | null;
+}
+export type { AchievementDetails,Event };
