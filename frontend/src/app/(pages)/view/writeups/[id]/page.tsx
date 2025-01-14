@@ -7,21 +7,47 @@ import { WriteupDetails } from "@/types/writeups";
 import DetailsSection from "@/components/DetailsSection";
 import sanitizeFilePath from "@/utils/sanitizeFilePath";
 import CommentsSection from "@/components/CommentsSection";
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import { auth } from "@/auth";
+import { ArticleJsonLd } from "next-seo";
+import { cache } from 'react';
+const fetchWriteupFromDatabase = cache(async (id: string) => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/writeups/view/${id}`);
+    console.log("Fetching writeup from database");
+    if (!res.ok) {
+        throw new Error((await res.json()).message);
+        return {}
+    }
+
+    return (await res.json()).data;
+})
+export const generateMetadata = async ({ params }: { params: { id: string } }) => {
+    params = await params;
+    const id = params.id;
+    const post = await fetchWriteupFromDatabase(id); 
+    return {
+      title: post.title,
+      description: post.description,
+      openGraph: {
+        title: post.title,
+        description: post.description,
+        url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/view/writeup/${id}`,
+        
+      },
+      robots: 'index, follow',
+      keywords: 'SSM, Singapore Students Merger, CTF, Cybersecurity, Writeup, ' + post.topics.join(', '),
+    };
+  };
+
+  
 export default async function WriteupView({ params }: { params: { id: string } }) {
     const loggedIn = await auth()?true:false;
     params = await params;
     const id = params.id;
-    let data;
+    let writeupDetails: WriteupDetails;
 
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/writeups/view/${id}`);
-        if (!response.ok) {
-            const error = (await response.json()).message;
-            return <div>{error}</div>;
-        }
-        data = await response.json();
+        writeupDetails = await fetchWriteupFromDatabase(id);
     } catch (error: unknown) {
         if (error instanceof Error) {
             console.error("Fetch Error:", error.message);
@@ -31,7 +57,6 @@ export default async function WriteupView({ params }: { params: { id: string } }
         return <div>An error occurred while reading the markdown file.</div>;
     }
 
-    const writeupDetails: WriteupDetails = data.data;
     const basePath = path.resolve(process.cwd(), 'uploads/writeups');
     const filename = writeupDetails.contentFile;
     let content, estimatedReadTime;
@@ -69,6 +94,20 @@ export default async function WriteupView({ params }: { params: { id: string } }
 
     return (
         <>
+            <ArticleJsonLd
+            useAppDir={true}
+            type="Article"
+            url={`${process.env.NEXT_PUBLIC_WEBSITE_URL}/view/writeups/${id}`}
+            title={writeupDetails.title}
+            description={writeupDetails.description}
+            images={[`${process.env.NEXT_PUBLIC_WEBSITE_URL}/uploads/writeups/images/${writeupDetails.thumbnail}`]}
+            datePublished={writeupDetails.date}
+            authorName={writeupDetails.author}
+            publisherName="SSM Team"
+            publisherLogo={`${process.env.NEXT_PUBLIC_WEBSITE_URL}/logo.png`}
+            isAccessibleForFree={true}
+
+            />
             <div>
                 <DetailsSection details={writeupDetails} estimatedReadTime={estimatedReadTime} />
                 <div>
