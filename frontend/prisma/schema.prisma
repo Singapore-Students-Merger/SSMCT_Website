@@ -67,6 +67,7 @@ model user {
   blogs            blogs[]
   writeups         writeups[]
   comments         comments[]
+  userroles        userroles[]
 
   @@index([mainCategoryId], map: "mainCategoryId")
 }
@@ -216,4 +217,20 @@ model ctf {
   logo       String?
   event      events   @relation(fields: [eventId], references: [id], onDelete: Cascade, map: "CTF_eventId_fkey")
   members   userctfs[]
+}
+
+model roles{
+  roleId Int @id @default(autoincrement())
+  title String 
+  type String 
+  userroles userroles[]
+
+}
+
+model userroles{
+  userId String 
+  roleId Int
+  user user @relation(fields: [userId], references: [id], onDelete: Cascade, map: "UserRoles_userId_fkey")
+  role roles @relation(fields: [roleId], references: [roleId], onDelete: Cascade, map: "UserRoles_roleId_fkey")
+  @@id ([userId, roleId])
 }
