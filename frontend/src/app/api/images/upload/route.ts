@@ -46,7 +46,7 @@ const formSchema = z.object({
         message: "Invalid Date"
     })
 });
-const imageUploadPath = path.join(process.cwd(), '/uploads/writeups/images/');
+const imageUploadPath = path.join(process.cwd(), '/uploads/gallery/');
 
 export const POST = async (req, res) => {
     let userId
@@ -78,22 +78,34 @@ export const POST = async (req, res) => {
 
 
         const buffer = Buffer.from(await image.arrayBuffer());
+        let imageName = image.name.substring(0, image.name.lastIndexOf('.'));
         let filename = sanitizeFilePath(imageUploadPath, image.name, ['jpg', 'jpeg', 'png', 'webp', 'svg'], false);
         let name = filename.substring(0, filename.lastIndexOf('.'));
         while (fs.existsSync(filename)) { //prevent clashing filenames
+            // TODO: improve whatever this is
             name += '1';
+            imageName += '1';
             filename = name + path.extname(filename);
         }
+        imageName += path.extname(filename);
         //upload file
         await writeFile(filename, buffer);
-
+        if (!event.id){
+            const response = await prisma.events.create({
+                data: {
+                    title: event.title,
+                    userId: userId,
+                }
+            })
+            event.id = response.id;
+        }
         // Save information to the database
         await prisma.gallery.create({
             data: {
                 title,
                 description,
                 date: new Date(date),
-                image: filename,
+                image: imageName,
                 type: "CTF",
                 events: {
                     connect: {
@@ -109,6 +121,7 @@ export const POST = async (req, res) => {
         })
         return NextResponse.json({ status: "success", message: "Image uploaded successfully" });
     } catch (error) {
+        console.error(error.message);
         if (error instanceof z.ZodError) {
             // Extract error messages and join them with a comma
             const errorMessage = error.issues.map((err) => err.message).join(", ");
