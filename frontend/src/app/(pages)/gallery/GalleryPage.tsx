@@ -21,7 +21,7 @@ const GalleryPage: React.FC<GalleryPageProps> = ({ data }) => {
     <>
       <div>
         {/* Banner Section */}
-        <Hero title="Gallery" bgImage="/backgrounds/gallery.png" />
+        <Hero title="Gallery" bgImage="/backgrounds/gallery.jpg" bgImageMobile='/backgrounds/gallery_mobile.jpg'/>
 
         {/* Bonding Sessions Section */}
         <GradientBg className="py-8 w-full" gradientPosition="y-center">

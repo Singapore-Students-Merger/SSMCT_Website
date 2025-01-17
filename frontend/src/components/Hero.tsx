@@ -4,17 +4,34 @@ import Image from 'next/image';
 import Logo from "./logos/SSMLogo";
 import Button from "./Button";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 interface HeroProps {
     className?: string;
     bgImage: string;
+    bgImageMobile?: string;
     title: string;
 }
 
-const Hero: React.FC<HeroProps> = ({ className, bgImage, title }) => {
+const Hero: React.FC<HeroProps> = ({ className, bgImage, title, bgImageMobile }) => {
+    const [isPortrait, setIsPortrait] = useState(false);
+    useEffect(() => {
+        const updateOrientation = () => {
+            setIsPortrait(window.matchMedia('(orientation: portrait)').matches);
+        };
+
+        updateOrientation(); // Check initial state
+        window.addEventListener('resize', updateOrientation);
+
+        return () => {
+            window.removeEventListener('resize', updateOrientation);
+        };
+    }, []);
+
     return (
         <div className={twMerge('w-full h-screen bg-center bg-cover bg-no-repeat',className)}>
             <div className="absolute w-full h-full -z-10">
-                <Image width = {1440} height = {743} src={bgImage} alt="background" className="animate-bgFade opacity-30 absolute top-0 left-0 w-full h-full object-cover"/>
+                { isPortrait && bgImageMobile && <Image width = {720} height = {1280} src={bgImageMobile} alt="background" className="animate-bgFade opacity-30 absolute top-0 left-0 w-full h-full object-cover"/>}
+                { (!isPortrait || !bgImageMobile) && <Image width = {1920} height = {1080} src={bgImage} alt="background" className="animate-bgFade opacity-30 absolute top-0 left-0 w-full h-full object-cover"/>}
                 <div className="absolute bg-gradient-to-t from-background w-full h-full top-0 left-0 animate-fadeIn"></div>
             </div>
             <div className="flex flex-col items-center justify-center h-full pb-20 gap-10">
