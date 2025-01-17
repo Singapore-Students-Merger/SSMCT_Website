@@ -14,6 +14,17 @@ const addAnimationDelayPlugin: PluginCreator = ({ addUtilities, theme }) => {
   addUtilities(utilities, { respectPrefix: false, respectImportant: false });
 };
 
+const addAnimationDurationPlugin: PluginCreator = ({ addUtilities, theme }) => {
+  const durations = theme('animationDuration') as Record<string, string>;
+
+  const utilities = Object.entries(durations).reduce((acc, [key, value]) => {
+    acc[`.animate-duration-${key}`] = { 'animation-duration': value };
+    return acc;
+  }, {} as Record<string, Record<string, string>>);
+
+  addUtilities(utilities, { respectPrefix: false, respectImportant: false });
+}
+
 const radialGradientPlugin = plugin(
   function ({ matchUtilities, theme }) {
     matchUtilities(
@@ -81,6 +92,13 @@ export default {
         },
       },
       animationDelay: {
+        '100': '100ms',
+        '200': '200ms',
+        '500': '500ms',
+        '1000': '1s',
+        '1500': '1.5s',
+      },
+      animationDuration: {
         '100': '100ms',
         '200': '200ms',
         '500': '500ms',
@@ -176,5 +194,5 @@ export default {
       },
     },
   },
-  plugins: [radialGradientPlugin,addAnimationDelayPlugin, typographPlugin],
+  plugins: [radialGradientPlugin,addAnimationDelayPlugin, typographPlugin, addAnimationDurationPlugin],
 } satisfies Config;
