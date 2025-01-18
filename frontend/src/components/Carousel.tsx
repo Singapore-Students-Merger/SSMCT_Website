@@ -153,10 +153,10 @@ const Carousel = ({ data, setSelectedImage }: CarouselProps) => {
 
     return (
         <>
-        <div className="flex gap-4 overflow-auto py-4 md:py-12 w-full box-border"
+        <div className="scrollbar-custom flex gap-4 overflow-auto py-4 md:py-12 w-full box-border"
             onMouseDown={handleMouseDown}
             ref = {carouselRef}>
-            <div className="w-[20rem] max-w-[90vw] md:w-[35rem] shrink-0"></div>
+            <div className="w-[20rem] max-w-[90vw] md:w-[30rem] shrink-0"></div>
         {data.map((info, idx) => (
             <CarouselItem key={idx} info={info} 
             ref={(el) => (itemRefs.current[idx] = el)}
@@ -164,7 +164,7 @@ const Carousel = ({ data, setSelectedImage }: CarouselProps) => {
             setSelectedImage = {setSelectedImage}
             />
         ))}
-                    <div className="w-[20rem]  md:w-[35rem] max-w-[90vw] shrink-0"></div>
+                    <div className="w-[20rem]  md:w-[30rem] max-w-[90vw] shrink-0"></div>
 
         </div>
         <div className="flex justify-center mt-4">
