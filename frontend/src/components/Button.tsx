@@ -10,6 +10,7 @@ interface ButtonProps {
     version?: 'primary' | 'secondary';
     shadow?: boolean;
     border?: boolean;
+    disabled?: boolean;
 }
 // Button component
 // This component is a button that can have an icon before and after the text.
@@ -23,7 +24,9 @@ const Button: React.FC<ButtonProps> = ({
     className,
     type = 'button',
     version = 'primary',
-    shadow = true
+    shadow = true,
+    border = true,
+    disabled = false,
 }) => {
     const baseClass = `
         text-primary
@@ -50,9 +53,10 @@ const Button: React.FC<ButtonProps> = ({
     const borderClass = 'border-2 border-secondary-tier2';
     return (
         <button
-            className={twMerge(baseClass, versionClass,borderClass, className)}
+            className={twMerge(baseClass, versionClass,border?borderClass:'', className)}
             onClick={onClick}
             type={type}
+            disabled={disabled}
         >
             {beforeIcon && <span className="mr-2">{beforeIcon}</span>}
             <div className='grow'>

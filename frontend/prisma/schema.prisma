@@ -30,6 +30,7 @@ model categories {
   id             Int              @id @default(autoincrement())
   icon           String?
   name           String           @db.Text
+  thumbnail     String?
   user           user[]
   usercategories usercategories[]
   writeups       writeups[]
