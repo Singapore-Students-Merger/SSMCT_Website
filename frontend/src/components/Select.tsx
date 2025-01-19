@@ -2,9 +2,10 @@
 import React from "react";
 import Select, { StylesConfig, components } from "react-select";
 import { twMerge } from "tailwind-merge";
+import SelectIcon from "./logos/SelectIcon";
 
 interface Option {
-  value: string;
+  value: string | number;
   label: string;
 }
 
@@ -71,8 +72,9 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      fontWeight: "normal",
+      fontWeight: "bold",
       margin:0,
+  
     }),
     valueContainer: (provided) => ({
       ...provided,
@@ -84,11 +86,13 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
       backgroundColor: "rgb(63, 100, 115)",
       zIndex: 10,
+      margin:0,
     }),
     menuList: (provided) => ({
       ...provided,
       padding: 0,
       zIndex:10,
+      margin:0,
     }),
     option: (provided, state) => ({
       ...provided,
@@ -124,7 +128,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
 
   const DropdownIndicator = (props: any) => (
     <components.DropdownIndicator {...props}>
-      <span className="text-current">&#x25BC;</span> {/* Custom dropdown indicator */}
+      <SelectIcon />
     </components.DropdownIndicator>
   );
 

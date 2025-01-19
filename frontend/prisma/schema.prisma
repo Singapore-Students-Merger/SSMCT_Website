@@ -30,6 +30,7 @@ model categories {
   id             Int              @id @default(autoincrement())
   icon           String?
   name           String           @db.Text
+  thumbnail     String?
   user           user[]
   usercategories usercategories[]
   writeups       writeups[]
@@ -140,6 +141,7 @@ model blogs {
   date        DateTime      @default(now())
   contentFile String
   kudos       Int           @default(0)
+  featured    Boolean       @default(false)
   user        user          @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Blogs_userId_fkey")
   topics blogstopics[]
   comments    comments[]
