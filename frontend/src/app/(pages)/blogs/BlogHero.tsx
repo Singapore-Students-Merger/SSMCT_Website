@@ -20,7 +20,7 @@ export default function BlogHero({featured}: BlogHeroProps) {
                 <p className="mb-2 hidden md:block">{featured.type}</p>
                 <h1 className="text-5xl font-bold text-white hidden md:block">{featured.title}</h1>
                 <p className="text-lg text-white">{featured.description}</p>
-                <Link href={`/view/blogs/${featured.id}`}>
+                <Link href={`/blogs/views/${featured.id}`}>
                 <Button version = "secondary" className="mt-2 px-12">Read the Article</Button>
                 </Link>
             </div>

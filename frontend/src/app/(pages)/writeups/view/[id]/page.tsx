@@ -97,7 +97,7 @@ export default async function WriteupView({ params }: { params: { id: string } }
             <ArticleJsonLd
             useAppDir={true}
             type="Article"
-            url={`${process.env.NEXT_PUBLIC_WEBSITE_URL}/view/writeups/${id}`}
+            url={`${process.env.NEXT_PUBLIC_WEBSITE_URL}/writeups/view/${id}`}
             title={writeupDetails.title}
             description={writeupDetails.description}
             images={[`${process.env.NEXT_PUBLIC_WEBSITE_URL}/uploads/writeups/images/${writeupDetails.thumbnail}`]}

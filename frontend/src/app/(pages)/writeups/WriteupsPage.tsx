@@ -111,7 +111,7 @@ export default function WriteupsPage({data, categories, topics}: WriteupsPagePro
                 <FilterOption setSelected = {difficultyHandler}  value = {filters["difficulty"]} label = "Filter Difficulty" options = {difficulty} searchable={false} multiSelect={true}/>
             </FilterOptions>}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-10/12 m-auto">
-                {sortedData.map((writeup) => <Card info={{...writeup,link:`/view/writeups/${writeup.id}`}} key={`writeup_${writeup.id}`}/>)}
+                {sortedData.map((writeup) => <Card info={{...writeup,link:`/writeups/view/${writeup.id}`}} key={`writeup_${writeup.id}`}/>)}
             </div>
         </GradientBg>
     )
