@@ -20,6 +20,7 @@ interface MultiSelectProps {
   options: Option[];
   selected?: Option[];
   setSelected: (options: Option[]) => void; 
+  placeholder?: string;
 }
 
 interface Option {
@@ -141,6 +142,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
   options,
   selected = [],
   setSelected,
+  placeholder = "Select",
 }) => {
   // Controls visibility of the dropdown
   const [showTooltip, setShowTooltip] = useState(false);
@@ -183,7 +185,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
       >
         {selected.length
           ? selected.map((sel) => sel.label).join(", ")
-          : "Select Options"}
+          : placeholder}
       </Button>
 
       {showTooltip && (

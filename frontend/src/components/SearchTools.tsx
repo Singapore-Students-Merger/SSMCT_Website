@@ -18,13 +18,14 @@ interface FilterBarProps {
     retract: boolean;
 }
 
+// TODO: Change all id's to value
 interface FilterOptionProps {
     label: string;
-    options: {label: string, id: null | string}[];
-    setSelected: ((options: {label: string, id: null}[]) => void) | ((option: {label: string, id: null}) => void);   
+    options: {label: string, id: string | number | null}[];
+    setSelected: (options: {label: string, id: string | number | null}[]) => void;   
     multiSelect?: boolean;
     searchable?: boolean; 
-    value?: {label: string, id: null}[];
+    value?: {label: string, id: string | number | null}[];
 }
 
 export function SearchBar({setSearchQuery, value, className, placeholder = "Search"}: SearchBarProps) {
@@ -51,7 +52,7 @@ export function FilterBar({setRetract,retract} : FilterBarProps) {
 
 export function FilterOptions({children}: {children: React.ReactNode}) {
     return (
-        <div className="grid grid-cols-4 gap-8 w-10/12 m-auto my-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8 w-10/12 m-auto my-8">
             {children}
         </div>
     );
@@ -65,7 +66,7 @@ export function FilterOption({value, label, options, setSelected, searchable=fal
             {searchable && multiSelect && <SearchableMultiSelect selected = {value} options = {options} setSelected={setSelected} placeholder = {label}/>}
             {searchable && !multiSelect && <SearchableSelect value = {value} options = {options} setSelectedOptions={setSelected} placeholder = {label}/>}
             {!searchable && multiSelect && <MultiSelect selected = {value} options = {options} setSelected={setSelected} placeholder = {label}/>}
-            {!searchable && !multiSelect && <CustomSelect version = "secondary" className = "rounded-xl" options = {options.map((option)=>({label:option.label,  value:option.id}))} setSelectedOption={setSelected} placeholder = {label}/>}
+            {!searchable && !multiSelect && <CustomSelect value = {value} version = "secondary" className = "rounded-xl" options = {options.map((option)=>({label:option.label,  value:option.id}))} onChange={setSelected} placeholder = {label}/>}
         </div>
     )
 }
