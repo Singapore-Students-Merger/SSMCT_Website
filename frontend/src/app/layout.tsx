@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
+import { Suspense } from "react";
+import Loading from "./loading";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
   },
   description: "Singapore Students Merger (SSM) is a team of passionate students from across Singapore who love cybersecurity. We compete in CTFs, organize events, and create a welcoming space to learn, grow, and connect with others who share our enthusiasm.",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/icon.ico",
   },
   openGraph: {
     type: "website",
@@ -41,7 +42,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Suspense fallback={<Loading/>} >
         {children}
+        </Suspense>
       </body>
     </html>
   );
