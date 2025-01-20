@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["relationJoins"]
 }
 
 datasource db {
@@ -221,18 +222,43 @@ model ctf {
   members   userctfs[]
 }
 
-model roles{
-  roleId Int @id @default(autoincrement())
-  title String 
-  type String 
-  userroles userroles[]
-
+model discordusers {
+  id            String            @id
+  username      String
+  discriminator String
+  discordRoles  userdiscordroles[] // Roles assigned to the Discord user
 }
 
-model userroles{
-  userId String 
-  roleId Int
-  user user @relation(fields: [userId], references: [id], onDelete: Cascade, map: "UserRoles_userId_fkey")
-  role roles @relation(fields: [roleId], references: [roleId], onDelete: Cascade, map: "UserRoles_roleId_fkey")
-  @@id ([userId, roleId])
+model roles {
+  id        Int          @id @default(autoincrement())
+  title     String
+  type      String      @default("ctf") // Type of role
+  userRoles userroles[]  // Roles assigned to users
+  linkedDiscordRoles discordroles[] // Discord roles linked to this role
+}
+
+model discordroles {
+  id               String                @id
+  title            String
+  linkedRoleId     Int?               // Optional link to a role
+  linkedRole       roles?             @relation(fields: [linkedRoleId], references: [id], onDelete: SetNull)
+  userDiscordRoles userdiscordroles[] // Roles assigned to Discord users
+}
+
+model userroles {
+  userId String    // Links to `Users`
+  roleId Int       // Links to `Roles`
+  user   user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role   roles     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, roleId]) // Composite primary key to avoid duplicate user-role entries
+}
+
+model userdiscordroles {
+  discordId      String        // Links to `DiscordUsers`
+  discordRoleId  String           // Links to `DiscordRoles`
+  discordUser    discordusers  @relation(fields: [discordId], references: [id], onDelete: Cascade)
+  discordRole    discordroles  @relation(fields: [discordRoleId], references: [id], onDelete: Cascade)
+
+  @@id([discordId, discordRoleId]) // Composite primary key to avoid duplicate Discord user-role entries
 }
