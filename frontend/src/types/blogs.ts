@@ -10,6 +10,8 @@ type BlogDetails = {
     event: string;
     date: string;
     thumbnail?: string;
+    type: string;
+    featured?: boolean;
 }
 
 // BlogSummary is used to display all the different Blogs
