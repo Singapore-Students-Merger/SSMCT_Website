@@ -20,9 +20,13 @@ export default function CreateBlogsPage(){
         { value: 'Insane', label: 'Insane' },
         { value: 'Impossible', label: 'Impossible'}
       ];
+
     const [categories, setCategories] = useState([]);
     const [topics, setTopics] = useState<Topic[]>([]);
     const [ctfs, setCtfs] = useState<Event[]>([]);
+
+    
+
     useEffect(() => {
         async function getCategories() {
             const res = await fetch("/api/categories");
@@ -57,6 +61,7 @@ export default function CreateBlogsPage(){
 
     const [BlogThumbnail, setBlogThumbnail] = useState<File | null>(null);
     const [BlogFile, setBlogFile] = useState<File | null>(null);
+    const [ctf, setCTF] = useState<Event | null>(null);
     const [selected, setSelected] = useState<number[]>([]);
     const [topicSearch, setTopicSearch] = useState<string>('');
 
@@ -83,6 +88,14 @@ export default function CreateBlogsPage(){
             setBlogFile(file); // Store file separately
         }
     };
+
+    const eventChangeHandler = (selectedOption: {label:string, id: number|null}) => {
+        if (selectedOption) {
+            setCTF({title: selectedOption.label, id: selectedOption.id});
+        } else {
+            setCTF(null);
+        }
+    }
 
     const topicSelector = (topicId: number) => {
         setSelected((prevSelected) => {
@@ -149,6 +162,7 @@ export default function CreateBlogsPage(){
             formDataToSubmit.append("Level", formData.Level || ""); // Assuming Difficulty has value and label
             formDataToSubmit.append("Category", formData.Category || "");
             formDataToSubmit.append("Topics", JSON.stringify(formData.Topics));
+            formDataToSubmit.append("CTF", JSON.stringify(ctf));
             formDataToSubmit.append("Description", formData.Description);
             if (BlogThumbnail) formDataToSubmit.append('BlogThumbnail', BlogThumbnail);
             if (BlogFile) formDataToSubmit.append('BlogFile', BlogFile);
@@ -181,7 +195,7 @@ export default function CreateBlogsPage(){
             // Catch and log the error
             console.error('Error during submit:', error);
         }
-        }
+    }
 
     //prevent hydration error
     const [isClient, setIsClient] = useState(false);
@@ -211,7 +225,13 @@ export default function CreateBlogsPage(){
                     <label>Level</label>
                 </div>
 
-                <UploadFileComponent accept = "image/*" onFileUpload = {uploadThumbnailHandler} label = "Blog Thumbnail" file = {BlogThumbnail}/>
+                <div className = 'flex flex-col gap-2'>
+                    <SearchableSelect options = {
+                        ctfs.map((ctf:Event)=>{return {label:ctf.title, id: ctf.id}})} 
+                        setSelectedOption = {eventChangeHandler}
+                        placeholder="CTF"/>
+                    <label>Related CTF {!(ctf?.id) && <span className="text-red-500 text-sm">(CTF not found. It will be created.)</span>}</label>
+                </div>
 
                 <div className = 'flex flex-col gap-2'>
                     <Select className = 'rounded-xl h-[3rem] text-left' placeholder = 'Select Category' options = {categories} name = 'Category' onChange = {handleCategoryChange} required = {true}/>
@@ -219,9 +239,9 @@ export default function CreateBlogsPage(){
                 </div>
 
                 <div className = 'flex flex-col gap-2 row-span-5'>
-                    <div className = 'rounded-xl h-[calc(22rem+2px)]  bg-secondary-tier1/50 border-2 border-secondary-tier2'>
+                    <div className = 'rounded-xl h-[calc(28rem+2px)]  bg-secondary-tier1/50 border-2 border-secondary-tier2'>
                         <TextInput onChange={onTopicSearchChange} value = {topicSearch} className = 'h-[3rem] items-center px-4 text-primary flex text-lg rounded-b-none rounded-t-xl' placeholder="Search Topics" />
-                        <div className = 'overflow-auto text-primary h-[calc(19rem-2px)] rounded-none rounded-bl-xl rounded-br-xl w-[100%] bg-secondary-tier3 resize-none'>
+                        <div className = 'overflow-auto text-primary h-[calc(25rem-2px)] rounded-none rounded-bl-xl rounded-br-xl w-[100%] bg-secondary-tier3 resize-none'>
                         {topics.map((topic, index) => {
                             // const isSelected = selected.includes(topic.name); // Check if the topic is in the selected array
                             // const brightness = isSelected ? 'brightness-125' : 'brightness-100'; // Set the background color based on selection
@@ -245,9 +265,11 @@ export default function CreateBlogsPage(){
                     <label>Topics</label>
                 </div>
 
+                <UploadFileComponent accept = "image/*" onFileUpload = {uploadThumbnailHandler} label = "Blog Thumbnail" file = {BlogThumbnail}/>
 
-                <div className = 'flex flex-col gap-2 row-span-3 justify-start items-start'>
-                    <textarea className = 'text-primary placeholder-primary h-[20rem] rounded-xl w-[100%] bg-secondary-tier3 resize-none border-2 border-secondary-tier2 px-4 py-2 text-lg' placeholder = 'Description' name = 'Description' value = {formData.Description} onChange = {handleChange} required></textarea>
+
+                <div className = 'flex flex-col gap-2 row-span-4 justify-start items-start'>
+                    <textarea className = 'text-primary placeholder-primary h-[25rem] rounded-xl w-[100%] bg-secondary-tier3 resize-none border-2 border-secondary-tier2 px-4 py-2 text-lg' placeholder = 'Description' name = 'Description' value = {formData.Description} onChange = {handleChange} required></textarea>
                     <label>Description</label>
                 </div>
 

@@ -59,6 +59,7 @@ export const POST = async (req, res) => {
         const Description = formData.get('Description')
         // const BlogThumbnail = formData.get('BlogThumbnail')
         // const BlogFile = formData.get('BlogFile')
+        const CTF = formData.get('CTF')
         const session = await auth();
         if (!session) {
             redirect("/auth/signin");
@@ -68,6 +69,19 @@ export const POST = async (req, res) => {
         // Search for categoryId
         const categories = await prisma.categories.findMany();
         const categoryId = categories.find(cat => cat.name === Category);
+
+        let eventId = CTF.id
+
+        if (!CTF.id) {
+            const event = await prisma.events.create({
+                data: {
+                    userId: userId,
+                    title: CTF,
+                    isCompetition: true,
+                },
+            });
+            eventId = event.id;
+        }
 
 
         // Create a record in the database
@@ -80,6 +94,7 @@ export const POST = async (req, res) => {
                 link: path.join("/uploads/blogs/Blog/" + filename2),
                 thumbnail: path.join("/uploads/blogs/images/" + filename),
                 userId: userId,
+                eventId: eventId,
             },
             select: {
                 id: true,

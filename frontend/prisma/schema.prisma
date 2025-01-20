@@ -157,7 +157,7 @@ model blogs {
   @@index([userId], map: "Blogs_userId_fkey")
 }
 
-model Blogs {
+model writeups {
   id          Int      @id @default(autoincrement())
   title       String
   difficulty  String
@@ -179,11 +179,11 @@ model topics {
   description String?
 }
 
-model Blogstopics {
-  BlogId Int
+model writeupstopics {
+  writeupId Int
   topicId   Int
 
-  @@id([BlogId, topicId])
+  @@id([writeupId, topicId])
 }
 
 model blogstopics {
@@ -197,7 +197,7 @@ model comments {
   id        Int      @id @default(autoincrement())
   userId    String
   blogId    Int?
-  BlogId Int?
+  writeupId Int?
   comment   String
   date      DateTime @default(now())
 }
