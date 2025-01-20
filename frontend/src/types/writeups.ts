@@ -1,4 +1,4 @@
-type WriteupDetails = {
+type BlogDetails = {
     id: number;
     title: string;
     description: string;
@@ -13,10 +13,10 @@ type WriteupDetails = {
     thumbnail?: string;
 }
 
-// WriteupSummary is used to display all the different writeups
-type WriteupSummary = Omit<WriteupDetails, 'source' | 'contentFile'>;
+// BlogSummary is used to display all the different Blogs
+type BlogSummary = Omit<BlogDetails, 'source' | 'contentFile'>;
 
-// WriteupUpload is used when uploading a writeup
-type WriteupUpload = Omit<WriteupDetails, 'date' | 'length' | 'author'>;
+// BlogUpload is used when uploading a Blog
+type BlogUpload = Omit<BlogDetails, 'date' | 'length' | 'author'>;
 
-export type { WriteupDetails, WriteupSummary, WriteupUpload };
+export type { BlogDetails, BlogSummary, BlogUpload };

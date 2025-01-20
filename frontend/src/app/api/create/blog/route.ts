@@ -6,13 +6,6 @@ import { writeFile } from "fs/promises";
 import { auth } from "@/auth"
 import { redirect } from 'next/navigation'
 
-
-// export const config = {
-//     api: {
-//         bodyParser: false, // Disable body parsing so that formidable can handle it
-//     },
-// };
-
 export const POST = async (req, res) => {
     try {
         // console.log(req);
@@ -31,7 +24,7 @@ export const POST = async (req, res) => {
         if (!(['.jpg', '.jpeg', '.png', '.webp', '.svg'].includes(path.extname(filename)))) {
             return NextResponse.json({ status: 'error', 'error': 'Invalid thumbnail type, we only accept jpg, jpeg, png, webp or svg' })
         }
-        while (fs.existsSync(path.join(process.cwd(), '/uploads/Blogs/images/', filename))) { //prevent clashing filenames
+        while (fs.existsSync(path.join(process.cwd(), '/uploads/blogs/images/', filename))) { //prevent clashing filenames
             name += '1';
             filename = name + path.extname(filename);
             console.log('ALREADY EXISTING FILENAME, ATTEMPTING TO CHANGE FILENMAEEEEEE');
@@ -45,7 +38,7 @@ export const POST = async (req, res) => {
         if (!(['.md', '.markdown'].includes(path.extname(filename2)))) {
             return NextResponse.json({ status: 'error', 'error': 'Invalid file type, we only accept markdown' })
         }
-        while (fs.existsSync(path.join(process.cwd(), '/uploads/Blogs/Blog/', filename2))) { //prevent clashing filenames
+        while (fs.existsSync(path.join(process.cwd(), '/uploads/blogs/blog/', filename2))) { //prevent clashing filenames
             name2 += '1';
             filename2 = name2 + path.extname(filename2);
             console.log('FOR THE MD FILE FOR THE MD FILE ALREADY EXISTING FILENAME, ATTEMPTING TO CHANGE FILENMAEEEEEE #####')
@@ -54,17 +47,15 @@ export const POST = async (req, res) => {
 
 
         //upload files
-        await writeFile(path.join(process.cwd(), "/uploads/Blogs/images/" + filename), buffer);
-        console.log('Uploading file: ', path.join(process.cwd(), "/uploads/Blogs/Blog/" + filename2));
-        await writeFile(path.join(process.cwd(), "/uploads/Blogs/Blog/" + filename2), buffer2);
+        await writeFile(path.join(process.cwd(), "/uploads/blogs/images/" + filename), buffer);
+        console.log('Uploading file: ', path.join(process.cwd(), "/uploads/blogs/blog/" + filename2));
+        await writeFile(path.join(process.cwd(), "/uploads/blogs/Blog/" + filename2), buffer2);
 
         //retrieve data
         const Title = formData.get('Title')
-        const Difficulty = formData.get('Difficulty')
-        const Link = formData.get('Link')
+        const Level = formData.get('Level')
         const Category = formData.get('Category')
         const Topics = JSON.parse(formData.get('Topics'))
-        const CTF = JSON.parse(formData.get('CTF'))
         const Description = formData.get('Description')
         // const BlogThumbnail = formData.get('BlogThumbnail')
         // const BlogFile = formData.get('BlogFile')
@@ -78,35 +69,16 @@ export const POST = async (req, res) => {
         const categories = await prisma.categories.findMany();
         const categoryId = categories.find(cat => cat.name === Category);
 
-        let eventId = CTF.id
-
-        if (!CTF.id) {
-            const event = await prisma.events.create({
-                data: {
-                    userId: userId,
-                    title: CTF.title,
-                    isCompetition: true,
-                },
-            });
-            eventId = event.id;
-            await prisma.ctf.create({
-                data: {
-                    eventId: event.id,
-                }
-            });
-        }
 
         // Create a record in the database
-        const id = await prisma.Blogs.create({
+        const id = await prisma.blogs.create({
             data: {
                 title: Title,
-                difficulty: Difficulty,
-                contentFile: Link,
+                level: Level,
                 description: Description,
                 categoryId: categoryId ? categoryId.id : null,
-                eventId: eventId.id,
-                source: path.join("/uploads/Blogs/Blog/" + filename2),
-                thumbnail: path.join("/uploads/Blogs/images/" + filename),
+                link: path.join("/uploads/blogs/Blog/" + filename2),
+                thumbnail: path.join("/uploads/blogs/images/" + filename),
                 userId: userId,
             },
             select: {
@@ -120,9 +92,9 @@ export const POST = async (req, res) => {
         for (const topicId of Topics) {
             if (topicId)
                 // console.log(topic); // This will log each topic in the array
-                await prisma.Blogstopics.create({
+                await prisma.blogstopics.create({
                     data: {
-                        BlogId: id['id'],
+                        blogId: id['id'],
                         topicId: topicId,
                     }
                 })

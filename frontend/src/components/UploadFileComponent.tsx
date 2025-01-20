@@ -39,7 +39,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ onFileUpload,
                         type="file"
                         className={`top-0 absolute opacity-0 w-full rounded-none rounded-bl-xl rounded-br-xl h-full`}
                         onChange={handleFileChange}
-                        name="WriteupFile"
+                        name="BlogFile"
                         accept={accept}
                         required
                     />
@@ -55,7 +55,7 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ onFileUpload,
                     )}
                 </div>
             </div>
-            <label htmlFor="WriteupFile">{label}</label>
+            <label htmlFor="BlogFile">{label}</label>
         </div>
     );
 };

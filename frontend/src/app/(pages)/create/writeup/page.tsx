@@ -1,4 +1,4 @@
-import CreateWriteupPage from "@/components/CreateWriteupPage";
+import CreateBlogPage from "@/components/CreateBlogPage";
 import { auth } from "@/auth"
 import { redirect } from 'next/navigation'
 
@@ -8,5 +8,5 @@ export default async function createPage() {
         redirect("/auth/signin");
     }
 
-    return <CreateWriteupPage/>;
+    return <CreateBlogPage/>;
 }

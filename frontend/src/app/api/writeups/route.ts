@@ -1,8 +1,8 @@
-import { WriteupSummary } from "@/types/writeups";
+import { BlogSummary } from "@/types/Blogs";
 import { NextRequest, NextResponse } from 'next/server';
 
 export function GET(req: NextRequest) {
-  const writeups: WriteupSummary[] = [
+  const Blogs: BlogSummary[] = [
     {
       id: 1,
       title: "Introduction to Web Exploits",
@@ -68,7 +68,7 @@ export function GET(req: NextRequest) {
     },
   ];
   
-  return NextResponse.json(writeups);
+  return NextResponse.json(Blogs);
       
 
 }

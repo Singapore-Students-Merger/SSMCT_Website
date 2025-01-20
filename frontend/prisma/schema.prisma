@@ -28,13 +28,11 @@ model account {
 
 model categories {
   id             Int              @id @default(autoincrement())
-  icon           String?
   name           String           @db.Text
+  icon           String?
+  gallery        gallery[]
   user           user[]
   usercategories usercategories[]
-  gallery        gallery[]
-  writeups       writeups[]
-  blogs          blogs[]
 }
 
 model session {
@@ -51,24 +49,22 @@ model user {
   id               String             @id @default(cuid())
   name             String?
   realName         String?
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @default(now()) @updatedAt
   discordId        String?            @unique(map: "User_discordId_key")
   image            String?
   mainCategoryId   Int?
   email            String?            @unique(map: "User_email_key")
   emailVerified    Boolean?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @default(now()) @updatedAt
   account          account[]
-  session          session[]
-  categories       categories?        @relation(fields: [mainCategoryId], references: [id], map: "user_ibfk_1")
-  usercategories   usercategories[]
+  acheivements     acheivements[]
+  blogs            blogs[]
   events           events[]
   gallery          gallery[]
-  acheivements     acheivements[]
+  session          session[]
+  categories       categories?        @relation(fields: [mainCategoryId], references: [id], map: "user_ibfk_1")
   userachievements userachievements[]
-  blogs            blogs[]
-  writeups         writeups[]
-  comments         comments[]
+  usercategories   usercategories[]
 
   @@index([mainCategoryId], map: "mainCategoryId")
 }
@@ -100,10 +96,8 @@ model events {
   isBonding     Boolean  @default(false)
   date          DateTime @default(now())
   user          user     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Events_userId_fkey")
-  writeups      writeups[]
-  blogs         blogs[]
-  gallery       gallery[]
-  ctf           ctf?
+
+  @@index([userId], map: "Events_userId_fkey")
 }
 
 model gallery {
@@ -114,10 +108,12 @@ model gallery {
   eventId      Int?
   date         DateTime    @default(now())
   description  String?
+  categoriesId Int?
   user         user        @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Gallery_userId_fkey")
   categories   categories? @relation(fields: [categoriesId], references: [id])
-  events       events?     @relation(fields: [eventId], references: [id], map: "Gallery_eventId_fkey")
-  categoriesId Int?
+
+  @@index([userId], map: "Gallery_userId_fkey")
+  @@index([categoriesId], map: "gallery_categoriesId_fkey")
 }
 
 model acheivements {
@@ -129,99 +125,79 @@ model acheivements {
   points           Int?
   user             user               @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Acheivements_userId_fkey")
   userachievements userachievements[]
+
+  @@index([userId], map: "Acheivements_userId_fkey")
 }
 
 model userachievements {
   userId        String
   acheivementId Int
-  user          user         @relation(fields: [userId], references: [id], onDelete: Cascade, map: "UserAchievements_userId_fkey")
   acheivements  acheivements @relation(fields: [acheivementId], references: [id], onDelete: Cascade, map: "UserAchievements_acheivementId_fkey")
+  user          user         @relation(fields: [userId], references: [id], onDelete: Cascade, map: "UserAchievements_userId_fkey")
 
   @@id([userId, acheivementId])
+  @@index([acheivementId], map: "UserAchievements_acheivementId_fkey")
 }
 
 model blogs {
-  id          Int           @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   thumbnail   String
   userId      String
   eventId     Int?
   categoryId  Int?
   title       String
-  type        String        @default("Misc")
-  difficulty       String?
+  type        String   @default("Misc")
+  level       String?
   description String
-  date        DateTime      @default(now())
-  contentFile String
-  kudos       Int           @default(0)
-  user        user          @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Blogs_userId_fkey")
-  topics blogstopics[]
-  comments    comments[]
-  categories  categories?   @relation(fields: [categoryId], references: [id], map: "blogs_ibfk_1")
-  events      events?       @relation(fields: [eventId], references: [id], map: "blogs_ibfk_2")
+  date        DateTime @default(now())
+  link        String
+  kudos       Int      @default(0)
+  user        user     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Blogs_userId_fkey")
+
+  @@index([userId], map: "Blogs_userId_fkey")
 }
 
-model writeups {
-  id             Int              @id @default(autoincrement())
-  thumbnail      String
-  userId         String
-  eventId        Int?
-  difficulty     String
-  categoryId     Int?
-  source         String?
-  title          String
-  description    String
-  date           DateTime         @default(now())
-  kudos          Int              @default(0)
-  contentFile    String
-  user           user             @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Writeups_userId_fkey")
-  topics writeupstopics[]
-  comments       comments[]
-  categories     categories?      @relation(fields: [categoryId], references: [id], map: "writeups_ibfk_1")
-  events         events?          @relation(fields: [eventId], references: [id], map: "writeups_ibfk_2")
+model Blogs {
+  id          Int      @id @default(autoincrement())
+  title       String
+  difficulty  String
+  link        String
+  description String
+  categoryId  Int?
+  date        DateTime @default(now())
+  eventId     Int?
+  kudos       Int      @default(0)
+  source      String?
+  thumbnail   String
+  userId      String
 }
 
 model topics {
-  id             Int              @id @default(autoincrement())
-  title          String
-  icon           String?
-  description    String?
-  writeups writeupstopics[]
-  blogs    blogstopics[]
+  id          Int     @id @default(autoincrement())
+  title       String
+  icon        String?
+  description String?
 }
 
-model writeupstopics {
-  writeupId Int
+model Blogstopics {
+  BlogId Int
   topicId   Int
-  writeups  writeups @relation(fields: [writeupId], references: [id], onDelete: Cascade, map: "WriteupsTopics_writeupId_fkey")
-  topics    topics   @relation(fields: [topicId], references: [id], onDelete: Cascade, map: "WriteupsTopics_topicId_fkey")
 
-  @@id([writeupId, topicId])
+  @@id([BlogId, topicId])
 }
 
 model blogstopics {
   blogId  Int
   topicId Int
-  blogs   blogs  @relation(fields: [blogId], references: [id], onDelete: Cascade, map: "BlogsTopics_blogId_fkey")
-  topics  topics @relation(fields: [topicId], references: [id], onDelete: Cascade, map: "BlogsTopics_topicId_fkey")
 
   @@id([blogId, topicId])
 }
 
 model comments {
-  id        Int       @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   userId    String
   blogId    Int?
-  writeupId Int?
+  BlogId Int?
   comment   String
-  date      DateTime  @default(now())
-  user      user      @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Comments_userId_fkey")
-  blogs     blogs?    @relation(fields: [blogId], references: [id], onDelete: Cascade, map: "Comments_blogId_fkey")
-  writeups  writeups? @relation(fields: [writeupId], references: [id], onDelete: Cascade, map: "Comments_writeupId_fkey")
-}
-
-model ctf {
-  eventId    Int      @id
-  points     Int?
-  placing    Int?
-  event      events   @relation(fields: [eventId], references: [id], onDelete: Cascade, map: "CTF_eventId_fkey")
+  date      DateTime @default(now())
 }
