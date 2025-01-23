@@ -10,6 +10,31 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/lib/prisma";
 // You'll need to import and pass this
 // to `NextAuth` in `app/api/auth/[...nextauth]/route.ts`
+const userIsInSSM = async (access_token: string) => {
+  const guildId = process.env.DISCORD_GUILD_ID; // Your Discord guild ID
+    const apiUrl = "https://discord.com/api/v10/users/@me/guilds";
+
+    // Fetch user's guilds
+    const response = await fetch(apiUrl, {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
+
+    if (!response.ok) {
+      console.error("Failed to fetch user's Discord guilds");
+      throw new Error("Failed to fetch user's Discord guilds");
+    }
+    const guilds = await response.json();
+    const isInGuild = guilds.some((guild) => guild.id === guildId);
+    if (!isInGuild) {
+      console.error("User is not in the required Discord guild");
+      return false
+    }
+    return true;
+}
+
+
 export const config = {
   adapter: PrismaAdapter(prisma),
   pages: {
@@ -25,7 +50,7 @@ export const config = {
     DiscordProvider({
       clientId: process.env.DISCORD_CLIENT_ID!,
       clientSecret: process.env.DISCORD_CLIENT_SECRET!,
-      authorization: { params: { scope: 'identify guilds' }},
+      authorization: { params: { scope: 'identify guilds guilds.members.read' }},
       token: "https://discord.com/api/oauth2/token",
       userinfo: "https://discord.com/api/users/@me",
       profile: (profile) => {
@@ -40,30 +65,28 @@ export const config = {
     }),
   ],
   callbacks: {
-    async signIn({ account }) {
+    async signIn({ account, user }) {
+      if (!account || !user) {
+        return false;
+      }
       if (account.provider === "discord") {
-        console.log("Discord account:", account);
-        const guildId = process.env.DISCORD_GUILD_ID; // Your Discord guild ID
-        const apiUrl = "https://discord.com/api/v10/users/@me/guilds";
-
-        // Fetch user's guilds
-        const response = await fetch(apiUrl, {
-          headers: {
-            Authorization: `Bearer ${account.access_token}`,
+        console.log(account)
+        const discordId = account.providerAccountId;
+        if (!account.access_token) {
+          return false;
+        }
+        const fromSSM = await userIsInSSM(account.access_token);
+        if (!fromSSM) {
+          throw new Error("User is not in the required Discord guild");
+        }
+        await prisma.user.update({
+          where: { id: user.id },
+          data: {
+            discordId,
           },
         });
+        
 
-        if (!response.ok) {
-          console.error("Failed to fetch user's Discord guilds");
-          throw new Error("Failed to fetch user's Discord guilds");
-        }
-
-        const guilds = await response.json();
-        const isInGuild = guilds.some((guild) => guild.id === guildId);
-        if (!isInGuild) {
-          console.error("User is not in the required Discord guild");
-          throw new Error("You must be in the SSMCTF Discord Server as a member to sign in");
-        }
       }
 
       return true; // Allow sign-in

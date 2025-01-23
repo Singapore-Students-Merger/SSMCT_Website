@@ -1,3 +1,4 @@
+"use client"
 import { twMerge } from "tailwind-merge";
 import JoinLogo from "./logos/JoinLogo";
 import Image from 'next/image';
