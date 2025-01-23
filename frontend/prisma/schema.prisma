@@ -70,6 +70,7 @@ model user {
   writeups         writeups[]
   comments         comments[]
   userroles        userroles[]
+  discordUser      discordusers?     @relation(fields: [discordId], references: [id], map: "User_discordId_fkey")
 
   @@index([mainCategoryId], map: "mainCategoryId")
 }
@@ -105,6 +106,7 @@ model events {
   blogs         blogs[]
   gallery       gallery[]
   ctf           ctf?
+  roles         roles[]
 }
 
 model gallery {
@@ -227,12 +229,15 @@ model discordusers {
   username      String
   discriminator String
   discordRoles  userdiscordroles[] // Roles assigned to the Discord user
+  user          user? 
 }
 
 model roles {
   id        Int          @id @default(autoincrement())
   title     String
-  type      String      @default("ctf") // Type of role
+  type      String      @default("ctf participant") // Type of role
+  linkedEventId Int?    // Optional link to an event
+  linkedEvent events?   @relation(fields: [linkedEventId], references: [id], onDelete: SetNull)
   userRoles userroles[]  // Roles assigned to users
   linkedDiscordRoles discordroles[] // Discord roles linked to this role
 }
