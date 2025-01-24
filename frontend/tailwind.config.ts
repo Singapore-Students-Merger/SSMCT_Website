@@ -2,7 +2,16 @@ import type { Config } from "tailwindcss";
 import plugin from 'tailwindcss/plugin';
 import { PluginCreator } from 'tailwindcss/types/config';
 import typographPlugin from '@tailwindcss/typography';
+const addAnimationFillModePlugin: PluginCreator = ({ addUtilities, theme }) => {
+  const fillModes = theme('animationFillMode') as Record<string, string>;
 
+  const utilities = Object.entries(fillModes).reduce((acc, [key, value]) => {
+    acc[`.animate-fill-${key}`] = { 'animation-fill-mode': value };
+    return acc;
+  }, {} as Record<string, Record<string, string>>);
+
+  addUtilities(utilities, { respectPrefix: false, respectImportant: false });
+}
 const addAnimationDelayPlugin: PluginCreator = ({ addUtilities, theme }) => {
   const delays = theme('animationDelay') as Record<string, string>;
 
@@ -105,6 +114,11 @@ export default {
         '1000': '1s',
         '1500': '1.5s',
       },
+      animationFillMode: {
+        'backwards': 'backwards',
+        'forwards': 'forwards',
+        'both': 'both',
+      },
       animation: {
         fadeIn: 'fadeIn 1s ease-in-out backwards',
         fadeOut: 'fadeOut 1s ease-in-out backwards',
@@ -194,5 +208,5 @@ export default {
       },
     },
   },
-  plugins: [radialGradientPlugin,addAnimationDelayPlugin, typographPlugin, addAnimationDurationPlugin],
+  plugins: [addAnimationFillModePlugin, radialGradientPlugin,addAnimationDelayPlugin, typographPlugin, addAnimationDurationPlugin],
 } satisfies Config;
