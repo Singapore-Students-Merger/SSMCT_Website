@@ -1,0 +1,269 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["relationJoins"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              user    @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Account_userId_fkey")
+
+  @@unique([provider, providerAccountId], map: "Account_provider_providerAccountId_key")
+  @@index([userId], map: "Account_userId_fkey")
+}
+
+model categories {
+  id             Int              @id @default(autoincrement())
+  icon           String?
+  name           String           @db.Text
+  thumbnail     String?
+  user           user[]
+  usercategories usercategories[]
+  writeups       writeups[]
+  blogs          blogs[]
+}
+
+model session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique(map: "Session_sessionToken_key")
+  userId       String
+  expires      DateTime
+  user         user     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Session_userId_fkey")
+
+  @@index([userId], map: "Session_userId_fkey")
+}
+
+model user {
+  id               String             @id @default(cuid())
+  name             String?
+  realName         String?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @default(now()) @updatedAt
+  discordId        String?            @unique(map: "User_discordId_key")
+  image            String?
+  mainCategoryId   Int?
+  email            String?            @unique(map: "User_email_key")
+  emailVerified    Boolean?
+  account          account[]
+  session          session[]
+  categories       categories?        @relation(fields: [mainCategoryId], references: [id], map: "user_ibfk_1")
+  usercategories   usercategories[]
+  events           events[]
+  gallery          gallery[]
+  ctfs         userctfs[]
+  blogs            blogs[]
+  writeups         writeups[]
+  comments         comments[]
+  userroles        userroles[]
+  discordUser      discordusers?     @relation(fields: [discordId], references: [id], map: "User_discordId_fkey")
+
+  @@index([mainCategoryId], map: "mainCategoryId")
+}
+
+model usercategories {
+  userId     String
+  categoryId Int
+  user       user       @relation(fields: [userId], references: [id], onDelete: Cascade, map: "usercategories_ibfk_1")
+  categories categories @relation(fields: [categoryId], references: [id], onUpdate: Restrict, map: "usercategories_ibfk_2")
+
+  @@id([userId, categoryId])
+  @@index([categoryId], map: "categoryId")
+}
+
+model verificationtoken {
+  identifier String
+  token      String   @unique(map: "VerificationToken_token_key")
+  expires    DateTime
+
+  @@unique([identifier, token], map: "VerificationToken_identifier_token_key")
+}
+
+model events {
+  id            Int      @id @default(autoincrement())
+  userId        String?
+  title         String
+  description   String?
+  isCompetition Boolean  @default(false)
+  isBonding     Boolean  @default(false)
+  date          DateTime @default(now())
+  user          user?     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Events_userId_fkey")
+  writeups      writeups[]
+  blogs         blogs[]
+  gallery       gallery[]
+  ctf           ctf?
+  roles         roles[]
+}
+
+model gallery {
+  id           Int         @id @default(autoincrement())
+  userId       String
+  image        String
+  title        String
+  type         String
+  eventId      Int?
+  date         DateTime    @default(now())
+  description  String?
+  user         user        @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Gallery_userId_fkey")
+  events       events?     @relation(fields: [eventId], references: [id], map: "Gallery_eventId_fkey")
+}
+
+
+
+model userctfs {
+  userId        String
+  ctfId Int
+  user          user         @relation(fields: [userId], references: [id], onDelete: Cascade, map: "UserAchievements_userId_fkey")
+  ctf           ctf          @relation(fields: [ctfId], references: [eventId], onDelete: Cascade, map: "UserAchievements_ctfId_fkey")
+  @@id([userId, ctfId])
+}
+
+model blogs {
+  id          Int           @id @default(autoincrement())
+  thumbnail   String
+  userId      String
+  eventId     Int?
+  categoryId  Int?
+  title       String
+  type        String        @default("Misc")
+  difficulty       String?
+  description String
+  date        DateTime      @default(now())
+  contentFile String
+  kudos       Int           @default(0)
+  featured    Boolean       @default(false)
+  user        user          @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Blogs_userId_fkey")
+  topics blogstopics[]
+  comments    comments[]
+  categories  categories?   @relation(fields: [categoryId], references: [id], map: "blogs_ibfk_1")
+  events      events?       @relation(fields: [eventId], references: [id], map: "blogs_ibfk_2")
+}
+
+model writeups {
+  id             Int              @id @default(autoincrement())
+  thumbnail      String
+  userId         String
+  eventId        Int?
+  difficulty     String
+  categoryId     Int?
+  source         String?
+  title          String
+  description    String
+  date           DateTime         @default(now())
+  kudos          Int              @default(0)
+  contentFile    String
+  user           user             @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Writeups_userId_fkey")
+  topics writeupstopics[]
+  comments       comments[]
+  categories     categories?      @relation(fields: [categoryId], references: [id], map: "writeups_ibfk_1")
+  events         events?          @relation(fields: [eventId], references: [id], map: "writeups_ibfk_2")
+}
+
+model topics {
+  id             Int              @id @default(autoincrement())
+  title          String
+  icon           String?
+  description    String?
+  writeups writeupstopics[]
+  blogs    blogstopics[]
+}
+
+model writeupstopics {
+  writeupId Int
+  topicId   Int
+  writeups  writeups @relation(fields: [writeupId], references: [id], onDelete: Cascade, map: "WriteupsTopics_writeupId_fkey")
+  topics    topics   @relation(fields: [topicId], references: [id], onDelete: Cascade, map: "WriteupsTopics_topicId_fkey")
+
+  @@id([writeupId, topicId])
+}
+
+model blogstopics {
+  blogId  Int
+  topicId Int
+  blogs   blogs  @relation(fields: [blogId], references: [id], onDelete: Cascade, map: "BlogsTopics_blogId_fkey")
+  topics  topics @relation(fields: [topicId], references: [id], onDelete: Cascade, map: "BlogsTopics_topicId_fkey")
+
+  @@id([blogId, topicId])
+}
+
+model comments {
+  id        Int       @id @default(autoincrement())
+  userId    String
+  blogId    Int?
+  writeupId Int?
+  comment   String
+  date      DateTime  @default(now())
+  user      user      @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Comments_userId_fkey")
+  blogs     blogs?    @relation(fields: [blogId], references: [id], onDelete: Cascade, map: "Comments_blogId_fkey")
+  writeups  writeups? @relation(fields: [writeupId], references: [id], onDelete: Cascade, map: "Comments_writeupId_fkey")
+}
+
+model ctf {
+  eventId    Int      @id
+  ctfId      Int?     @unique
+  points     Int?
+  placing    Int?
+  link       String?
+  participants Int?
+  logo       String?
+  event      events   @relation(fields: [eventId], references: [id], onDelete: Cascade, map: "CTF_eventId_fkey")
+  members   userctfs[]
+}
+
+model discordusers {
+  id            String            @id
+  username      String
+  discriminator String
+  discordRoles  userdiscordroles[] // Roles assigned to the Discord user
+  user          user? 
+}
+
+model roles {
+  id        Int          @id @default(autoincrement())
+  title     String
+  type      String      @default("ctf participant") // Type of role
+  linkedEventId Int?    // Optional link to an event
+  linkedEvent events?   @relation(fields: [linkedEventId], references: [id], onDelete: SetNull)
+  userRoles userroles[]  // Roles assigned to users
+  linkedDiscordRoles discordroles[] // Discord roles linked to this role
+}
+
+model discordroles {
+  id               String                @id
+  title            String
+  linkedRoleId     Int?               // Optional link to a role
+  linkedRole       roles?             @relation(fields: [linkedRoleId], references: [id], onDelete: SetNull)
+  userDiscordRoles userdiscordroles[] // Roles assigned to Discord users
+}
+
+model userroles {
+  userId String    // Links to `Users`
+  roleId Int       // Links to `Roles`
+  user   user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role   roles     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, roleId]) // Composite primary key to avoid duplicate user-role entries
+}
+
+model userdiscordroles {
+  discordId      String        // Links to `DiscordUsers`
+  discordRoleId  String           // Links to `DiscordRoles`
+  discordUser    discordusers  @relation(fields: [discordId], references: [id], onDelete: Cascade)
+  discordRole    discordroles  @relation(fields: [discordRoleId], references: [id], onDelete: Cascade)
+
+  @@id([discordId, discordRoleId]) // Composite primary key to avoid duplicate Discord user-role entries
+}

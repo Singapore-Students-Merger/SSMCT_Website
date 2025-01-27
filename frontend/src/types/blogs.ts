@@ -5,10 +5,13 @@ type BlogDetails = {
     author: string;
     contentFile: string;
     topics: string[];
-    categories: string[];
-    level: "None" | "Easy" | "Medium" | "Hard";
-    date: Date;
+    category: string;
+    difficulty: "None" | "Easy" | "Medium" | "Hard";
+    event: string;
+    date: string;
     thumbnail?: string;
+    type: string;
+    featured?: boolean;
 }
 
 // BlogSummary is used to display all the different Blogs

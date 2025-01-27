@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 import plugin from 'tailwindcss/plugin';
 import { PluginCreator } from 'tailwindcss/types/config';
+import typographPlugin from '@tailwindcss/typography';
 
 const addAnimationDelayPlugin: PluginCreator = ({ addUtilities, theme }) => {
   const delays = theme('animationDelay') as Record<string, string>;
@@ -12,6 +13,17 @@ const addAnimationDelayPlugin: PluginCreator = ({ addUtilities, theme }) => {
 
   addUtilities(utilities, { respectPrefix: false, respectImportant: false });
 };
+
+const addAnimationDurationPlugin: PluginCreator = ({ addUtilities, theme }) => {
+  const durations = theme('animationDuration') as Record<string, string>;
+
+  const utilities = Object.entries(durations).reduce((acc, [key, value]) => {
+    acc[`.animate-duration-${key}`] = { 'animation-duration': value };
+    return acc;
+  }, {} as Record<string, Record<string, string>>);
+
+  addUtilities(utilities, { respectPrefix: false, respectImportant: false });
+}
 
 const radialGradientPlugin = plugin(
   function ({ matchUtilities, theme }) {
@@ -64,7 +76,29 @@ export default {
   ],
   theme: {
     extend: {
+      typography: {
+        DEFAULT: {
+          css: {
+            color: '#fff',
+            strong: { color: 'rgb(var(--foreground))', fontWeight: 'bold' },
+            bold: { color: 'rgb(var(--foreground))', fontWeight: 'bold' },
+            h1: { color: 'rgb(var(--foreground))', fontWeight: 'bold', borderBottom: '2px solid rgb(var(--foreground))' },
+            h2: { color: 'rgb(var(--foreground))', fontWeight: 'bold', borderBottom: '1px solid rgb(var(--secondary))' },
+            h3: { color: 'rgb(var(--foreground))', fontWeight: 'bold' },
+            h4: { color: '#fff', fontWeight: 'bold' },
+            a: { color: '#3182ce', textDecoration: 'none' },
+            code: { color: 'rgb(var(--foreground))', background: 'rgb(var(--tertiary))' },
+          },
+        },
+      },
       animationDelay: {
+        '100': '100ms',
+        '200': '200ms',
+        '500': '500ms',
+        '1000': '1s',
+        '1500': '1.5s',
+      },
+      animationDuration: {
         '100': '100ms',
         '200': '200ms',
         '500': '500ms',
@@ -141,8 +175,8 @@ export default {
         },
       },
       fontSize: {
-        'body-sm': '0.75rem', // Small screens
-        'body-md': '0.875rem',   // Medium screens
+        'body-sm': '0.9rem', // Small screens
+        'body-md': '0.95rem',   // Medium screens
         'body-lg': '1rem',    // Large screens
       },
       colors: {
@@ -160,5 +194,5 @@ export default {
       },
     },
   },
-  plugins: [radialGradientPlugin,addAnimationDelayPlugin],
+  plugins: [radialGradientPlugin,addAnimationDelayPlugin, typographPlugin, addAnimationDurationPlugin],
 } satisfies Config;
