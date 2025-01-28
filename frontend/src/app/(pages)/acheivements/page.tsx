@@ -1,6 +1,6 @@
 import Hero from "../../../components/Hero";
 import AchievementCard from "../../../components/AchievementCard";
-import { getAllCtfs } from "@/app/api/acheivements/route";
+import { getAllCtfs } from "@/utils/getAllCtfs";
 
 export default async function AchievementsPage() {
   const achievements = await getAllCtfs();
@@ -22,9 +22,10 @@ export default async function AchievementsPage() {
                   key={index}
                   title={achievement.title}
                   points={achievement.points}
-                  participants={achievement.participants}
+                  participants={achievement.members}
                   icon={achievement.logo ?? "/assets/no_logo.webp"}
                   placing={achievement.placing}
+                  link={achievement.link}
                 />
               ))}
             </div>
@@ -37,7 +38,7 @@ export default async function AchievementsPage() {
                   key={index}
                   title={achievement.title}
                   points={achievement.points}
-                  participants={achievement.participants}
+                  participants={achievement.members}
                   icon={achievement.logo ?? "/assets/no_logo.webp"}
                   placing={achievement.placing}
                   link={achievement.link}

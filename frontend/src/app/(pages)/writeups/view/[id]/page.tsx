@@ -21,9 +21,9 @@ const fetchWriteupFromDatabase = cache(async (id: string) => {
 
     return (await res.json()).data;
 })
-export const generateMetadata = async ({ params }: { params: { id: string } }) => {
-    params = await params;
-    const id = params.id;
+export const generateMetadata = async ({ params }: { params: Promise<{id:string}> }) => {
+    const newParams = await params;
+    const id = newParams.id;
     const post = await fetchWriteupFromDatabase(id); 
     return {
       title: post.title,
@@ -40,10 +40,10 @@ export const generateMetadata = async ({ params }: { params: { id: string } }) =
   };
 
   
-export default async function WriteupView({ params }: { params: { id: string } }) {
+export default async function WriteupView({ params }: { params: Promise<{id:string}> }) {
     const loggedIn = await auth()?true:false;
-    params = await params;
-    const id = params.id;
+    const newParams = await params;
+    const id = newParams.id;
     let writeupDetails: WriteupDetails;
 
     try {
@@ -117,7 +117,7 @@ export default async function WriteupView({ params }: { params: { id: string } }
                         dangerouslySetInnerHTML={{ __html: content.toString() }}>
                     </div>
                 </div>
-                <CommentsSection commentError = {commentError} comments = {comments} id={id} type="writeups" loggedIn={loggedIn} />
+                <CommentsSection commentsError = {commentError} comments = {comments} id={id} type="writeups" loggedIn={loggedIn} />
             </div>
             <Toaster />
         </>

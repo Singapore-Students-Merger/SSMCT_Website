@@ -2,12 +2,11 @@
 import  { useState, useRef } from "react";
 import Button from "./Button";
 import toast from "react-hot-toast";
-import CommentComp from "./CommentComponent";
 import Comment from "@/types/comment";
 interface CommentFormProps {
   id: string;
   type: "blogs"| "writeups";
-  setComments: (comments: Comment[]) => void; 
+  setComments: (callback: (comment:Comment[])=>Comment[]) => void; 
 }
 
 interface SubmitHandlerError {
@@ -50,7 +49,7 @@ const CommentForm = ({id,type,setComments} : CommentFormProps) => {
         throw new Error((await response.json()).message);
       }
       const newComment:Comment = (await response.json()).data;
-      setComments((prevComments) => [newComment, ...prevComments]);
+      setComments((prevComments:Comment[]) => [newComment, ...prevComments]);
       setComment("");
     })
     .catch((error: SubmitHandlerError | Error) => {

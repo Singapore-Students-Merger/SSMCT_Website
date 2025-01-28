@@ -48,12 +48,13 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
         month: "long",
         day: "numeric",
       }),
-      ctf: data.events?.title,
+      ctf: data.events?.title??"",
     };
 
     return NextResponse.json({ data: writeupDetails });
-  } catch (error : any) {
-    console.error("Unexpected error:", error.message);
+  } catch (error) {
+    if (error instanceof Error)
+      console.error("Unexpected error:", error.message);
     return NextResponse.json(
       { error: true, message: "An unexpected error occurred" },
       { status: 500 }

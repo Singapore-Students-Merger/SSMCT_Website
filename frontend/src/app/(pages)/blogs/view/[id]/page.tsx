@@ -9,11 +9,10 @@ import { BlogDetails } from "@/types/blogs";
 import {auth} from "@/auth";
 import CommentsSection from "@/components/CommentsSection";
 
-export default async function BlogView({ params }: { params: { id: string } }) {
+export default async function BlogView({ params }: { params: Promise<{ id: string }> }) {
     const loggedIn = await auth()?true:false;
-
-    params = await params;
-    const id = params.id;
+    const newParams = await params;
+    const id = newParams.id;
     let data;
 
     try {
@@ -78,7 +77,7 @@ export default async function BlogView({ params }: { params: { id: string } }) {
                     className="prose max-w-none mx-auto px-10 md:px-32 my-8"
                     dangerouslySetInnerHTML={{ __html: content.toString() }}>
                 </div>
-                <CommentsSection commentError = {commentError} comments = {comments} id={id} type="blogs" loggedIn={loggedIn} />
+                <CommentsSection commentsError = {commentError} comments = {comments} id={id} type="blogs" loggedIn={loggedIn} />
             </section>
         </>
     );

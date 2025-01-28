@@ -2,21 +2,19 @@
 
 import GradientBg from "@/components/GradientBg";
 import TextInput from "@/components/TextInput";
-import Select from "@/components/Select";
 import Button from "@/components/Button";
 import toast, { Toaster } from 'react-hot-toast';
-import Category from "@/types/category";
 
 import { useState, useEffect } from 'react';
 import UploadFileComponent from "./UploadFileComponent";
 import SearchableSelect  from "@/components/SearchableSelect";
 import DateInput from "./DateInput";
 interface Option {
-    id: number;
     label: string;
+    id: number | string | null;
 }
 interface Event {
-    id: number | null;
+    id: string | number | null;
     title: string;
 }
 interface FormDataProps {
@@ -50,7 +48,7 @@ export default function CreateImagesPage(){
     const uploadThumbnailHandler = (file: null|File) => {
         setFormData((old)=>{return {...old,image:file}}); 
     };
-    const eventChangeHandler = (selectedOption: {label:string, id: number|null}) => {
+    const eventChangeHandler = (selectedOption: Option) => {
         if (selectedOption) {
             setFormData((old)=>{return {
                 ...old,
@@ -110,7 +108,7 @@ export default function CreateImagesPage(){
         .then(data => {
             setEvents(data.map((event:Event)=>{return {id:event.id, label:event.title}}));
         })
-        .catch(err => {
+        .catch(() => {
             toast.error("Failed to fetch events");
         });
     }, []);

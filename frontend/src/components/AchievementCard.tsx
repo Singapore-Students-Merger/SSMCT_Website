@@ -3,14 +3,14 @@ import Image from "next/image";
 
 interface AchievementCardProps {
   title: string;
-  points: number;
+  points: number | null;
   participants: { realName?: string; name: string }[];
-  icon: string;
-  place: string;
+  icon: string | null;
+  placing: string | null;
   link: string | null;
 }
 
-const AchievementCard: React.FC<AchievementCardProps> = ({ title, points, participants, icon, place, link }) => {
+const AchievementCard: React.FC<AchievementCardProps> = ({ title, points, participants, icon, placing, link }) => {
   const CardContent = (
     <div
       className={`bg-secondary-tier3/75 text-white rounded-lg overflow-hidden
@@ -26,7 +26,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({ title, points, partic
         </h2>
         <div className="aspect-video w-full">
           <Image
-            src={icon === "" ? "/assets/no_logo.webp" : icon}
+            src={icon ? icon : "/assets/no_logo.webp"}
             alt={title}
             fill={true}
             objectFit="contain"
@@ -43,7 +43,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({ title, points, partic
       </div>
       <div className="my-4 px-4">
         <h3 className="text-center text-2xl font-bold relative">
-          {place} Place
+          {placing} Place
           <div className="absolute w-full bottom-0 border-b-2 border-secondary-tier1">
             <div
               className="absolute h-4 left-0 top-1/2 -translate-y-1/2 border-l-2 border-secondary-tier1"

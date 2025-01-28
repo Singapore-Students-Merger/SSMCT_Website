@@ -6,6 +6,7 @@ interface Info {
     description: string;
     src: string;
     date: string;
+    category: "CTF" | "Bonding";
 }
 
 interface GalleryItemProps {

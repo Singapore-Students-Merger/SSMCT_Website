@@ -10,11 +10,12 @@ interface CardProps {
         date: string;
         author: string;
         difficulty: string;
-        event: string;
+        event?: string;
+        ctf?: string;
     }
 }
 
-export function Card({info: {link, thumbnail, category, title, description, date, author, difficulty, event}}: CardProps) {
+export function Card({info: {link, thumbnail, category, title, description, date, author, difficulty, event, ctf}}: CardProps) {
     return (
         <Link href={link}>
         <div className="flex flex-col w-full  rounded-lg shadow-[0_0_5px_1px_#5BC2D9] overflow-hidden border-2 border-black hover:brightness-125 backdrop:brightness-125 transition duration-200">
@@ -27,7 +28,7 @@ export function Card({info: {link, thumbnail, category, title, description, date
                 <p className="text-md text-primary">{date}</p>
                 </div>
                 <div className='flex justify-between'>
-                <p className="text-md text-accent1">{event}</p>
+                <p className="text-md text-accent1">{event??ctf??""}</p>
                 <p className="text-md text-accent1">{category}({difficulty})</p>
                 </div>
                 <h3 className="text-xl font-bold mt-1 text-white">{title}</h3>
