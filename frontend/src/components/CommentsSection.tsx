@@ -2,7 +2,6 @@
 import CommentForm from "./CommentForm";
 import Comment from "../types/comment";
 import CommentComp from "./CommentComponent";
-import {auth} from "@/auth";
 import Link from "next/link";
 import { useState,useEffect } from "react";
 import toast from "react-hot-toast";

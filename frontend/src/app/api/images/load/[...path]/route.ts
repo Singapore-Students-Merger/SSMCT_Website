@@ -20,6 +20,9 @@ export async function GET(req: Request, { params }: { params: { path: string[] }
             },
         });
     } catch (error) {
+        if (error instanceof Error) {
+            console.error("Unexpected error:", error.message);
+        }
         return NextResponse.json({ message: "File not found" }, { status: 404 });
     }
 }

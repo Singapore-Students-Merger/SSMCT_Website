@@ -1,12 +1,15 @@
 type AchievementDetails = {
-    ctf: string;
-    place: number;
-    description: string;
+    title: string;
+    description: string | null;
     date: Date;
-    thumbnail?: string;
-    members: string[];
-    points: number;
-    participants: number;
+    points: number | null;
+    members: {
+        realName?: string;
+        name: string;
+    }[];
+    placing: string;
+    link: string|null;
+    logo?: string|null;
 }
 
 type Event = {

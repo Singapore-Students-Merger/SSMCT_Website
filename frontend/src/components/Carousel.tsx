@@ -1,7 +1,6 @@
 "use client"
 import  { useState, useRef,useEffect } from "react";
 import { GalleryItem, Info } from "./Gallery";
-import { set } from "zod";
 interface CarouselProps {
   data: Info[];
   setSelectedImage: React.Dispatch<React.SetStateAction<Info | null>>;
@@ -9,7 +8,7 @@ interface CarouselProps {
 
 interface CarouselItemProps {
     info: Info;
-    ref: React.RefObject<HTMLDivElement | null>;
+    ref: (el: HTMLDivElement | null) => void;
     disableClick?: boolean;
     setSelectedImage: React.Dispatch<React.SetStateAction<Info | null>>;
 }
@@ -73,62 +72,67 @@ const Carousel = ({ data, setSelectedImage }: CarouselProps) => {
       }
     };
     
-    const handleScrollWheel = (event: any) => {
-      if (carouselRef.current) {
-        if (carouselRef.current.scrollLeft <= 100 && event.deltaY < 0) {
-          return;
-        }
-        if (
-          carouselRef.current.scrollLeft >=
-          carouselRef.current.scrollWidth - carouselRef.current.offsetWidth - 100&&
-          event.deltaY > 0
-        ) {
-          return;
-        }
-        carouselRef.current.scrollLeft += event.deltaY;
-        event.preventDefault();
-      }
+    interface ScrollWheelEvent extends WheelEvent {
+      deltaY: number;
     }
-    // Handle the scroll event
-    const handleScroll = () => {
-      const curIndex = checkCenteredItem();
-  
-      if (scrollTimeout.current) {
-        clearTimeout(scrollTimeout.current);
-      }
-  
-      // Set a new timeout to detect when scrolling has stopped
-      scrollTimeout.current = window.setTimeout(() => {
-        handleScrollEnd(curIndex); // Trigger the auto-centering
-      }, 100); // Wait 100ms after scroll stops
-    };
-  
-    // Track whether the user is actively dragging the scrollbar
-    const handleMouseDown = (event: any) => {
-      startPos.current = event.clientX;
-      isDragging.current = true; // User starts dragging
-    };
-    const handleMouseMove = (event: any) => {
-      if (!isDragging.current) return; // Do nothing if user is not dragging
-      // move the carousel
-      setDisableClick(true);
-      if (carouselRef.current) {
-        const diff = startPos.current - event.clientX;
-        startPos.current = event.clientX;
-        carouselRef.current.scrollLeft += diff;
-      }
-      const curIndex = checkCenteredItem(); // Recheck centered item while user is dragging
-      
-    }
-    const handleMouseUp = () => {
-        setDisableClick(false);
-      isDragging.current = false; // User stops dragging
-      const curIndex = checkCenteredItem(); // Recheck centered item when user releases
-      handleScrollEnd(curIndex); // Trigger auto-centering after user releases scrollbar
-    };
+
+   
   
     // Set up scroll and mouse event listeners
     useEffect(() => {
+      const handleScrollWheel = (event: ScrollWheelEvent) => {
+        if (carouselRef.current) {
+          if (carouselRef.current.scrollLeft <= 100 && event.deltaY < 0) {
+            return;
+          }
+          if (
+            carouselRef.current.scrollLeft >=
+            carouselRef.current.scrollWidth - carouselRef.current.offsetWidth - 100 &&
+            event.deltaY > 0
+          ) {
+            return;
+          }
+          carouselRef.current.scrollLeft += event.deltaY;
+          event.preventDefault();
+        }
+      };
+      // Handle the scroll event
+      const handleScroll = () => {
+        const curIndex = checkCenteredItem();
+    
+        if (scrollTimeout.current) {
+          clearTimeout(scrollTimeout.current);
+        }
+    
+        // Set a new timeout to detect when scrolling has stopped
+        scrollTimeout.current = window.setTimeout(() => {
+          handleScrollEnd(curIndex); // Trigger the auto-centering
+        }, 100); // Wait 100ms after scroll stops
+      };
+    
+      // Track whether the user is actively dragging the scrollbar
+      const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>| MouseEvent) => {
+        startPos.current = event.clientX;
+        isDragging.current = true; // User starts dragging
+      };
+      const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>| MouseEvent) => {
+        if (!isDragging.current) return; // Do nothing if user is not dragging
+        // move the carousel
+        setDisableClick(true);
+        if (carouselRef.current) {
+          const diff = startPos.current - event.clientX;
+          startPos.current = event.clientX;
+          carouselRef.current.scrollLeft += diff;
+        }
+        
+      }
+      const handleMouseUp = () => {
+          setDisableClick(false);
+        isDragging.current = false; // User stops dragging
+        const curIndex = checkCenteredItem(); // Recheck centered item when user releases
+        handleScrollEnd(curIndex); // Trigger auto-centering after user releases scrollbar
+      };
+
       const ref = carouselRef.current;
       checkCenteredItem();
       if (ref) {
@@ -154,7 +158,6 @@ const Carousel = ({ data, setSelectedImage }: CarouselProps) => {
     return (
         <>
         <div className="scrollbar-custom flex gap-4 overflow-auto py-4 md:py-12 w-full box-border"
-            onMouseDown={handleMouseDown}
             ref = {carouselRef}>
             <div className="w-[20rem] max-w-[90vw] md:w-[30rem] shrink-0"></div>
         {data.map((info, idx) => (

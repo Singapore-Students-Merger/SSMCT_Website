@@ -1,4 +1,4 @@
-import { NextResponse, NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../lib/prisma";
 import fs from 'fs';
 import path from 'path';
@@ -13,7 +13,7 @@ import { redirect } from 'next/navigation'
 //     },
 // };
 
-export const POST = async (req, res) => {
+export const POST = async (req: NextRequest) => {
     try {
         // console.log(req);
         const formData = await req.formData();

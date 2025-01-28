@@ -9,11 +9,10 @@ import { BlogDetails } from "@/types/blogs";
 import {auth} from "@/auth";
 import CommentsSection from "@/components/CommentsSection";
 
-export default async function BlogView({ params }: { params: { id: string } }) {
+export default async function BlogView({ params }: { params: Promise<{ id: string }> }) {
     const loggedIn = await auth()?true:false;
-
-    params = await params;
-    const id = params.id;
+    const newParams = await params;
+    const id = newParams.id;
     let data;
 
     try {

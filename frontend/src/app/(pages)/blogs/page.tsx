@@ -3,7 +3,6 @@ import Posts from "@/components/Posts";
 import { getBlogs } from "@/app/api/blogs/route";
 import { getTopics } from "@/app/api/topics/route";
 import { getEvents } from "@/app/api/events/route";
-import GradientBg from "@/components/GradientBg";
 import BlogHero from "./BlogHero";
 export default async function BlogsPageServer() {
   let data = await getBlogs();

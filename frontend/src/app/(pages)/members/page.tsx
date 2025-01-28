@@ -92,7 +92,7 @@ const webDevs: Members[] = [
   },
 ]
 
-export default async function MembersPage(props) {
+export default async function MembersPage() {
   const members = await getCachedMembers(); 
   const gridStyle = "grid grid-cols-2 lg:grid-cols-3 gap-x-12 lg:gap-x-32 px-4 lg:px-16 my-16 gap-y-8 lg:gap-y-16";
   return (

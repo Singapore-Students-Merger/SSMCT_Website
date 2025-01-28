@@ -1,5 +1,5 @@
 import { WriteupSummary } from "@/types/writeups";
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import prisma from "@/lib/prisma";
 
 export async function getWriteups(): Promise<WriteupSummary[]> {
@@ -48,7 +48,7 @@ export async function getWriteups(): Promise<WriteupSummary[]> {
     }
   });
 }
-export async function GET(req: NextRequest) {
+export async function GET() {
   const writeups: WriteupSummary[] = await getWriteups();
   
   return NextResponse.json(writeups);

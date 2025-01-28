@@ -1,4 +1,4 @@
-import { NextResponse, NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import fs from 'fs';
 import path from 'path';
@@ -48,7 +48,7 @@ const formSchema = z.object({
 });
 const imageUploadPath = path.join(process.cwd(), '/uploads/gallery/');
 
-export const POST = async (req, res) => {
+export const POST = async (req: NextRequest) => {
     let userId
     try {
         const session = await auth();
@@ -121,7 +121,8 @@ export const POST = async (req, res) => {
         })
         return NextResponse.json({ status: "success", message: "Image uploaded successfully" });
     } catch (error) {
-        console.error(error.message);
+        if (error instanceof Error)
+            console.error(error.message);
         if (error instanceof z.ZodError) {
             // Extract error messages and join them with a comma
             const errorMessage = error.issues.map((err) => err.message).join(", ");

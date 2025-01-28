@@ -93,7 +93,7 @@ export default function CreateWriteupsPage(){
     });
 
     
-    const onTopicSearchChange = (e: any) => {
+    const onTopicSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTopicSearch(e.target.value);
     }
     //making it appear
@@ -136,7 +136,7 @@ export default function CreateWriteupsPage(){
         
 
     //changing formData value on change
-    const handleChange = (e: any) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
             ...prev,
@@ -174,7 +174,13 @@ export default function CreateWriteupsPage(){
     };
 
     //submitting data to endpoints
-    async function handleSubmit(event){
+
+    interface SubmitResponse {
+        status: string;
+        error?: string;
+    }
+
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>): Promise<void> {
         event.preventDefault();
         
         try {
@@ -194,8 +200,8 @@ export default function CreateWriteupsPage(){
                 body: formDataToSubmit,
             })
             .then((response) => response.json())
-            .then((data) => {
-                if (data['status'] == 'success') {
+            .then((data: SubmitResponse) => {
+                if (data.status === 'success') {
                     // Reset form data if successful
                     setFormData({
                         Title: "",
@@ -205,8 +211,8 @@ export default function CreateWriteupsPage(){
                         Topics: [],
                         Description: "",
                     });
-                } else if (data['status'] == 'error') {
-                    throw new Error(data['error']);
+                } else if (data.status === 'error') {
+                    throw new Error(data.error);
                 }
             })
             toast.promise(submitPromise, {
@@ -215,15 +221,11 @@ export default function CreateWriteupsPage(){
                 error: (error) => `Failed to create writeup: ${error.message}`,
             })
 
-            
-
-            
-            
         } catch (error) {
             // Catch and log the error
             console.error('Error during submit:', error);
         }
-        }
+    }
 
     //prevent hydration error
     const [isClient, setIsClient] = useState(false);

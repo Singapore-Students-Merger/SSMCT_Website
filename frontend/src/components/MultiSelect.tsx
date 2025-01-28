@@ -1,5 +1,5 @@
 "use client";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import TextInput from "./TextInput";
 import SearchIcon from "./logos/SearchIcon";
 import SelectIcon from "./logos/SelectIcon";

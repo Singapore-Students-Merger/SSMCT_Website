@@ -1,4 +1,3 @@
-import { AchievementDetails } from "@/types/acheivements";
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from "@/lib/prisma";
 
@@ -24,7 +23,8 @@ export async function GET(req: NextRequest) {
         return NextResponse.json([]);
       }
       catch (error){
-        console.error(error.message);
+        if (error instanceof Error)
+          console.error(error.message);
         return NextResponse.json({ error: "Failed to fetch event names" }, { status: 500 });
       }
       

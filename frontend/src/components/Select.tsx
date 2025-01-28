@@ -28,7 +28,6 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   options,
   placeholder,
   onChange,
-  beforeIcon,
   className,
   version = "primary",
   shadow = true,
@@ -126,7 +125,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     
   };
 
-  const DropdownIndicator = (props: any) => (
+  const DropdownIndicator = (props) => (
     <components.DropdownIndicator {...props}>
       <SelectIcon />
     </components.DropdownIndicator>

@@ -2,7 +2,6 @@
 import  { useState, useRef } from "react";
 import Button from "./Button";
 import toast from "react-hot-toast";
-import CommentComp from "./CommentComponent";
 import Comment from "@/types/comment";
 interface CommentFormProps {
   id: string;

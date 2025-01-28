@@ -2,10 +2,8 @@
 
 import GradientBg from "@/components/GradientBg";
 import TextInput from "@/components/TextInput";
-import Select from "@/components/Select";
 import Button from "@/components/Button";
 import toast, { Toaster } from 'react-hot-toast';
-import Category from "@/types/category";
 
 import { useState, useEffect } from 'react';
 import UploadFileComponent from "./UploadFileComponent";
@@ -110,7 +108,7 @@ export default function CreateImagesPage(){
         .then(data => {
             setEvents(data.map((event:Event)=>{return {id:event.id, label:event.title}}));
         })
-        .catch(err => {
+        .catch(() => {
             toast.error("Failed to fetch events");
         });
     }, []);

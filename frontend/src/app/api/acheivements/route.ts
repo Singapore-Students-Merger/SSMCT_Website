@@ -85,31 +85,31 @@ export async function getAllCtfs() {
       }
     }
   );
-  const formattedData = data.map((row) => {
+  const formattedData: AchievementDetails[] = data.map((row) => {
     const participantingMembers: {
       [discordId: string]: {
-        name?: string,
+        name: string,
         realName?: string,
       }
     } = {}
     for (const member of row.members) {
       if (!member.user.discordId) continue;
       participantingMembers[member.user.discordId] = {
-        name: member.user.name ?? undefined,
+        name: member.user.name ?? "",
         realName: member.user.realName ?? undefined,
       };
     }
     for (const member of row.event.roles[0]?.linkedDiscordRole?.userDiscordRoles ?? []) {
       if (!member.discordUser.id) continue;
       participantingMembers[member.discordUser.id] = {
-        name: member.discordUser.username ?? undefined,
+        name: member.discordUser.username,
         realName: member.discordUser.user?.realName ?? undefined,
       };
     }
     for (const member of row.event.roles[0]?.userRoles ?? []) {
       if (!member.user.discordId) continue;
       participantingMembers[member.user.discordId] = {
-        name: member.user.name ?? undefined,
+        name: member.user.name ?? "",
         realName: member.user.realName ?? undefined,
       };
     }
@@ -117,11 +117,11 @@ export async function getAllCtfs() {
       link: row.link,
       logo: row.logo,
       points: row.points,
-      placing: row.placing,
+      placing: row.placing?.toString() ?? "",
       ctfId: row.ctfId,
       title: row.event.title,
       description: row.event.description,
-      participants: Object.values(participantingMembers),
+      members: Object.values(participantingMembers),
       date: row.event.date,
     }
   })
@@ -166,7 +166,8 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(achievementDetails);
   }
   catch (error) {
-    console.error(error.message);
+    if (error instanceof Error)
+      console.error(error.message);
     return NextResponse.json({ error: "Failed to fetch event names" }, { status: 500 });
   }
 
