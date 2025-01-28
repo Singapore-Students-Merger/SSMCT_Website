@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Card } from "@/components/Card";
 import { WriteupSummary } from "@/types/writeups";
 import { useMemo } from "react";
+import { FilterOptionType, SortOptionType } from "@/components/SearchTools";
 
 const difficulty = [
     {label:"Easy", id: "Easy"},
@@ -21,10 +22,10 @@ const sortOptions = [
 ]
 
 interface Filter {
-    topics: {label: string, id: string}[];
-    categories: {label: string, id: string}[];
-    difficulty: {label: string, id: string}[];
-    sort: {label: string, value: string};
+    topics: FilterOptionType[];
+    categories: FilterOptionType[];
+    difficulty: FilterOptionType[];
+    sort: SortOptionType;
 }
 interface WriteupsPageProps {
     data: WriteupSummary[];
@@ -81,17 +82,17 @@ export default function WriteupsPage({data, categories, topics}: WriteupsPagePro
         });
     }, [filteredData, filters.sort]);
 
-    const sortHandler = (option) => {
+    const sortHandler = (option : SortOptionType) => {
         setFilters((old) => ({...old, sort: option}));
     }
-    const topicHandler = (options) => {
+    const topicHandler = (options : FilterOptionType[]) => {
         setFilters((old) => ({...old, topics: options}));
     }
-    const categoryHandler = (options) => {
+    const categoryHandler = (options: FilterOptionType[]) => {
 
         setFilters((old) => ({...old, categories: options}));
     }
-    const difficultyHandler = (options) => {
+    const difficultyHandler = (options: FilterOptionType[]) => {
         setFilters((old) => ({...old, difficulty: options}));
     }
     return (

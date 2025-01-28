@@ -4,10 +4,19 @@ import type {
   NextApiResponse,
 } from "next"
 import type { NextAuthOptions } from "next-auth"
-import { getServerSession } from "next-auth"
+import { getServerSession, type DefaultSession } from "next-auth"
 import DiscordProvider from "next-auth/providers/discord";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/lib/prisma";
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+      discordId?: string;
+    } & DefaultSession["user"];
+  }
+}
+
 // You'll need to import and pass this
 // to `NextAuth` in `app/api/auth/[...nextauth]/route.ts`
 const userIsInSSM = async (access_token: string) => {
@@ -25,8 +34,12 @@ const userIsInSSM = async (access_token: string) => {
       console.error("Failed to fetch user's Discord guilds");
       throw new Error("Failed to fetch user's Discord guilds");
     }
-    const guilds = await response.json();
-    const isInGuild = guilds.some((guild) => guild.id === guildId);
+    interface Guild {
+      id: string;
+    }
+
+    const guilds: Guild[] = await response.json();
+    const isInGuild: boolean = guilds.some((guild: Guild) => guild.id === guildId);
     if (!isInGuild) {
       console.error("User is not in the required Discord guild");
       return false
@@ -94,7 +107,7 @@ export const config = {
     async session({ session, user }) {
       if (session?.user) {
         session.user.id = user.id;
-        session.user.discordId = user.discordId; // Include Discord ID in the session
+        // session.user.discordId = user.discordId; // Include Discord ID in the session
       }
       return session;
     },

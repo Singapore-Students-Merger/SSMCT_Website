@@ -2,7 +2,7 @@ import Image from "next/image"
 interface SpecialMembersCardProps {
     member: {
         image?: string;
-        title: string;
+        title?: string;
         realName: string;
         username: string;
     }

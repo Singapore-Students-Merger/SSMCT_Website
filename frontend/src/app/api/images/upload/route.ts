@@ -58,7 +58,8 @@ export const POST = async (req: NextRequest) => {
         userId = session.user?.id;
     }
     catch (error) {
-        console.error(error.message)
+        if (error instanceof Error)
+            console.error(error.message)
         return NextResponse.json({ status: "error", message: "Error Validating User" });
     }
     try {

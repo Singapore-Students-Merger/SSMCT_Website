@@ -31,7 +31,7 @@ export default async function getWriteups(): Promise<WriteupSummary[]> {
   });
   return writeups.map((writeup) => {
     return {
-      author: writeup.user.name,
+      author: writeup.user.name ?? "Anonymous",
       id: writeup.id,
       title: writeup.title,
       description: writeup.description,

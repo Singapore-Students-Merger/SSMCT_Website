@@ -1,5 +1,5 @@
 "use client"
-import  { useState, useRef,useEffect } from "react";
+import React, { useState, useRef,useEffect } from "react";
 import { GalleryItem, Info } from "./Gallery";
 interface CarouselProps {
   data: Info[];
@@ -13,13 +13,16 @@ interface CarouselItemProps {
     setSelectedImage: React.Dispatch<React.SetStateAction<Info | null>>;
 }
 
-const CarouselItem: React.FC<CarouselItemProps> = ({ info, ref, disableClick,setSelectedImage }) => {
 
+const CarouselItem = React.forwardRef<HTMLDivElement, CarouselItemProps>(({ info, disableClick, setSelectedImage }, ref) => {
     return (
-        <GalleryItem setSelectedImage = {setSelectedImage}
-        info={info} ref = {ref} className="perspective w-[20rem] max-w-[90vw] md:w-[35rem] shrink-0" disableClick= {disableClick}/>
+        <GalleryItem setSelectedImage={setSelectedImage}
+              //  @ts-expect-error TO FIX IN FUTURE
+            info={info} ref={ref} className="perspective w-[20rem] max-w-[90vw] md:w-[35rem] shrink-0" disableClick={disableClick} />
     )
-}
+});
+CarouselItem.displayName = 'CarouselItem';
+
 const Carousel = ({ data, setSelectedImage }: CarouselProps) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const carouselRef = useRef<HTMLDivElement | null>(null);
@@ -161,10 +164,13 @@ const Carousel = ({ data, setSelectedImage }: CarouselProps) => {
             ref = {carouselRef}>
             <div className="w-[20rem] max-w-[90vw] md:w-[30rem] shrink-0"></div>
         {data.map((info, idx) => (
-            <CarouselItem key={idx} info={info} 
-            ref={(el) => (itemRefs.current[idx] = el)}
-            disableClick = {disableClick}
-            setSelectedImage = {setSelectedImage}
+            <CarouselItem
+              key={idx}
+              info={info}
+              //  @ts-expect-error TO FIX IN FUTURE
+              ref={(el) => (itemRefs.current[idx] = el)}
+              disableClick={disableClick}
+              setSelectedImage={setSelectedImage}
             />
         ))}
                     <div className="w-[20rem]  md:w-[30rem] max-w-[90vw] shrink-0"></div>

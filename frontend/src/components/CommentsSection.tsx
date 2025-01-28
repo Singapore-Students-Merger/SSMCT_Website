@@ -10,7 +10,7 @@ interface CommentsSectionProps {
     id: string;
     type: "blogs"| "writeups";
     loggedIn:boolean
-    commentError: boolean;
+    commentsError: boolean;
 }
 
 export default function CommentsSection({ comments,id,type,loggedIn,commentsError } : CommentsSectionProps) {

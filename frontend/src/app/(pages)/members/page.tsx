@@ -4,6 +4,7 @@ import SpecialMembersCard from "./SpecialMemberCard";
 import MemberCard from "./MemberCard";
 import { twMerge } from "tailwind-merge";
 import { getCachedMembers } from "@/utils/getMembers";
+
 const admins: Members[] = [
     {
         title: "Twin No 1",

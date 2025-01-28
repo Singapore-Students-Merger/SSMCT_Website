@@ -7,7 +7,8 @@ export async function GET() {
         const data = await getGalleryData();
         return NextResponse.json(data);
     } catch (error) {
-        console.error(error.message);
+        if (error instanceof Error)
+            console.error(error.message);
         return NextResponse.json({ message: "Error fetching data" }, { status: 500 });
     }
 }

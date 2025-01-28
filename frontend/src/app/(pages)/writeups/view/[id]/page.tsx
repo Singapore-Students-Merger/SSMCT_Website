@@ -117,7 +117,7 @@ export default async function WriteupView({ params }: { params: Promise<{id:stri
                         dangerouslySetInnerHTML={{ __html: content.toString() }}>
                     </div>
                 </div>
-                <CommentsSection commentError = {commentError} comments = {comments} id={id} type="writeups" loggedIn={loggedIn} />
+                <CommentsSection commentsError = {commentError} comments = {comments} id={id} type="writeups" loggedIn={loggedIn} />
             </div>
             <Toaster />
         </>

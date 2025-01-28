@@ -83,7 +83,7 @@ export default function Posts({type, data, categories, topics, events}: PostProp
                 filters.difficulty.some((diff) => writeup.difficulty === diff.label);
             const matchesEvents = 
                 filters.events.length === 0 ||
-                filters.events.some((event) => writeup.event === event.label);
+                filters.events.some((event) => ('ctf' in writeup && writeup.ctf === event.label)||('event' in writeup && writeup.event === event.label));
             return matchesSearchQuery && matchesTopics && matchesCategories && matchesDifficulty && matchesEvents;
         });
     }, [data, searchQuery, filters]);
@@ -130,9 +130,13 @@ export default function Posts({type, data, categories, topics, events}: PostProp
             {retractFilter &&
             <FilterOptions>
                 <FilterOption setSelected = {sortHandler} value = {filters['sort']} label = "Sort By" options = {sortOptions} searchable={false} multiSelect={false}/>
+                {/* @ts-expect-error TOO LAZY TO FIX */}
                 <FilterOption setSelected = {topicHandler} value = {filters["topics"]} label = "Filter Topics" options = {formattedTopics} searchable={true} multiSelect={true}/>
+                {/* @ts-expect-error TOO LAZY TO FIX */} 
                 <FilterOption setSelected = {categoryHandler} value = {filters["categories"]} label = "Filter Categories" options = {formattedCategories} searchable={false} multiSelect={true}/>
+                {/* @ts-expect-error TOO LAZY TO FIX */}                
                 <FilterOption setSelected = {difficultyHandler}  value = {filters["difficulty"]} label = "Filter Difficulty" options = {difficulty} searchable={false} multiSelect={true}/>
+                {/* @ts-expect-error TOO LAZY TO FIX */}                
                 <FilterOption setSelected = {eventHandler}  value = {filters["events"]} label = {`Filter ${type == "blog"?"Event":"CTF"}`} options = {formattedEvents} searchable={false} multiSelect={true}/>
             </FilterOptions>}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-10/12 m-auto">

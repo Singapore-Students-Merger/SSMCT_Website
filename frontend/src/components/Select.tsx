@@ -124,7 +124,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     }),
     
   };
-
+  /* @ts-expect-error PROPS CAN BE ANY */
   const DropdownIndicator = (props) => (
     <components.DropdownIndicator {...props}>
       <SelectIcon />

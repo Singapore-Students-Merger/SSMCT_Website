@@ -11,7 +11,7 @@ interface SearchableSelectProps {
 
 interface Option {
     label: string;
-    id: number | string;
+    id: number | string | null;
 }
 
 const OptionComponent: React.FC<{ option: Option, setOption: (value: string) => void }> = ({ option, setOption }) => {

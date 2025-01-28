@@ -48,7 +48,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
         month: "long",
         day: "numeric",
       }),
-      ctf: data.events?.title,
+      ctf: data.events?.title??"",
     };
 
     return NextResponse.json({ data: writeupDetails });

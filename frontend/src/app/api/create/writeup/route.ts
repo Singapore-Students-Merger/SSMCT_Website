@@ -7,25 +7,19 @@ import { auth } from "@/auth"
 import { redirect } from 'next/navigation'
 
 
-// export const config = {
-//     api: {
-//         bodyParser: false, // Disable body parsing so that formidable can handle it
-//     },
-// };
-
 export const POST = async (req: NextRequest) => {
     try {
         // console.log(req);
         const formData = await req.formData();
 
         const writeupThumbnail = formData.get('WriteupThumbnail')
-        const writeupFile = formData.get('WriteupFile')
+        const writeupFile = formData.get('WriteupFile') as File | null;
         if (!writeupThumbnail || !writeupFile) {
             return NextResponse.json({ error: "Not all files received." }, { status: 400 });
         }
 
-        const buffer = Buffer.from(await writeupThumbnail.arrayBuffer());
-        let filename = writeupThumbnail.name.replaceAll(" ", "_");
+        const buffer = Buffer.from(await (writeupThumbnail as File).arrayBuffer());
+        let filename = (writeupThumbnail as File).name.replaceAll(" ", "_");
         path.normalize(filename).replace(/^(\.\.(\/|\\|$))+/, ''); //filter
         let name = filename.substring(0, filename.lastIndexOf('.'))
         if (!(['.jpg', '.jpeg', '.png', '.webp', '.svg'].includes(path.extname(filename)))) {
@@ -63,8 +57,13 @@ export const POST = async (req: NextRequest) => {
         const Difficulty = formData.get('Difficulty')
         const Link = formData.get('Link')
         const Category = formData.get('Category')
-        const Topics = JSON.parse(formData.get('Topics'))
-        const CTF = JSON.parse(formData.get('CTF'))
+        const Topics = formData.get('Topics');
+        const CTF = formData.get('CTF');
+        if (!Topics || !CTF) {
+            return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
+        }
+        const parsedTopics = JSON.parse(Topics as string);
+        const parsedCTF = JSON.parse(CTF as string);
         const Description = formData.get('Description')
         // const WriteupThumbnail = formData.get('WriteupThumbnail')
         // const WriteupFile = formData.get('WriteupFile')
@@ -78,13 +77,13 @@ export const POST = async (req: NextRequest) => {
         const categories = await prisma.categories.findMany();
         const categoryId = categories.find(cat => cat.name === Category);
 
-        let eventId = CTF.id
+        let eventId = parsedCTF.id
 
-        if (!CTF.id) {
+        if (!parsedCTF.id) {
             const event = await prisma.events.create({
                 data: {
                     userId: userId,
-                    title: CTF.title,
+                    title: parsedCTF.title,
                     isCompetition: true,
                 },
             });
@@ -99,10 +98,10 @@ export const POST = async (req: NextRequest) => {
         // Create a record in the database
         const id = await prisma.writeups.create({
             data: {
-                title: Title,
-                difficulty: Difficulty,
-                contentFile: Link,
-                description: Description,
+                title: Title as string,
+                difficulty: Difficulty as string,
+                contentFile: Link as string,
+                description: Description as string,
                 categoryId: categoryId ? categoryId.id : null,
                 eventId: eventId.id,
                 source: path.join("/uploads/writeups/writeup/" + filename2),
@@ -115,9 +114,8 @@ export const POST = async (req: NextRequest) => {
         });
 
         //create a record for topics in database
-        console.log('Topics', Topics);
 
-        for (const topicId of Topics) {
+        for (const topicId of parsedTopics) {
             if (topicId)
                 // console.log(topic); // This will log each topic in the array
                 await prisma.writeupstopics.create({
@@ -133,7 +131,8 @@ export const POST = async (req: NextRequest) => {
         console.log('Success');
         return NextResponse.json({ status: "success" });
     } catch (error) {
-        console.error(error.message)
+        if (error instanceof Error)
+            console.error(error.message)
         return NextResponse.json({ status: "error", message: "Internal Server Error" });
     }
 }

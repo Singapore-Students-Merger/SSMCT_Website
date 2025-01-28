@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import Comment from '@/types/Comment'
+import Comment from '@/types/comment'
 export default function CommentComp({ comment } : { comment: Comment }) {
     const date = new Date(comment.date)
     const formattedDate = date.toLocaleDateString('en-US', {

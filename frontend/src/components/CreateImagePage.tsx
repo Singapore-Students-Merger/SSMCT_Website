@@ -10,11 +10,11 @@ import UploadFileComponent from "./UploadFileComponent";
 import SearchableSelect  from "@/components/SearchableSelect";
 import DateInput from "./DateInput";
 interface Option {
-    id: number;
     label: string;
+    id: number | string | null;
 }
 interface Event {
-    id: number | null;
+    id: string | number | null;
     title: string;
 }
 interface FormDataProps {
@@ -48,7 +48,7 @@ export default function CreateImagesPage(){
     const uploadThumbnailHandler = (file: null|File) => {
         setFormData((old)=>{return {...old,image:file}}); 
     };
-    const eventChangeHandler = (selectedOption: {label:string, id: number|null}) => {
+    const eventChangeHandler = (selectedOption: Option) => {
         if (selectedOption) {
             setFormData((old)=>{return {
                 ...old,
