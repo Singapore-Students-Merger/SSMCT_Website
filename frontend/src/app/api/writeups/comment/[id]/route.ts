@@ -7,10 +7,10 @@ const commentSchema = z.object({
     content: z.string().min(1, "Comment cannot be empty").max(500, "Comment is too long"),
 });
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
-        params = await params;
-        const id = parseInt(params.id);
+        const newParams = await params;
+        const id = parseInt(newParams.id);
 
         if (isNaN(id)) {
             return NextResponse.json(
@@ -38,10 +38,10 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
 
 
 
-export async function POST(req: Request, { params }: { params: { id: string } }) {
+export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
-        params = await params;
-        const id = parseInt(params.id);
+        const newParams = await params;
+        const id = parseInt(newParams.id);
         const session = await auth();
 
         if (!session) {

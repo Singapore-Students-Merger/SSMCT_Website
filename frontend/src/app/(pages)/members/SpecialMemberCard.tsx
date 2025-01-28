@@ -1,5 +1,13 @@
 import Image from "next/image"
-export default function SpecialMembersCard({member}) {
+interface SpecialMembersCardProps {
+    member: {
+        image?: string;
+        title: string;
+        realName: string;
+        username: string;
+    }
+}
+export default function SpecialMembersCard({member}: SpecialMembersCardProps){
     const imageEle = member.image? (
         <div className='w-10/12 mx-auto mb-4 overflow-clip relative bg-[#284250]/50 rounded-full aspect-square'>
             <div className='absolute inset-0 bg-gradient-to-b from-[#0F1B26] to-50% to-[#0F1B2600] rounded-full'>

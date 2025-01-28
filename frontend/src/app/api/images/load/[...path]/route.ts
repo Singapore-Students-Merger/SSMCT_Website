@@ -5,10 +5,10 @@ import { join } from "path";
 
 const baseDir = join(process.cwd(), "uploads/gallery/");
 
-export async function GET(req: Request, { params }: { params: { path: string[] } }) {
-    params = await params;
+export async function GET(req: Request, { params }: { params: Promise<{ path: string[] }> }) {
+    const newParams = await params;
     console.log(baseDir);
-    const sanitizedPath = sanitizeFilePath(baseDir, join(...params.path), ["jpg", "jpeg", "png", "gif", "webp"]);
+    const sanitizedPath = sanitizeFilePath(baseDir, join(...newParams.path), ["jpg", "jpeg", "png", "gif", "webp"]);
     try {
         const file = await fs.readFile(sanitizedPath);
         const ext = sanitizedPath.split(".").pop();

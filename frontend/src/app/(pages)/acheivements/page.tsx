@@ -1,6 +1,6 @@
 import Hero from "../../../components/Hero";
 import AchievementCard from "../../../components/AchievementCard";
-import { getAllCtfs } from "@/app/api/acheivements/route";
+import { getAllCtfs } from "@/utils/getAllCtfs";
 
 export default async function AchievementsPage() {
   const achievements = await getAllCtfs();

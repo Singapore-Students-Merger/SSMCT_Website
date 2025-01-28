@@ -1,15 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import prisma from "@/lib/prisma";
+import getEvents from '@/utils/getEvents';
 
-export async function getEvents() {
-  const events = await prisma.events.findMany({
-    select: {
-      id: true,
-      title: true,
-    },
-  });
-  return events
-}
 export async function GET(req: NextRequest) {
       const { searchParams } = new URL(req.url);
       const fields = searchParams.get("fields");

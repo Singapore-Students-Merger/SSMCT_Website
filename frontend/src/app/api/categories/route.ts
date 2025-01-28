@@ -1,13 +1,8 @@
 import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
-import Category from "@/types/category";
-
-export async function getCategories(){
-  return await prisma.categories.findMany()
-}
+import getCategories from "@/utils/getCategories";
 export async function GET() {
   try{
-    const categories: Category[] = await getCategories();
+    const categories = await getCategories();
     return NextResponse.json(categories);
   }
   catch(e){

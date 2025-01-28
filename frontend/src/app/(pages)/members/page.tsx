@@ -3,7 +3,7 @@ import { Members } from "@/types/members";
 import SpecialMembersCard from "./SpecialMemberCard";
 import MemberCard from "./MemberCard";
 import { twMerge } from "tailwind-merge";
-import { getCachedMembers } from "@/app/api/members/route";
+import { getCachedMembers } from "@/utils/getMembers";
 const admins: Members[] = [
     {
         title: "Twin No 1",
