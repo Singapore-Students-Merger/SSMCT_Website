@@ -1,0 +1,15 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/ylrdxapi/ssmct.org
+    - /bin/mkdir -p $DEPLOYPATH/uploads/blogs
+    - /bin/mkdir -p $DEPLOYPATH/uploads/writeups
+    - /bin/cp frontend/server.js $DEPLOYPATH
+    - /bin/cp frontend/package.json $DEPLOYPATH
+    - /bin/cp frontend/package-lock.json $DEPLOYPATH
+    - /bin/cp frontend/next.config.ts $DEPLOYPATH
+    - /bin/cp frontend/postcss.config.mjs $DEPLOYPATH
+    - /bin/cp frontend/tailwind.config.ts $DEPLOYPATH
+    - /bin/cp -R frontend/.next $DEPLOYPATH
+    - /bin/cp -R frontend/prisma $DEPLOYPATH
+    - /bin/cp -R frontend/public $DEPLOYPATH
