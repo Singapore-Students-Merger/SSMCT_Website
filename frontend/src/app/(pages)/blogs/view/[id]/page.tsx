@@ -41,7 +41,7 @@ export default async function BlogView({ params }: { params: Promise<{ id: strin
         if (!fullPath) {
             throw new Error("Invalid file path");
         }
-        const markdownPath = path.join(process.cwd(), 'uploads/blogs', blogDetails.contentFile);
+        const markdownPath = path.join(process.cwd(), 'uploads/blogs/blog', blogDetails.contentFile);
         const markdownContent = fs.readFileSync(markdownPath, "utf-8").toString();
         content = await processMarkdown(markdownContent);
         estimatedReadTime = Math.ceil(content.split(' ').length / 200);

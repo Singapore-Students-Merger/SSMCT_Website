@@ -11,7 +11,8 @@ export default async function WriteupsPageServer() {
   data = data.map((writeup) => {
     if (!writeup.thumbnail) {
       const category = categories.find((category) => category.name === writeup.category);
-      writeup.thumbnail = `/assets/${category?.thumbnail ?? ""}`;
+      writeup.thumbnail = `/writeups/images/${category?.thumbnail ?? ""}`;
+      console.log(writeup.thumbnail);
     }
     return writeup;
   }

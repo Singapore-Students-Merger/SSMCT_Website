@@ -14,7 +14,7 @@ export default function sanitizeFilePath(
 
   // Create a regex to match allowed extensions
   const extensionPattern = extensions.join('|');
-  const regex = new RegExp(`^[a-zA-Z0-9_\\-]+\\.(${extensionPattern})$`);
+const regex = new RegExp(`^[^/\\\\:*?"<>|]+\\.(${extensionPattern})$`);
   // Validate filename
   if (!regex.test(filename)) {
     throw new Error(`Invalid filename. Allowed extensions: ${extensions.join(", ")}`);

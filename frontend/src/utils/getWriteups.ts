@@ -3,6 +3,7 @@ import { WriteupSummary } from "@/types/writeups";
 export default async function getWriteups(): Promise<WriteupSummary[]> {
   const writeups = await prisma.writeups.findMany({
     select:{
+      thumbnail: true,
       id: true,
       title: true,
       description: true,
@@ -43,6 +44,7 @@ export default async function getWriteups(): Promise<WriteupSummary[]> {
         month: "long",
         day: "numeric",
       }),
+      thumbnail: writeup.thumbnail?`/api/writeups/images/${writeup.thumbnail}`:undefined,
     }
   });
 }
