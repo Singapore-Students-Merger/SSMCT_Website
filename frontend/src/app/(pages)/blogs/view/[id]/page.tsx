@@ -9,6 +9,8 @@ import { BlogDetails } from "@/types/blogs";
 import {auth} from "@/auth";
 import CommentsSection from "@/components/CommentsSection";
 
+export const dynamic = "force-dynamic"
+
 export default async function BlogView({ params }: { params: Promise<{ id: string }> }) {
     const loggedIn = await auth()?true:false;
     const newParams = await params;

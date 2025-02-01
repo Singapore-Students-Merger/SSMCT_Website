@@ -2,6 +2,7 @@ import Hero from "../../../components/Hero";
 import AchievementCard from "../../../components/AchievementCard";
 import { getAllCtfs } from "@/utils/getAllCtfs";
 
+export const dynamic = "force-dynamic"
 export default async function AchievementsPage() {
   const achievements = await getAllCtfs();
 

@@ -7,5 +7,5 @@ const GalleryPageServer = async () => {
 
   return <GalleryPage data={data} />;
 };
-
+export const revalidate = 3600;
 export default GalleryPageServer;

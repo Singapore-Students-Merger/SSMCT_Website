@@ -2,7 +2,10 @@ import { auth } from "@/auth"
 import { redirect } from 'next/navigation'
 import UserForm from "@/components/UserForm";
 import Category from '@/types/category';
-export default async function Login() {
+
+export const dynamic = "force-dynamic"
+
+export default async function NewUser() {
     const session = await auth();
     if (!session) {
         redirect("/auth/signin");

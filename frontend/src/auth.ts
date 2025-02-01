@@ -84,7 +84,7 @@ export const config = {
       }
       if (account.provider === "discord") {
         console.log(account)
-        const discordId = account.providerAccountId;
+        // const discordId = account.providerAccountId;
         if (!account.access_token) {
           return false;
         }
@@ -92,12 +92,12 @@ export const config = {
         if (!fromSSM) {
           throw new Error("User is not in the required Discord guild");
         }
-        await prisma.user.update({
-          where: { id: user.id },
-          data: {
-            discordId,
-          },
-        });
+        // await prisma.user.update({
+        //   where: { id: user.id },
+        //   data: {
+        //     discordId,
+        //   },
+        // });
         
 
       }

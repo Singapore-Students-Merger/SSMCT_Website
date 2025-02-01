@@ -17,6 +17,13 @@ const admins: Members[] = [
       title: "Admin",
       username: "P3RPL3X",
       realName: "Ravin Nagpal",
+      image: "/member/ravin.png",
+      roles: ["admin"],
+    },
+    {
+      title: "Admin",
+      username: "Dakshthapar",
+      realName: "Dakshthapar",
       image: "/member/david.png",
       roles: ["admin"],
     },
@@ -24,28 +31,21 @@ const admins: Members[] = [
         title: "Founder of SSMCT",
         username: "gatari",
         realName: "gatari",
-        image: "/member/david.png",
+        image: "/member/gatari.png",
         roles: ["admin"],
     },
     {
       title: "Founder of SSMCT",
       username: "bo wen",
       realName: "bo wen",
-      image: "/member/david.png",
+      image: "/member/bowen.png",
       roles: ["admin"],
   },
-  {
-    title: "Founder of SSMCT",
-    username: "_blueplume",
-    realName: "_blueplume",
-    image: "/member/david.png",
-    roles: ["admin"],
-},
 {
-  title: "Founder of SSMCT",
-  username: "annie110100",
-  realName: "annie110100",
-  image: "/member/david.png",
+  title: "yay!",
+  username: "yanganyi",
+  realName: "Yang An Yi",
+  image: "/member/annie.png",
   roles: ["admin"],
 },
 {
@@ -92,6 +92,7 @@ const webDevs: Members[] = [
     roles: ["Web Developer"],
   },
 ]
+export const revalidate = 3600;
 
 export default async function MembersPage() {
   const members = await getCachedMembers(); 
@@ -121,7 +122,7 @@ export default async function MembersPage() {
       </section>
       <section className="px-2 lg:px-32 w-full box-border my-12">
         <h2 className="text-white text-5xl font-bold text-center lg:text-left">Our Members</h2>
-        <div className={twMerge(gridStyle,"lg:gap-x-10 gap-x-4")}>
+        <div className={twMerge(gridStyle,"lg:gap-x-10 gap-x-4 grid-cols-1 md:grid-cols-2")}>
         {members.map((member, idx) => (
             <MemberCard key={member.username} member={member} idx = {idx}/>
         ))}

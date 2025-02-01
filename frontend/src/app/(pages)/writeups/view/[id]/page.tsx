@@ -11,6 +11,8 @@ import { Toaster } from 'react-hot-toast';
 import { auth } from "@/auth";
 import { ArticleJsonLd } from "next-seo";
 import { cache } from 'react';
+
+export const dynamic = "force-dynamic"
 const fetchWriteupFromDatabase = cache(async (id: string) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/writeups/view/${id}`);
     console.log("Fetching writeup from database");

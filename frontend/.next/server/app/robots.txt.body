@@ -1,0 +1,8 @@
+User-Agent: *
+Allow: /
+Disallow: /create
+Disallow: /api
+
+Sitemap: https://ssmct.org/sitemap.xml
+Sitemap: https://ssmct.org/blogs/sitemap.xml
+Sitemap: https://ssmct.org/writeups/sitemap.xml

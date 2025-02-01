@@ -1,6 +1,10 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import crypto from "crypto";
+
+
+
 interface TeamData{
     team_id: number;
     points: string;
@@ -24,8 +28,36 @@ async function getEventInformation(ctfId: string) {
     const event = await data.json();
     return event;
 }
+
+
+function validateKey(key: string): boolean {
+    if (!key) return false;
+
+    // Hash the provided key
+    const hash = crypto.createHash("sha256").update(key).digest("hex");
+
+    // Retrieve stored hashed secret from environment variables
+    const storedHash = process.env.UPDATE_KEY;
+
+    if (!storedHash) {
+        throw new Error("Server misconfiguration: UPDATE_KEY not set");
+    }
+
+    // Compare and return result
+    return hash === storedHash;
+}
+
+
 export async function POST(req: Request, { params }: { params: Promise<{ year: string }> }) {
+    // get secret key in request
+    
     try{
+        const body = await req.json()
+        const key = body.KEY
+        if (!validateKey(key)){
+            return NextResponse.json({error:"Secret key not set"},{status:500})
+        }
+
         const newParams = await params;
         const year = parseInt(newParams.year);
         const session = await auth();
