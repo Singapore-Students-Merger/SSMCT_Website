@@ -57,7 +57,7 @@ export default async function WriteupView({ params }: { params: Promise<{id:stri
         return <div>An error occurred while reading the markdown file.</div>;
     }
 
-    const basePath = path.resolve(process.cwd(), 'uploads/writeups');
+    const basePath = path.resolve(process.cwd(), 'uploads/writeups/writeup');
     const filename = writeupDetails.contentFile;
     let content, estimatedReadTime;
 
