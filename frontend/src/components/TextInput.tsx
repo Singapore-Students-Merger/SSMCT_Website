@@ -16,6 +16,8 @@ interface TextInputProps {
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
     onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
+    disabled?: boolean;
+    onClick?: () => void;
 }
 // Button component
 // This component is a button that can have an icon before and after the text.
@@ -35,7 +37,9 @@ const TextInput: React.FC<TextInputProps> = ({
     required = false,
     onChange,
     onBlur,
-    onFocus
+    onFocus,
+    disabled = false,
+    onClick
 }) => {
     const baseClass = `
         text-primary
@@ -62,10 +66,11 @@ const TextInput: React.FC<TextInputProps> = ({
     
     const borderClass = 'border-2 border-secondary-tier2';
     return (
-        <div className='flex flex-col gap-2'>
+        <div className='flex flex-col gap-2' onClick = {onClick}>
         <div className={twMerge(baseClass, versionClass,borderClass, className)}>
             {beforeIcon && <span className="mr-2">{beforeIcon}</span>}
             <input
+                disabled={disabled}
                 className='bg-transparent w-full placeholder:text-primary placeholder:font-normal'
                 onInput={onInput}
                 onChange={onChange}

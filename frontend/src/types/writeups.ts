@@ -5,9 +5,9 @@ type BlogDetails = {
     author: string;
     contentFile: string;
     topics: string[];
-    categories: string[];
+    category: string;
     difficulty: "Easy" | "Medium" | "Hard";
-    date: Date;
+    date: string;
     ctf?: string;
     source?: string;
     thumbnail?: string;

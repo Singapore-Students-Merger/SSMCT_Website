@@ -1,11 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
-import Category from "@/types/category";
-
-export async function GET(req: NextRequest) {
+import { NextResponse } from "next/server";
+import getCategories from "@/utils/getCategories";
+export async function GET() {
   try{
-    const users: Category[] = await prisma.categories.findMany();
-    return NextResponse.json(users);
+    const categories = await getCategories();
+    return NextResponse.json(categories);
   }
   catch(e){
     console.error("Failed to fetch data", e instanceof Error ? e.message : e);

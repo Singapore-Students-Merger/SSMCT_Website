@@ -1,8 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
-import Category from "@/types/category";
+import { NextResponse } from "next/server";
+import getTopics from "@/utils/getTopics";
 
-export async function GET(req: NextRequest) {
-  const users: Category[] = await prisma.topics.findMany();
-  return NextResponse.json(users);
+export async function GET() {
+  const topics = await getTopics();
+  return NextResponse.json(topics);
 }

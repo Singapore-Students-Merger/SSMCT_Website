@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import Image from 'next/image';
 
 interface UploadFileComponentProps {
@@ -44,10 +44,11 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ onFileUpload,
                         required
                     />
                     {previewUrl ? (
-                        <img
+                        <Image
                             src={previewUrl}
                             alt="Preview"
                             className="rounded-sm h-full"
+                            layout="fill"
 
                         />
                     ) : (
