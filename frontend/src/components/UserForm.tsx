@@ -74,8 +74,8 @@ export default function UserForm({ name, categories } : UserFormProps) {
                 }),
             {
                 loading: 'Updating user...',
-                success: (message) => message, // Use the resolved message
-                error: (err) => err.message || 'An error occurred', // Use the error message
+                success: (message: string) => message, // Use the resolved message
+                error: (err: Error) => err.message || 'An error occurred', // Use the error message
             }
         );
         
@@ -105,7 +105,7 @@ export default function UserForm({ name, categories } : UserFormProps) {
                     className="rounded-xl"
                     label="Main Category"
                     options={options}
-                    onChange={(e) => setMainCategoryId(e!.value)}
+                    onChange={(e) => setMainCategoryId(e!.value as string)}
                 />
             </div>
             <div>

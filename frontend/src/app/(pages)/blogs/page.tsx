@@ -1,9 +1,8 @@
-import { getCategories } from "@/app/api/categories/route";
+import getCategories from "@/utils/getCategories";
 import Posts from "@/components/Posts";
-import { getBlogs } from "@/app/api/blogs/route";
-import { getTopics } from "@/app/api/topics/route";
-import { getEvents } from "@/app/api/events/route";
-import GradientBg from "@/components/GradientBg";
+import  getBlogs  from "@/utils/getBlogs";
+import getTopics from "@/utils/getTopics";
+import getEvents from "@/utils/getEvents";
 import BlogHero from "./BlogHero";
 export default async function BlogsPageServer() {
   let data = await getBlogs();

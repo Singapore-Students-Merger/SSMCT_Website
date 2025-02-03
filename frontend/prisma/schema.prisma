@@ -239,13 +239,13 @@ model roles {
   linkedEventId Int?    // Optional link to an event
   linkedEvent events?   @relation(fields: [linkedEventId], references: [id], onDelete: SetNull)
   userRoles userroles[]  // Roles assigned to users
-  linkedDiscordRoles discordroles[] // Discord roles linked to this role
+  linkedDiscordRole discordroles? // Roles assigned to Discord users
 }
 
 model discordroles {
   id               String                @id
   title            String
-  linkedRoleId     Int?               // Optional link to a role
+  linkedRoleId     Int?               @unique// Optional link to a role
   linkedRole       roles?             @relation(fields: [linkedRoleId], references: [id], onDelete: SetNull)
   userDiscordRoles userdiscordroles[] // Roles assigned to Discord users
 }

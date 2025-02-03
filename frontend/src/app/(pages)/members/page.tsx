@@ -3,7 +3,8 @@ import { Members } from "@/types/members";
 import SpecialMembersCard from "./SpecialMemberCard";
 import MemberCard from "./MemberCard";
 import { twMerge } from "tailwind-merge";
-import { getCachedMembers } from "@/app/api/members/route";
+import { getCachedMembers } from "@/utils/getMembers";
+
 const admins: Members[] = [
     {
         title: "Twin No 1",
@@ -92,7 +93,7 @@ const webDevs: Members[] = [
   },
 ]
 
-export default async function MembersPage(props) {
+export default async function MembersPage() {
   const members = await getCachedMembers(); 
   const gridStyle = "grid grid-cols-2 lg:grid-cols-3 gap-x-12 lg:gap-x-32 px-4 lg:px-16 my-16 gap-y-8 lg:gap-y-16";
   return (

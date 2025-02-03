@@ -1,7 +1,7 @@
-import { getCategories } from "@/app/api/categories/route";
-import { getWriteups } from "@/app/api/writeups/route";
-import { getTopics } from "@/app/api/topics/route";
-import { getEvents } from "@/app/api/events/route";
+import getCategories from "@/utils/getCategories";
+import getWriteups from "@/utils/getWriteups";
+import getTopics from "@/utils/getTopics";
+import getEvents from "@/utils/getEvents";
 import Posts from "@/components/Posts";
 export default async function WriteupsPageServer() {
   let data = await getWriteups();
@@ -11,7 +11,8 @@ export default async function WriteupsPageServer() {
   data = data.map((writeup) => {
     if (!writeup.thumbnail) {
       const category = categories.find((category) => category.name === writeup.category);
-      writeup.thumbnail = `/assets/${category?.thumbnail ?? ""}`;
+      writeup.thumbnail = `/writeups/images/${category?.thumbnail ?? ""}`;
+      console.log(writeup.thumbnail);
     }
     return writeup;
   }

@@ -1,7 +1,6 @@
 import { Client, Events, GatewayIntentBits } from "discord.js"
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { connect } from "http2";
 const token = process.env.DISCORD_BOT_TOKEN
 if (!token) throw new Error("No token provided")
 const guildId = process.env.DISCORD_GUILD_ID || "";

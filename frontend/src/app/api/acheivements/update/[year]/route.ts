@@ -24,10 +24,10 @@ async function getEventInformation(ctfId: string) {
     const event = await data.json();
     return event;
 }
-export async function POST(req: Request, { params }: { params: { year: string } }) {
+export async function POST(req: Request, { params }: { params: Promise<{ year: string }> }) {
     try{
-        params = await params;
-        const year = parseInt(params.year);
+        const newParams = await params;
+        const year = parseInt(newParams.year);
         const session = await auth();
         if (process.env.CTF_TIME_API_URL === undefined || process.env.CTF_TIME_ID === undefined) {
             return NextResponse.json({ error: "CTF Time API URL or CTF ID not set" }, { status: 500 });

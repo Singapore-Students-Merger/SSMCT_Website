@@ -1,5 +1,5 @@
 "use client";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import TextInput from "./TextInput";
 import SearchIcon from "./logos/SearchIcon";
 import SelectIcon from "./logos/SelectIcon";
@@ -43,8 +43,8 @@ const MultiSelectOption : React.FC<OptionProps> = ({option, toggleOption, isSele
         ${isSelected ? "bg-[#2b4752]" : ""}
       `}
     >
-      {isSelected && <CheckIcon fill="#BAEAFF"/>}
-      {!isSelected && <AddIcon />}
+      {isSelected && <CheckIcon className = "w-4" fill="#BAEAFF"/>}
+      {!isSelected && <AddIcon className = "w-4" />}
       <span className="font-bold text-white">{option.label}</span>
     </div>
   );

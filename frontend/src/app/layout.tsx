@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GoogleAnalytics } from '@next/third-parties/google'
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Suspense } from "react";
@@ -46,6 +47,7 @@ export default function RootLayout({
         {children}
         </Suspense>
       </body>
+      <GoogleAnalytics gaId="G-LPMB2T0YR9" />
     </html>
   );
 }

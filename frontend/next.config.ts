@@ -10,6 +10,13 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'ctftime.org',
+        port: '',
+        pathname: '/media/events/**',
+        search: '',
+      },
+      {
+        protocol: 'https',
         hostname: 'cdn.discordapp.com',
         port: '',
         pathname: '/avatars/**',
