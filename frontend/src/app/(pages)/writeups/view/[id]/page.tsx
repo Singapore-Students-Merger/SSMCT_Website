@@ -31,7 +31,7 @@ export const generateMetadata = async ({ params }: { params: Promise<{id:string}
       openGraph: {
         title: post.title,
         description: post.description,
-        url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/view/writeup/${id}`,
+        url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/writeups/view/${id}`,
         
       },
       robots: 'index, follow',
@@ -66,8 +66,7 @@ export default async function WriteupView({ params }: { params: Promise<{id:stri
         if (!fullPath) {
             throw new Error("Invalid file path");
         }
-        const markdownPath = path.join(process.cwd(), 'uploads/writeups', writeupDetails.contentFile);
-        const markdownContent = fs.readFileSync(markdownPath, "utf-8").toString();
+        const markdownContent = fs.readFileSync(fullPath, "utf-8").toString();
         content = await processMarkdown(markdownContent);
         estimatedReadTime = Math.ceil(content.split(' ').length / 200);
     } catch (error: unknown) {

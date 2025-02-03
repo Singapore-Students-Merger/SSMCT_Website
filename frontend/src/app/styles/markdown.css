@@ -27,3 +27,8 @@ pre[class*="language-"] {
   margin-bottom: 1.5rem;
   border: 1px solid #444;
 }
+
+img{
+  max-width: 75%;
+  margin:auto;
+}
