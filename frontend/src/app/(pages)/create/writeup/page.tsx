@@ -1,6 +1,6 @@
-import CreateBlogPage from "@/components/CreateBlogPage";
 import { auth } from "@/auth"
 import { redirect } from 'next/navigation'
+import CreateWriteupsPage from "@/components/CreateWriteupPage";
 
 export default async function createPage() {
     const session = await auth();
@@ -8,5 +8,5 @@ export default async function createPage() {
         redirect("/auth/signin");
     }
 
-    return <CreateBlogPage/>;
+    return <CreateWriteupsPage />;
 }
