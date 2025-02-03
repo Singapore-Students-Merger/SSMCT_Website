@@ -139,7 +139,7 @@ export default function Posts({type, data, categories, topics, events}: PostProp
                 {/* @ts-expect-error TOO LAZY TO FIX */}                
                 <FilterOption setSelected = {eventHandler}  value = {filters["events"]} label = {`Filter ${type == "blog"?"Event":"CTF"}`} options = {formattedEvents} searchable={false} multiSelect={true}/>
             </FilterOptions>}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-10/12 m-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-10/12 m-auto mb-8">
                 {sortedData.map((post) => <Card info={{...post,link:`/${type == "blog"?"blogs":"writeups"}/view/${post.id}`}} key={`post_${post.id}`}/>)}
             </div>
         </GradientBg>

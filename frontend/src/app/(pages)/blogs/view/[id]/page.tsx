@@ -32,17 +32,18 @@ export default async function BlogView({ params }: { params: Promise<{ id: strin
     }
 
     const blogDetails: BlogDetails = data.data;
-    const basePath = path.resolve(process.cwd(), 'uploads/blogs');
+    const basePath = path.resolve(process.cwd(), 'uploads/blogs/blog');
     const filename = blogDetails.contentFile;
     let content, estimatedReadTime;
 
     try {
+        console.log(basePath)
+
         const fullPath = sanitizeFilePath(basePath, filename, ["md", "markdown"]);
         if (!fullPath) {
             throw new Error("Invalid file path");
         }
-        const markdownPath = path.join(process.cwd(), 'uploads/blogs/blog', blogDetails.contentFile);
-        const markdownContent = fs.readFileSync(markdownPath, "utf-8").toString();
+        const markdownContent = fs.readFileSync(fullPath, "utf-8").toString();
         content = await processMarkdown(markdownContent);
         estimatedReadTime = Math.ceil(content.split(' ').length / 200);
     } catch (error: unknown) {

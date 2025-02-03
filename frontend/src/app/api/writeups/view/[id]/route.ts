@@ -1,8 +1,8 @@
-import { WriteupDetails } from "@/types/writeups";
 import { NextResponse } from 'next/server';
 import prisma from "@/lib/prisma";
-
+import { WriteupDetails } from "@/types/writeups";
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  console.log("Ran")
   try {
     const resolvedParams = await params; // Await params
     const id = parseInt(resolvedParams.id);
