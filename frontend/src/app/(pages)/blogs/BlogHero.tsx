@@ -16,7 +16,7 @@ export default function BlogHero({featured}: BlogHeroProps) {
             <div className="relative z-0 h-full flex-grow w-full md:w-1/2 md:flex-grow-0">
                 <Image src={featured.thumbnail??""} alt={featured.title} layout="fill" objectFit="cover" className="bg-secondary-tier1 rounded-lg"/>
             </div>
-            <div className="relative z-10 flex flex-col justify-start gap-2 items-start flex-grow-0 w-full">
+            <div className="relative z-10 flex flex-col justify-start gap-2 items-start flex-grow-0 w-full lg:w-1/2">
                 <p className="mb-2 hidden md:block">{featured.type}</p>
                 <h1 className="text-5xl font-bold text-white hidden md:block">{featured.title}</h1>
                 <p className="text-lg text-white">{featured.description}</p>

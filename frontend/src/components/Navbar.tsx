@@ -4,9 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation"; 
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
+    const { data: session } = useSession();
     const pathname = usePathname(); 
     useEffect(() => {
         setIsOpen(false);
@@ -82,8 +84,21 @@ export default function Navbar() {
                         </li>
                     </div>
                     <li className="w-full">
-                        <Link href="/auth/signin" className={getLinkMenuClasses("/auth/login")}>Login</Link>
+                        <Link href="/auth/signin" className={getLinkMenuClasses("/auth/signin")}>Login</Link>
                     </li>
+                    {session && (
+                        <>
+                        <li className="w-full">
+                            <Link href="/auth/new_user" className={getLinkMenuClasses("/auth/new_user")}>Change Profile Information</Link>
+                        </li>
+                        <li className="w-full">
+                            <Link href="/create/blog" className={getLinkMenuClasses("/create/blog")}>Create Blog</Link>
+                        </li>
+                        <li className="w-full">
+                            <Link href="/create/writeup" className={getLinkMenuClasses("/create/writeup")}>Create Writeup</Link>
+                        </li>
+                        </>
+                    )}
                 </ul>
             </div>
         </nav>

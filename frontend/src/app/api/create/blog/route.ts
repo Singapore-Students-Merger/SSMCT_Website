@@ -8,7 +8,10 @@ import { redirect } from 'next/navigation'
 
 export const POST = async (req, res) => {
     try {
-        // console.log(req);
+        const session = await auth();
+        if (!session) {
+            redirect("/auth/signin");
+        }
         const formData = await req.formData();
 
         const BlogThumbnail = formData.get('BlogThumbnail')
@@ -60,10 +63,7 @@ export const POST = async (req, res) => {
         // const BlogThumbnail = formData.get('BlogThumbnail')
         // const BlogFile = formData.get('BlogFile')
         const CTF = formData.get('CTF')
-        const session = await auth();
-        if (!session) {
-            redirect("/auth/signin");
-        }
+        
         const userId = session.user!.id;
 
         // Search for categoryId
