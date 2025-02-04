@@ -186,7 +186,7 @@ const CallToAction = () => {
         {/* Call to Action Section */}
         <div className="text-center lg:text-left lg:w-1/2 pb-10">
             <p className={`text-xl lg:text-2xl mb-8 text-center ${inView?"animate-fadeIn-right":"opacity-0"}`}>
-                Whether you're just starting out or already a seasoned pro, there's a place for you here.
+                Whether you&rsquo;re just starting out or already a seasoned pro, there&apos;s a place for you here.
             </p>
             <Link href = "https://discord.gg/SWAwuFVQ6M">
               <Button version="primary" className={`text-xl w-64 ${inView?"animate-fadeIn-bottom":"opacity-0"} animate-delay-1000 m-auto`}>Join Us</Button>
