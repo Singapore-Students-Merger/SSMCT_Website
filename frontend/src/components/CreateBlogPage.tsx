@@ -23,10 +23,10 @@ interface Option {
     value: number | string | null;
 }
 
-export default function CreateWriteupsPage(){
+export default function CreateBlogsPage(){
     //Initialisation of data for the page
     const difficultyOptions = [
-        { value: '', label: 'Select Difficulty'},
+        { value: 'NA', label: 'NA'},
         { value: 'Easy', label: 'Easy' },
         { value: 'Medium', label: 'Medium' },
         { value: 'Hard', label: 'Hard' },
@@ -37,7 +37,7 @@ export default function CreateWriteupsPage(){
     const [categories, setCategories] = useState<Option[]>([]);
     const [topics, setTopics] = useState<Topic[]>([]);
     const [ctfs, setCtfs] = useState<Event[]>([]);
-    const [writeupAssets, setWriteupAssets] = useState<File[]>([]);
+    const [blogAssets, setBlogAssets] = useState<File[]>([]);
     useEffect(() => {
         async function getCategories() {
             const res = await fetch("/api/categories");
@@ -84,8 +84,8 @@ export default function CreateWriteupsPage(){
 
     
     //defining variables
-    const [writeupThumbnail, setWriteupThumbnail] = useState<File | null>(null);
-    const [writeupFile, setWriteupFile] = useState<File | null>(null);
+    const [blogThumbnail, setBlogThumbnail] = useState<File | null>(null);
+    const [blogFile, setBlogFile] = useState<File | null>(null);
     const [ctf, setCTF] = useState<Event | null>(null);
     const [selected, setSelected] = useState<number[]>([]);
     const [topicSearch, setTopicSearch] = useState<string>('');
@@ -100,19 +100,19 @@ export default function CreateWriteupsPage(){
     });
 
     useEffect(() => {
-        async function processWriteup(){
-            if (!writeupFile){
+        async function processBlog(){
+            if (!blogFile){
                 setExpectedAssets([]);
                 return
             }
-            const writeupContent = await writeupFile.text();
-            const assetNames = getAssetNames(writeupContent);
+            const blogContent = await blogFile.text();
+            const assetNames = getAssetNames(blogContent);
 
             setExpectedAssets(assetNames);
         }
-        processWriteup();
+        processBlog();
         
-    }, [writeupFile])
+    }, [blogFile])
 
 
     const onTopicSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -121,13 +121,13 @@ export default function CreateWriteupsPage(){
     //making it appear
     const uploadThumbnailHandler = (file: null|File) => {
         if (file) {
-            setWriteupThumbnail(file); // Store file separately
+            setBlogThumbnail(file); // Store file separately
         }
     };
     
-    const uploadWriteupHandler = (file:null|File) => {
+    const uploadBlogHandler = (file:null|File) => {
         if (file) {
-            setWriteupFile(file); // Store file separately
+            setBlogFile(file); // Store file separately
         }
     };
     const eventChangeHandler = (selectedOption: {label:string, id: number|null}) => {
@@ -220,11 +220,11 @@ export default function CreateWriteupsPage(){
             formDataToSubmit.append("Topics", JSON.stringify(formData.Topics));
             formDataToSubmit.append("CTF", JSON.stringify(ctf));
             formDataToSubmit.append("Description", formData.Description);
-            writeupAssets.forEach((file) => formDataToSubmit.append("assets", file));
-            if (writeupThumbnail) formDataToSubmit.append('WriteupThumbnail', writeupThumbnail);
-            if (writeupFile) formDataToSubmit.append('WriteupFile', writeupFile);
+            blogAssets.forEach((file) => formDataToSubmit.append("assets", file));
+            if (blogThumbnail) formDataToSubmit.append('BlogThumbnail', blogThumbnail);
+            if (blogFile) formDataToSubmit.append('BlogFile', blogFile);
 
-            const submitPromise: Promise<SubmitResponse> = fetch("/api/writeups/upload", {
+            const submitPromise: Promise<SubmitResponse> = fetch("/api/blogs/upload", {
                 method: "POST",
                 body: formDataToSubmit,
             })
@@ -241,9 +241,9 @@ export default function CreateWriteupsPage(){
                         Description: "",
                     });
                     // setCTF(null);
-                    setWriteupThumbnail(null);
-                    setWriteupFile(null);
-                    // setWriteupAssets([]);
+                    setBlogThumbnail(null);
+                    setBlogFile(null);
+                    // setBlogAssets([]);
                     // setSelected([]);
                     setExpectedAssets([]);
 
@@ -257,9 +257,9 @@ export default function CreateWriteupsPage(){
                 throw error;
             });
             toast.promise<SubmitResponse>(submitPromise, {
-                loading: 'Creating writeup...',
-                success: 'Writeup successfully created',
-                error: (error: Error) => `Failed to create writeup: ${error.message}`,
+                loading: 'Creating blog...',
+                success: 'Blog successfully created',
+                error: (error: Error) => `Failed to create blog: ${error.message}`,
             })
 
         } catch (error) {
@@ -288,7 +288,7 @@ export default function CreateWriteupsPage(){
     
     return(
         <GradientBg gradientPosition="center" className = 'p-10'>
-            <h1 className = 'text-[3rem] font-bold'>Create Writeup</h1>
+            <h1 className = 'text-[3rem] font-bold'>Create Blog</h1>
             <Toaster/>
 
             <form onSubmit = {handleSubmit} className = 'grid grid-cols-3 grid-rows-[6rem_6rem_6rem_6rem_6rem_6rem] my-5 gap-y-0 gap-x-10'>
@@ -303,7 +303,7 @@ export default function CreateWriteupsPage(){
                     <label>Difficulty (Required)</label>
                 </div>
                 
-                <UploadMarkDownComponent accept = ".md,.markdown" onFileUpload = {uploadWriteupHandler} label = "Writeup File (required)" file = {writeupFile} required/>
+                <UploadMarkDownComponent accept = ".md,.markdown" onFileUpload = {uploadBlogHandler} label = "Blog File (required)" file = {blogFile} required/>
 
 
                 <div className = 'flex flex-col gap-2'>
@@ -312,12 +312,7 @@ export default function CreateWriteupsPage(){
                     <label>Category (Required)</label>
                 </div>
 
-                <div className = 'flex flex-col gap-2'>
-                    <TextInput placeholder = 'Link to challenge source' version = 'secondary' className = 'rounded-xl'name = 'Link' value = {formData.Link} onChange = {handleChange}/>
-                    <label>Source</label>
-                </div> 
                 
-                <UploadFileComponent accept = "image/*" onFileUpload = {uploadThumbnailHandler} label = "Writeup Thumbnail" file = {writeupThumbnail}/>
 
                 <div className = 'flex flex-col gap-2'>
                     <SearchableSelect options = {
@@ -328,6 +323,14 @@ export default function CreateWriteupsPage(){
                     <label>Related CTF {ctf?.title== ""? "(Required)" : !(ctf?.id) && <span className="text-red-500 text-sm">(CTF not found. It will be created.)</span>}</label>
                 </div>
                 
+                <UploadFileComponent accept = "image/*" onFileUpload = {uploadThumbnailHandler} label = "Blog Thumbnail" file = {blogThumbnail}/>
+
+                <div className = 'flex flex-col gap-2 row-span-4 justify-start items-start'>
+                    {/* @ts-expect-error TOO LAZY TO FIX */}
+                    <textarea className = 'text-primary placeholder-primary h-[22rem] rounded-xl w-[100%] bg-secondary-tier3 resize-none border-2 border-secondary-tier2 px-4 py-2 text-lg' placeholder = 'Description' name = 'Description' value = {formData.Description} onChange = {handleChange}></textarea>
+                    <label>Description</label>
+                </div>
+
                 <div className = 'flex flex-col gap-2 row-span-5'>
                     <div className = 'rounded-xl h-[calc(22rem+2px)]  bg-secondary-tier1/50 border-2 border-secondary-tier2'>
                         <TextInput onChange={onTopicSearchChange} value = {topicSearch} className = 'h-[3rem] items-center px-4 text-primary flex text-lg rounded-b-none rounded-t-xl' placeholder="Search Topics" />
@@ -355,16 +358,12 @@ export default function CreateWriteupsPage(){
                     <label>Topics</label>
                 </div>
 
-                <div className = 'flex flex-col gap-2 row-span-3 justify-start items-start'>
-                    {/* @ts-expect-error TOO LAZY TO FIX */}
-                    <textarea className = 'text-primary placeholder-primary h-[20rem] rounded-xl w-[100%] bg-secondary-tier3 resize-none border-2 border-secondary-tier2 px-4 py-2 text-lg' placeholder = 'Description' name = 'Description' value = {formData.Description} onChange = {handleChange}></textarea>
-                    <label>Description</label>
-                </div>
-                <UploadMulitpleFileComponent info = "Upload ALL images used in your writeup"
-                files={writeupAssets} 
-                onFilesUpload={setWriteupAssets}
+                
+                <UploadMulitpleFileComponent info = "Upload ALL images used in your blog"
+                files={blogAssets} 
+                onFilesUpload={setBlogAssets}
                 expectedFiles={expectedAssets}
-                label="Writeup Assets" accept="image/*" 
+                label="Blog Assets" accept="image/*" 
                 />
 
                 <Button type = 'submit' className = 'row-span-1 h-[4rem] rounded-xl mt-[1rem] col-span-3'>Create</Button>

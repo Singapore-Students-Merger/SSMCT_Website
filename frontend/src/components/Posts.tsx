@@ -120,7 +120,7 @@ export default function Posts({type, data, categories, topics, events}: PostProp
     }
     return (
         <GradientBg gradientPosition='bottom'>
-            <h1 className="text-5xl text-white text-center font-bold py-8">{type == "blog"?"View Our Latest Posts":"Writeups"}</h1>
+            <h1 className="text-4xl lg:text-5xl text-white text-center font-bold py-8 px-4">{type == "blog"?"View Our Latest Posts":"Writeups"}</h1>
             <div className="flex justify-center w-10/12 md:w-8/12 m-auto gap-4 mb-8 flex-col md:flex-row">
                 <div className="flex-grow">
                     <SearchBar className = "w-full" setSearchQuery={setSearchQuery} value = {searchQuery} placeholder={type == "blog"?"Search Blogs":"Search Writeups"}/>
@@ -139,7 +139,7 @@ export default function Posts({type, data, categories, topics, events}: PostProp
                 {/* @ts-expect-error TOO LAZY TO FIX */}                
                 <FilterOption setSelected = {eventHandler}  value = {filters["events"]} label = {`Filter ${type == "blog"?"Event":"CTF"}`} options = {formattedEvents} searchable={false} multiSelect={true}/>
             </FilterOptions>}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-10/12 m-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-10/12 m-auto mb-8">
                 {sortedData.map((post) => <Card info={{...post,link:`/${type == "blog"?"blogs":"writeups"}/view/${post.id}`}} key={`post_${post.id}`}/>)}
             </div>
         </GradientBg>

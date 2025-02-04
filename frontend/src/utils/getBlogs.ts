@@ -54,7 +54,7 @@ export default async function getBlogs(): Promise<BlogSummary[]> {
         }),
         type: blog.type,
         featured: blog.featured,
-        thumbnail: blog.thumbnail
+        thumbnail: blog.thumbnail?`/api/blogs/images/${blog.thumbnail}`:undefined,
       }
     });
   }

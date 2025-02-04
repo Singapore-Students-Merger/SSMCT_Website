@@ -97,7 +97,7 @@ model verificationtoken {
 model events {
   id            Int      @id @default(autoincrement())
   userId        String?
-  title         String
+  title         String @unique
   description   String?
   isCompetition Boolean  @default(false)
   isBonding     Boolean  @default(false)
@@ -135,7 +135,7 @@ model userctfs {
 
 model blogs {
   id          Int           @id @default(autoincrement())
-  thumbnail   String
+  thumbnail   String?
   userId      String
   eventId     Int?
   categoryId  Int?
@@ -156,7 +156,7 @@ model blogs {
 
 model writeups {
   id             Int              @id @default(autoincrement())
-  thumbnail      String
+  thumbnail      String?
   userId         String
   eventId        Int?
   difficulty     String

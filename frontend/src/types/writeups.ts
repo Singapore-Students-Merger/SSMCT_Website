@@ -13,10 +13,10 @@ type WriteupDetails = {
     thumbnail?: string;
 }
 
-// WriteupSummary is used to display all the different writeups
+// BlogSummary is used to display all the different Blogs
 type WriteupSummary = Omit<WriteupDetails, 'source' | 'contentFile'>;
 
-// WriteupUpload is used when uploading a writeup
+// BlogUpload is used when uploading a Blog
 type WriteupUpload = Omit<WriteupDetails, 'date' | 'length' | 'author'>;
 
 export type { WriteupDetails, WriteupSummary, WriteupUpload };

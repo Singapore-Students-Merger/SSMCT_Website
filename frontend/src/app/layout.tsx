@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
+import { GoogleAnalytics } from '@next/third-parties/google'
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Suspense } from "react";
 import Loading from "./loading";
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
+import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -37,15 +41,24 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}
       >
-        <Suspense fallback={<Loading/>} >
-        {children}
-        </Suspense>
+        <SessionProviderWrapper>
+          <Navbar />
+        </SessionProviderWrapper>
+          <div className="h-16">
+
+          </div>
+          <Suspense fallback={<Loading/>} >
+          {children}
+          <Footer />
+          </Suspense>
       </body>
+      <GoogleAnalytics gaId="G-LPMB2T0YR9" />
     </html>
   );
 }

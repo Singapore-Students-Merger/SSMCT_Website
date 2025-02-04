@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import prisma from "../../../../lib/prisma";
 import fs from 'fs';
 import path from 'path';
@@ -6,44 +6,42 @@ import { writeFile } from "fs/promises";
 import { auth } from "@/auth"
 import { redirect } from 'next/navigation'
 
-
-export const POST = async (req: NextRequest) => {
+export const POST = async (req, res) => {
     try {
         const session = await auth();
         if (!session) {
             redirect("/auth/signin");
         }
-        
         const formData = await req.formData();
 
-        const writeupThumbnail = formData.get('WriteupThumbnail')
-        const writeupFile = formData.get('WriteupFile') as File | null;
-        if (!writeupThumbnail || !writeupFile) {
+        const BlogThumbnail = formData.get('BlogThumbnail')
+        const BlogFile = formData.get('BlogFile')
+        if (!BlogThumbnail || !BlogFile) {
             return NextResponse.json({ error: "Not all files received." }, { status: 400 });
         }
 
-        const buffer = Buffer.from(await (writeupThumbnail as File).arrayBuffer());
-        let filename = (writeupThumbnail as File).name.replaceAll(" ", "_");
+        const buffer = Buffer.from(await BlogThumbnail.arrayBuffer());
+        let filename = BlogThumbnail.name.replaceAll(" ", "_");
         path.normalize(filename).replace(/^(\.\.(\/|\\|$))+/, ''); //filter
         let name = filename.substring(0, filename.lastIndexOf('.'))
         if (!(['.jpg', '.jpeg', '.png', '.webp', '.svg'].includes(path.extname(filename)))) {
             return NextResponse.json({ status: 'error', 'error': 'Invalid thumbnail type, we only accept jpg, jpeg, png, webp or svg' })
         }
-        while (fs.existsSync(path.join(process.cwd(), '/uploads/writeups/images/', filename))) { //prevent clashing filenames
+        while (fs.existsSync(path.join(process.cwd(), '/uploads/blogs/images/', filename))) { //prevent clashing filenames
             name += '1';
             filename = name + path.extname(filename);
             console.log('ALREADY EXISTING FILENAME, ATTEMPTING TO CHANGE FILENMAEEEEEE');
         }
         console.log(filename);
 
-        const buffer2 = Buffer.from(await writeupFile.arrayBuffer());
-        let filename2 = writeupFile.name.replaceAll(" ", "_");
+        const buffer2 = Buffer.from(await BlogFile.arrayBuffer());
+        let filename2 = BlogFile.name.replaceAll(" ", "_");
         path.normalize(filename2).replace(/^(\.\.(\/|\\|$))+/, '');
         let name2 = filename2.substring(0, filename2.lastIndexOf('.'))
         if (!(['.md', '.markdown'].includes(path.extname(filename2)))) {
             return NextResponse.json({ status: 'error', 'error': 'Invalid file type, we only accept markdown' })
         }
-        while (fs.existsSync(path.join(process.cwd(), '/uploads/writeups/writeup/', filename2))) { //prevent clashing filenames
+        while (fs.existsSync(path.join(process.cwd(), '/uploads/blogs/blog/', filename2))) { //prevent clashing filenames
             name2 += '1';
             filename2 = name2 + path.extname(filename2);
             console.log('FOR THE MD FILE FOR THE MD FILE ALREADY EXISTING FILENAME, ATTEMPTING TO CHANGE FILENMAEEEEEE #####')
@@ -52,25 +50,19 @@ export const POST = async (req: NextRequest) => {
 
 
         //upload files
-        await writeFile(path.join(process.cwd(), "/uploads/writeups/images/" + filename), buffer);
-        console.log('Uploading file: ', path.join(process.cwd(), "/uploads/writeups/writeup/" + filename2));
-        await writeFile(path.join(process.cwd(), "/uploads/writeups/writeup/" + filename2), buffer2);
+        await writeFile(path.join(process.cwd(), "/uploads/blogs/images/" + filename), buffer);
+        console.log('Uploading file: ', path.join(process.cwd(), "/uploads/blogs/blog/" + filename2));
+        await writeFile(path.join(process.cwd(), "/uploads/blogs/Blog/" + filename2), buffer2);
 
         //retrieve data
         const Title = formData.get('Title')
-        const Difficulty = formData.get('Difficulty')
-        const Link = formData.get('Link')
+        const Level = formData.get('Level')
         const Category = formData.get('Category')
-        const Topics = formData.get('Topics');
-        const CTF = formData.get('CTF');
-        if (!Topics || !CTF) {
-            return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
-        }
-        const parsedTopics = JSON.parse(Topics as string);
-        const parsedCTF = JSON.parse(CTF as string);
+        const Topics = JSON.parse(formData.get('Topics'))
         const Description = formData.get('Description')
-        // const WriteupThumbnail = formData.get('WriteupThumbnail')
-        // const WriteupFile = formData.get('WriteupFile')
+        // const BlogThumbnail = formData.get('BlogThumbnail')
+        // const BlogFile = formData.get('BlogFile')
+        const CTF = formData.get('CTF')
         
         const userId = session.user!.id;
 
@@ -78,36 +70,31 @@ export const POST = async (req: NextRequest) => {
         const categories = await prisma.categories.findMany();
         const categoryId = categories.find(cat => cat.name === Category);
 
-        let eventId = parsedCTF.id
+        let eventId = CTF.id
 
-        if (!parsedCTF.id) {
+        if (!CTF.id) {
             const event = await prisma.events.create({
                 data: {
                     userId: userId,
-                    title: parsedCTF.title,
+                    title: CTF,
                     isCompetition: true,
                 },
             });
             eventId = event.id;
-            await prisma.ctf.create({
-                data: {
-                    eventId: event.id,
-                }
-            });
         }
 
+
         // Create a record in the database
-        const id = await prisma.writeups.create({
+        const id = await prisma.blogs.create({
             data: {
-                title: Title as string,
-                difficulty: Difficulty as string,
-                contentFile: Link as string,
-                description: Description as string,
+                title: Title,
+                level: Level,
+                description: Description,
                 categoryId: categoryId ? categoryId.id : null,
-                eventId: eventId.id,
-                source: path.join("/uploads/writeups/writeup/" + filename2),
-                thumbnail: path.join("/uploads/writeups/images/" + filename),
+                link: path.join("/uploads/blogs/Blog/" + filename2),
+                thumbnail: path.join("/uploads/blogs/images/" + filename),
                 userId: userId,
+                eventId: eventId,
             },
             select: {
                 id: true,
@@ -115,13 +102,14 @@ export const POST = async (req: NextRequest) => {
         });
 
         //create a record for topics in database
+        console.log('Topics', Topics);
 
-        for (const topicId of parsedTopics) {
+        for (const topicId of Topics) {
             if (topicId)
                 // console.log(topic); // This will log each topic in the array
-                await prisma.writeupstopics.create({
+                await prisma.blogstopics.create({
                     data: {
-                        writeupId: id['id'],
+                        blogId: id['id'],
                         topicId: topicId,
                     }
                 })
@@ -132,8 +120,7 @@ export const POST = async (req: NextRequest) => {
         console.log('Success');
         return NextResponse.json({ status: "success" });
     } catch (error) {
-        if (error instanceof Error)
-            console.error(error.message)
+        console.error(error.message)
         return NextResponse.json({ status: "error", message: "Internal Server Error" });
     }
 }

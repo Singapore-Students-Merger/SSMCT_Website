@@ -1,6 +1,6 @@
-import CreateWriteupPage from "@/components/CreateWriteupPage";
 import { auth } from "@/auth"
 import { redirect } from 'next/navigation'
+import CreateWriteupsPage from "@/components/CreateWriteupPage";
 
 export const dynamic = "force-dynamic"
 
@@ -10,5 +10,5 @@ export default async function createPage() {
         redirect("/auth/signin");
     }
 
-    return <CreateWriteupPage/>;
+    return <CreateWriteupsPage />;
 }
