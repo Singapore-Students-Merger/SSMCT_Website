@@ -10,7 +10,7 @@ import Button from "@/components/Button";
 import React from "react";
 import GradientBg from "@/components/GradientBg";
 const sectionClasses = "px-6 lg:px-32 flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-16 lg:gap-32 mb-8 lg:mb-16 py-8 lg:py-16";
-const imageClasses = "rounded-2xl shadow-md w-full object-cover !top-1/2 -translate-y-1/2 shadow-secondary-tier1 border-2 border-secondary-tier3";
+const imageClasses = "  w-full object-cover !top-1/2 -translate-y-1/2 ";
 
 export default function Home() {
 
@@ -22,12 +22,14 @@ export default function Home() {
       </>,
       imgSrc: "/assets/home/about1.png",
       imgAlt: "About Us",
+      description:"SSM meeting up at the Greyhats Summit 2024"
     },
     {
       title: "Our Mission",
       text: <>We learn from each other under an informal setting and we welcome new and <strong>passionate</strong> people into the team!</>,
       imgSrc: "/assets/home/about2.png",
       imgAlt: "Our Mission",
+      description:"Our Selected SSM Team taking a photo after the Greyhats CTF 2024 Finals, where we obtained 11th place."
     },
     {
       title: "Active CTF Players",
@@ -35,6 +37,7 @@ export default function Home() {
           of us <strong>organize local CTFs</strong>, and we strengthen our team through regular bonding sessions.</>,
       imgSrc: "/assets/home/about3.png",
       imgAlt: "Active Players",
+      description:"SSM members taking a photo after successfully organising YBNCTF 2024"
     },
   ];
 
@@ -47,7 +50,7 @@ export default function Home() {
         return <Section key={index} section={section} left = {index%2==0}/>
       })}
       </GradientBg>
-      <GradientBg gradientPosition="center">
+      <GradientBg gradientPosition="y-center">
       {/* Accomplishments */}
       <Accomplishments />
       </GradientBg>
@@ -60,12 +63,30 @@ export default function Home() {
   );
 }
 
+interface ImageItemProps {
+  src: string;
+  alt: string;
+  className: string;
+  inView: boolean;
+  description: string;
+}
+const ImageItem = ({ src, alt, className, inView, description}: ImageItemProps) => {
+  return (
+  <div className={twMerge("rounded-2xl shadow-md shadow-secondary-tier1 border-2 border-secondary-tier3 overflow-hidden w-full lg:w-1/2 aspect-video flex relative", inView ? "animate-fadeIn-left" : "opacity-0",className)}>
+    <Image src={src} alt={alt} className={twMerge(imageClasses)} fill={true} />
+    <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col justify-center items-center text-center opacity-0 transition duration-300 rounded-lg
+                    hover:opacity-100">
+      <p className="text-white text-lg py-4 px-4">{description}</p>
+    </div>
+  </div>)
+}
 interface SectionProps {
   section: {
     title: string;
     text: React.ReactNode;
     imgSrc: string;
     imgAlt: string;
+    description: string;
   };
   left?: boolean;
 }
@@ -84,9 +105,7 @@ const Section = ({ section, left }: SectionProps) => {
       </div>
 
       {/* Right-aligned image */}
-      <div className={twMerge("w-full lg:w-1/2 aspect-video flex relative", inView ? "animate-fadeIn-left" : "opacity-0")}>
-        <Image src={section.imgSrc} alt={section.imgAlt} className={imageClasses} fill={true} />
-      </div>
+      <ImageItem src={section.imgSrc} alt={section.imgAlt} className="" inView={inView} description={section.description}/>
     </section>
   )
 }
@@ -95,6 +114,25 @@ const Accomplishments = () => {
     triggerOnce: true,
     threshold: 0.3,
   });
+  const imageInfo = [{
+      src: "/assets/home/acheivement1.png",
+      alt: "downunderctf 2024",
+      className: "hidden md:block lg:w-full",
+      description: "One of our teams gets top 10% placing in downunderctf 2024"
+    },
+    {
+      src: "/assets/home/acheivement2.png",
+      alt: "SSM getting 6th place in BCACTF 5.0",
+      className: "lg:w-full",
+      description: "SSM getting 6th place in BCACTF 5.0"
+    },
+    {
+      src: "/assets/home/acheivement3.png",
+      alt: "SSM getting 2nd place in BTCTF 2024",
+      className: "hidden md:block lg:w-full",
+      description: "SSM obtains 2nd place in BTCTF 2024"
+    }
+  ]
   return (
     <section className="px-6 lg:px-32 text-center mb-16" ref = {ref}>
     <h2 className="text-3xl lg:text-5xl font-bold mb-12">Our Accomplishments</h2>
@@ -111,7 +149,7 @@ const Accomplishments = () => {
         <div className="text-4xl lg:text-6xl font-bold text-white">50</div>
         <p className="text-lg">CTFs Played</p>
       </div>
-      <div className={`col-span-2 flex flex-col items-center gap-4 animate-delay-500 ${inView?"animate-fadeIn-bottom":"opacity-0"}`}>
+      <div className={`col-span-2 md:col-span-1 flex flex-col items-center gap-4 animate-delay-500 ${inView?"animate-fadeIn-bottom":"opacity-0"}`}>
         <Image className = "w-16 h-16 md:w-24 md:h-24" src = "/assets/home/placings.svg" alt = "10 Top Placings" width = {100} height = {100}/>
         <div className="text-4xl lg:text-6xl font-bold text-white">10</div>
         <p className="text-lg">Top Placings Obtained</p>
@@ -119,10 +157,12 @@ const Accomplishments = () => {
     </div>
     {/* Images */}
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 relative">
-      <Image src="/assets/home/acheivement1.png" alt="Accomplishment 1" className={twMerge(imageClasses,`relative translate-y-0 !top-0 animate-delay-2000 hidden md:visible ${inView?"animate-fadeIn-bottom":"opacity-0"}`)}
-      width={400} height= {500}/>
-      <Image src="/assets/home/acheivement2.png" alt="Accomplishment 2" className={twMerge(imageClasses,`relative translate-y-0 !top-0 animate-delay-1700 ${inView?"animate-fadeIn-bottom":"opacity-0"}`)} width={400} height= {500}/>
-      <Image src="/assets/home/acheivement3.png" alt="Accomplishment 3" className={twMerge(imageClasses,`relative translate-y-0 !top-0 animate-delay-1500 hidden md:visible ${inView?"animate-fadeIn-bottom":"opacity-0"}`)} width={400} height= {500}/>
+      {
+        imageInfo.map((info, index) => {
+          return <ImageItem key={index} src={info.src} alt={info.alt} className={info.className} inView={inView} description={info.description}/>
+        })
+      }
+      
     </div>
   </section>
   )
@@ -138,15 +178,10 @@ const CallToAction = () => {
     <div className="flex items-center justify-center mt-4">
         <h2 className="text-3xl lg:text-5xl font-bold mb-6">Interested? Join Us!</h2>
       </div>
-    <section className={twMerge(sectionClasses,"mb-0")} ref = {ref}>
+    <section className={twMerge(sectionClasses,"!mb-0")} ref = {ref}>
         {/* Call to Action Image */}
         <div className={`w-full lg:w-1/2 aspect-video flex relative ${inView?"animate-fadeIn-left":"opacity-0"}`}>
-          <Image
-            src="/assets/home/about4.jpg"
-            alt="Our Mission"
-            className={imageClasses}
-            fill={true}
-          />
+          <ImageItem src="/assets/home/about4.jpg" alt="Our Mission" className="lg:w-full" inView={inView} description="SSM members enjoying the 2024 bonding session"/>
         </div>
         {/* Call to Action Section */}
         <div className="text-center lg:text-left lg:w-1/2 pb-10">
