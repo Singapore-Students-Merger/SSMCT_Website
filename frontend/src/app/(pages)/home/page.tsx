@@ -139,18 +139,18 @@ const Accomplishments = () => {
     <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
       {/* Stats */}
       <div className={`flex flex-col items-center gap-4 ${inView?"animate-fadeIn-bottom":"opacity-0"}`}>
-        <Image className = "w-16 h-16 md:w-24 md:h-24" src = "/assets/home/people.svg" alt = "100 Members" width = {100} height = {100}/>
+        <Image unoptimized className = "w-16 h-16 md:w-24 md:h-24" src = "/assets/home/people.svg" alt = "100 Members" width = {100} height = {100}/>
         <div className="text-4xl md:text-6xl font-bold text-white">100</div>
         <p className="text-lg">Members</p>
       </div>
       <div className={`flex flex-col items-center gap-4 animate-delay-200 ${inView?"animate-fadeIn-bottom":"opacity-0"}`}>
-      <Image className = "w-16 h-16 md:w-24 md:h-24" src = "/assets/home/ctfs.svg" alt = "50 CTFs" width = {100} height = {100}/>
+      <Image unoptimized className = "w-16 h-16 md:w-24 md:h-24" src = "/assets/home/ctfs.svg" alt = "50 CTFs" width = {100} height = {100}/>
 
         <div className="text-4xl lg:text-6xl font-bold text-white">50</div>
         <p className="text-lg">CTFs Played</p>
       </div>
       <div className={`col-span-2 md:col-span-1 flex flex-col items-center gap-4 animate-delay-500 ${inView?"animate-fadeIn-bottom":"opacity-0"}`}>
-        <Image className = "w-16 h-16 md:w-24 md:h-24" src = "/assets/home/placings.svg" alt = "10 Top Placings" width = {100} height = {100}/>
+        <Image unoptimized className = "w-16 h-16 md:w-24 md:h-24" src = "/assets/home/placings.svg" alt = "10 Top Placings" width = {100} height = {100}/>
         <div className="text-4xl lg:text-6xl font-bold text-white">10</div>
         <p className="text-lg">Top Placings Obtained</p>
       </div>

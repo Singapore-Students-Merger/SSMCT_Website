@@ -41,11 +41,6 @@ export default function Navbar() {
                             </Link>
                         </li>
                         <li>
-                            <Link href="/gallery" className={getLinkClasses("/gallery")}>
-                                Gallery
-                            </Link>
-                        </li>
-                        <li>
                             <Link href="/writeups" className={getLinkClasses("/writeups")}>
                                 Writeups
                             </Link>
@@ -53,6 +48,21 @@ export default function Navbar() {
                         <li>
                             <Link href="/blogs" className={getLinkClasses("/blogs")}>
                                 Blogs
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="/achievements" className={getLinkClasses("/achievements")}>
+                                Achievements
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="/gallery" className={getLinkClasses("/gallery")}>
+                                Gallery
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="/members" className={getLinkClasses("/members")}>
+                                Members
                             </Link>
                         </li>
                     </ul>
@@ -64,23 +74,29 @@ export default function Navbar() {
 
             {/* Mobile Menu Dropdown with Animation */}
             <div
-                className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                className={`overflow-hidden transition-all duration-300 ease-in-out w-full lg:w-1/3 absolute top-full right-0 ${
                     isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
                 }`}
             >
-                <ul className="flex flex-col items-start bg-secondary-tier3 shadow-lg font-bold w-full lg:w-1/3 absolute top-full right-0">
+                <ul className="flex flex-col items-start bg-secondary-tier3 shadow-lg font-bold w-full">
                     <div className="contents lg:hidden">
                         <li className="w-full">
                             <Link href="/" className={getLinkMenuClasses("/")}>Home</Link>
-                        </li>
-                        <li className="w-full">
-                            <Link href="/gallery" className={getLinkMenuClasses("/gallery")}>Gallery</Link>
                         </li>
                         <li className="w-full">
                             <Link href="/writeups" className={getLinkMenuClasses("/writeups")}>Writeups</Link>
                         </li>
                         <li className="w-full">
                             <Link href="/blogs" className={getLinkMenuClasses("/blogs")}>Blogs</Link>
+                        </li>
+                        <li className="w-full">
+                            <Link href="/gallery" className={getLinkMenuClasses("/achievements")}>Achievements</Link>
+                        </li>
+                        <li className="w-full">
+                            <Link href="/gallery" className={getLinkMenuClasses("/gallery")}>Gallery</Link>
+                        </li>
+                        <li className="w-full">
+                            <Link href="/members" className={getLinkMenuClasses("/members")}>Members</Link>
                         </li>
                     </div>
                     <li className="w-full">
