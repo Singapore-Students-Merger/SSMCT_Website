@@ -71,7 +71,7 @@ export default function CreateBlogsPage(){
     }, []);
 
     useEffect(() => {
-        fetch("/api/acheivements?fields=names")
+        fetch("/api/achievements?fields=names")
         .then((response) => response.json())
         .then((data) => {
             setCtfs(data);

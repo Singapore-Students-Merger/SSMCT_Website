@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 interface TeamData{
     team_id: number;
     points: string;
-    placing: number;
+    place: number;
 }
 
 interface CTFdResponse{
@@ -24,7 +24,7 @@ async function getEventInformation(ctfId: string) {
     const event = await data.json();
     return event;
 }
-export async function POST(req: Request, { params }: { params: Promise<{ year: string }> }) {
+export async function GET(req: Request, { params }: { params: Promise<{ year: string }> }) {
     try{
         const newParams = await params;
         const year = parseInt(newParams.year);
@@ -60,12 +60,13 @@ export async function POST(req: Request, { params }: { params: Promise<{ year: s
             if (event.error) {
                 continue;
             }
+            console.log(event,SSM)
             const {description,start,url,participants,logo} = event;
-            const {points,placing} = SSM;
+            const {points,place} = SSM;
             ctfs.push({
                 ctfId: ctfId,
                 points: points,
-                placing: placing,
+                placing: place,
                 title: ctfTitle,
                 link: url,
                 participants: participants,
@@ -79,7 +80,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ year: s
                     },
                     data: {
                         points: parseFloat(points),
-                        placing: placing,
+                        placing: place,
                         link: url,
                         participants: participants,
                         logo: logo

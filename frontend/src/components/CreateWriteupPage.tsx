@@ -71,7 +71,7 @@ export default function CreateWriteupsPage(){
     }, []);
 
     useEffect(() => {
-        fetch("/api/acheivements?fields=names")
+        fetch("/api/achievements?fields=names")
         .then((response) => response.json())
         .then((data) => {
             setCtfs(data);
@@ -232,18 +232,17 @@ export default function CreateWriteupsPage(){
             .then((data: SubmitResponse) => {
                 if (data.status === 'success') {
                     // Reset form data if successful
-                    setFormData({
+                    setFormData((oldData) => ({
+                        ...oldData,
                         Title: "",
-                        Difficulty: "",
                         Link: "",
-                        Category: "",
                         Topics: [],
                         Description: "",
-                    });
+                    }));
                     // setCTF(null);
                     setWriteupThumbnail(null);
                     setWriteupFile(null);
-                    // setWriteupAssets([]);
+                    setWriteupAssets([]);
                     // setSelected([]);
                     setExpectedAssets([]);
 
