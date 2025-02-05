@@ -1,5 +1,5 @@
 /* SVG container styling */
-svg {
+.loading svg {
     width: 100%;
     height: auto;
 }

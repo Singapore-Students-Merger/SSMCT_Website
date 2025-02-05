@@ -5,30 +5,30 @@
 @import "prismjs/plugins/line-numbers/prism-line-numbers.css";
 
 /* Add custom styles for code blocks */
-pre {
-  background-color: #2d2d2d; /* Dark background */
+/* Scope styles to only apply inside .custom-code-container */
+.custom-code-container pre {
+  background-color: #2d2d2d;
   padding: 1rem;
   border-radius: 8px;
   overflow-x: auto;
   font-family: "Fira Code", monospace;
 }
 
-code {
+.custom-code-container code {
   font-size: 0.875rem;
   color: #f8f8f2;
 }
 
-/* Adjust line numbers */
-pre.line-numbers {
+.custom-code-container pre.line-numbers {
   padding-left: 3.5rem;
 }
 
-pre[class*="language-"] {
+.custom-code-container pre[class*="language-"] {
   margin-bottom: 1.5rem;
   border: 1px solid #444;
 }
 
-img{
+.custom-code-container img {
   max-width: 75%;
-  margin:auto;
+  margin: auto;
 }

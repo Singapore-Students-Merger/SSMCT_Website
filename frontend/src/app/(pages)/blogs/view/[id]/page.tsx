@@ -75,7 +75,7 @@ export default async function BlogView({ params }: { params: Promise<{ id: strin
             <section>
                 <h2 className="text-3xl font-bold text-white border-b-2 border-tertiary mx-10 md:mx-16 my-4">Writeup</h2>
                 <div
-                    className="prose max-w-none mx-auto px-10 md:px-32 my-8"
+                    className="prose max-w-none mx-auto px-10 md:px-32 my-8 custom-code-container"
                     dangerouslySetInnerHTML={{ __html: content.toString() }}>
                 </div>
                 <CommentsSection commentsError = {commentError} comments = {comments} id={id} type="blogs" loggedIn={loggedIn} />
