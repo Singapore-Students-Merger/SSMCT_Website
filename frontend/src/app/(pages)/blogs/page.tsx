@@ -4,6 +4,9 @@ import  getBlogs  from "@/utils/getBlogs";
 import getTopics from "@/utils/getTopics";
 import getEvents from "@/utils/getEvents";
 import BlogHero from "./BlogHero";
+
+export const dynamic = "force-dynamic";
+
 export default async function BlogsPageServer() {
   let data = await getBlogs();
   const categories = await getCategories();
