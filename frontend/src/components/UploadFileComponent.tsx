@@ -138,6 +138,9 @@ const UploadFileComponent: React.FC<UploadFileComponentProps> = ({ onFileUpload,
         if (file && file.type.startsWith('image/')) {
             setPreviewUrl(URL.createObjectURL(file));
         }
+        else{
+            setPreviewUrl(null);
+        }
 
     };
     return (

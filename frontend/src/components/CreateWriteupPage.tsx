@@ -232,19 +232,18 @@ export default function CreateWriteupsPage(){
             .then((data: SubmitResponse) => {
                 if (data.status === 'success') {
                     // Reset form data if successful
-                    setFormData({
+                    setFormData((oldData) => ({
+                        ...oldData,
                         Title: "",
-                        Difficulty: "",
                         Link: "",
-                        Category: "",
                         Topics: [],
                         Description: "",
-                    });
+                    }));
                     // setCTF(null);
                     setWriteupThumbnail(null);
                     setWriteupFile(null);
-                    // setWriteupAssets([]);
-                    // setSelected([]);
+                    setWriteupAssets([]);
+                    setSelected([]);
                     setExpectedAssets([]);
 
                     form.disabled = false 

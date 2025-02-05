@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import getNumberWithOrdinal from "@/utils/getNumberWithOrdinal";
 
 interface AchievementCardProps {
   title: string;
@@ -43,7 +44,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({ title, points, partic
       </div>
       <div className="my-4 px-4">
         <h3 className="text-center text-2xl font-bold relative">
-          {placing} Place
+          {placing && `${getNumberWithOrdinal(Number(placing))} Place`}
           <div className="absolute w-full bottom-0 border-b-2 border-secondary-tier1">
             <div
               className="absolute h-4 left-0 top-1/2 -translate-y-1/2 border-l-2 border-secondary-tier1"

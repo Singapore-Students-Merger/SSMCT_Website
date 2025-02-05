@@ -113,6 +113,9 @@ export default function Navbar() {
                         <li className="w-full">
                             <Link href="/create/writeup" className={getLinkMenuClasses("/create/writeup")}>Create Writeup</Link>
                         </li>
+                        <li className="w-full">
+                            <Link href="/create/image" className={getLinkMenuClasses("/create/image")}>Upload Image</Link>
+                        </li>
                         </>
                     )}
                 </ul>

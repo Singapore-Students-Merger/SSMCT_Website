@@ -114,7 +114,7 @@ export default async function WriteupView({ params }: { params: Promise<{id:stri
                 <div>
                     <h2 className="text-3xl font-bold text-white border-b-2 border-tertiary mx-16 my-4">Writeup</h2>
                     <div
-                        className="prose max-w-none mx-auto px-10 md:px-32 my-8"
+                        className="prose max-w-none mx-auto px-10 md:px-32 my-8 custom-code-container"
                         dangerouslySetInnerHTML={{ __html: content.toString() }}>
                     </div>
                 </div>

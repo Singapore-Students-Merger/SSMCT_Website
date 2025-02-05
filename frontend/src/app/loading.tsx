@@ -2,7 +2,7 @@ import './loading.css'; // Import the CSS file for the loading animation.
 export default function Loading() {
     // You can add any UI inside Loading, including a Skeleton.
     return (
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex justify-center items-center flex-col">
+        <div className="loading absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex justify-center items-center flex-col">
             <svg className="w-8/12" xmlns="http://www.w3.org/2000/svg" width="2047" height="1308" viewBox="0 0 2047 1308" version="1.1">
                 <path 
                 className="outer-path"

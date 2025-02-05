@@ -72,7 +72,9 @@ interface ImageItemProps {
 }
 const ImageItem = ({ src, alt, className, inView, description}: ImageItemProps) => {
   return (
-  <div className={twMerge("rounded-2xl shadow-md shadow-secondary-tier1 border-2 border-secondary-tier3 overflow-hidden w-full lg:w-1/2 aspect-video flex relative", inView ? "animate-fadeIn-left" : "opacity-0",className)}>
+  <div className={twMerge("rounded-2xl shadow-md shadow-secondary-tier1 border-2 border-secondary-tier3 overflow-hidden w-full lg:w-1/2 aspect-video flex relative", 
+  inView ? "animate-fadeIn-left" : "opacity-0",
+  className)}>
     <Image src={src} alt={alt} className={twMerge(imageClasses)} fill={true} />
     <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col justify-center items-center text-center opacity-0 transition duration-300 rounded-lg
                     hover:opacity-100">
@@ -117,19 +119,19 @@ const Accomplishments = () => {
   const imageInfo = [{
       src: "/assets/home/acheivement1.png",
       alt: "downunderctf 2024",
-      className: "hidden md:block lg:w-full",
+      className: `hidden md:block lg:w-full !animate-delay-2000 ${inView?"!animate-fadeIn-bottom":"opacity-0"}`,
       description: "One of our teams gets top 10% placing in downunderctf 2024"
     },
     {
       src: "/assets/home/acheivement2.png",
-      alt: "SSM getting 6th place in BCACTF 5.0",
-      className: "lg:w-full",
+      alt: `SSM getting 6th place in BCACTF 5.0`,
+      className: `lg:w-full !animate-delay-1700 ${inView?"!animate-fadeIn-bottom":"opacity-0"}`,
       description: "SSM getting 6th place in BCACTF 5.0"
     },
     {
       src: "/assets/home/acheivement3.png",
       alt: "SSM getting 2nd place in BTCTF 2024",
-      className: "hidden md:block lg:w-full",
+      className: `hidden md:block lg:w-full !animate-delay-1500 ${inView?"!animate-fadeIn-bottom":"opacity-0"}`,
       description: "SSM obtains 2nd place in BTCTF 2024"
     }
   ]
