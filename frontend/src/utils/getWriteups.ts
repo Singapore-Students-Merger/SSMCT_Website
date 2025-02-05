@@ -27,7 +27,12 @@ export default async function getWriteups(): Promise<WriteupSummary[]> {
           }
         }
       },
-      date: true
+      date: true,
+      events: {
+        select: {
+          title: true
+        }
+      }
     }
   });
   return writeups.map((writeup) => {
@@ -45,6 +50,7 @@ export default async function getWriteups(): Promise<WriteupSummary[]> {
         day: "numeric",
       }),
       thumbnail: writeup.thumbnail?`/api/writeups/images/${writeup.thumbnail}`:undefined,
+      ctf: writeup.events?.title
     }
   });
 }

@@ -243,7 +243,7 @@ export default function CreateWriteupsPage(){
                     setWriteupThumbnail(null);
                     setWriteupFile(null);
                     setWriteupAssets([]);
-                    // setSelected([]);
+                    setSelected([]);
                     setExpectedAssets([]);
 
                     form.disabled = false 

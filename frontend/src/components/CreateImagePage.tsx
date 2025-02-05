@@ -6,7 +6,7 @@ import Button from "@/components/Button";
 import toast, { Toaster } from 'react-hot-toast';
 
 import { useState, useEffect } from 'react';
-import UploadFileComponent from "./UploadFileComponent";
+import { UploadFileComponent } from "./UploadFileComponent";
 import SearchableSelect  from "@/components/SearchableSelect";
 import DateInput from "./DateInput";
 interface Option {
