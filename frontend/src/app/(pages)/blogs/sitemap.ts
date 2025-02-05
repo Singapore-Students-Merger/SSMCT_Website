@@ -12,7 +12,7 @@ export default async function sitemap(){
     })
     return writeups.map((writeup) => (
         {
-            url: `${WEBSITE_URL}/blogs/${writeup.id}`,
+            url: `${WEBSITE_URL}/blogs/view/${writeup.id}`,
             lastModified: writeup.date
         }
     ))
