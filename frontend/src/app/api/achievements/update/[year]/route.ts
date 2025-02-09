@@ -101,7 +101,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ year: st
                     data: {
                         ctfId: parseInt(ctfId),
                         points: parseFloat(points),
-                        placing: placing,
+                        placing: place,
                         link: url,
                         participants: participants,
                         logo: logo,

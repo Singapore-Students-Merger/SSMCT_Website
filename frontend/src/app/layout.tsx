@@ -28,10 +28,11 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
+    title: "Home",
     locale: "en_SG",
     url: process.env.NEXT_PUBLIC_SITE_URL,
     siteName: "Singapore Students Merger",
-    images: `${process.env.NEXT_PUBLIC_SITE_URL}/assets/backgrounds/home.png`,
+    images: [`${process.env.NEXT_PUBLIC_SITE_URL}/assets/backgrounds/home.png`],
   },
   keywords: "SSM, Singapore Students Merger, CTF, Cybersecurity, Capture The Flag, Singapore, Students, Merger, CTF Team",
 };

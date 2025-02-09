@@ -9,7 +9,7 @@ type BlogDetails = {
     difficulty: "None" | "Easy" | "Medium" | "Hard";
     event: string;
     date: string;
-    thumbnail?: string;
+    thumbnail?: string | null;
     type: string;
     featured?: boolean;
 }

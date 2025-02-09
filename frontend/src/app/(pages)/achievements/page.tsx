@@ -1,6 +1,23 @@
 import Hero from "../../../components/Hero";
 import AchievementCard from "../../../components/AchievementCard";
 import { getAllCtfs } from "@/utils/getAllCtfs";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Achievements",
+  description: "Discover the milestones and accolades of Singapore Students Merger (SSM). Explore our achievements in ethical hacking and competitive problem-solving.",
+  openGraph: {
+    type: "website",
+    locale: "en_SG",
+    title: "Achievements",
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/achievements`,
+    siteName: "Singapore Students Merger",
+    images: [`${process.env.NEXT_PUBLIC_SITE_URL}/backgrounds/acheivements.jpg`],
+  },
+  keywords: ["SSM", "Singapore Students Merger", "CTF", "Cybersecurity", "Capture The Flag", "Singapore", "Students", "Merger", "CTF Team"
+    ,"Achievements"
+  ],
+};
 
 export default async function AchievementsPage() {
   const achievements = await getAllCtfs();

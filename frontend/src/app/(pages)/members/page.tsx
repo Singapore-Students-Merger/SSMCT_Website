@@ -4,7 +4,7 @@ import SpecialMembersCard from "./SpecialMemberCard";
 import MemberCard from "./MemberCard";
 import { twMerge } from "tailwind-merge";
 import { getCachedMembers } from "@/utils/getMembers";
-
+import { Metadata } from "next";
 const admins: Members[] = [
     {
         title: "Twin No 1",
@@ -21,28 +21,28 @@ const admins: Members[] = [
       roles: ["admin"],
     },
     {
-        title: "Founder of SSMCT",
+        title: "Admin",
         username: "gatari",
         realName: "gatari",
         image: "/member/david.png",
         roles: ["admin"],
     },
     {
-      title: "Founder of SSMCT",
+      title: "Admin",
       username: "bo wen",
       realName: "bo wen",
       image: "/member/david.png",
       roles: ["admin"],
   },
   {
-    title: "Founder of SSMCT",
+    title: "Admin",
     username: "_blueplume",
     realName: "_blueplume",
     image: "/member/david.png",
     roles: ["admin"],
 },
 {
-  title: "Founder of SSMCT",
+  title: "Admin",
   username: "annie110100",
   realName: "annie110100",
   image: "/member/david.png",
@@ -92,6 +92,22 @@ const webDevs: Members[] = [
     roles: ["Web Developer"],
   },
 ]
+
+export const metadata: Metadata = {
+  title: "Members",
+  description: "Meet the talented members of Singapore Students Merger (SSM) – a community of cybersecurity enthusiasts, CTF players, and developers pushing the limits of ethical hacking and problem-solving.",
+  openGraph: {
+    type: "website",
+    locale: "en_SG",
+    title: "Members",
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/members`,
+    siteName: "Singapore Students Merger",
+    images: [`${process.env.NEXT_PUBLIC_SITE_URL}/backgrounds/members.png`],
+  },
+  keywords: ["SSM", "Singapore Students Merger", "CTF", "Cybersecurity", "Capture The Flag", "Singapore", "Students", "Merger", "CTF Team"
+    ,"Members"
+  ],
+};
 
 export default async function MembersPage() {
   const members = await getCachedMembers(); 

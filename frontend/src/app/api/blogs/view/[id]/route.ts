@@ -1,4 +1,4 @@
-import { WriteupDetails } from "@/types/writeups";
+import { BlogDetails } from "@/types/blogs";
 import { NextResponse } from 'next/server';
 import prisma from "@/lib/prisma";
 
@@ -34,7 +34,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
       );
     }
 
-    const writeupDetails: WriteupDetails = {
+    const blogDetails: BlogDetails = {
       id: data.id,
       title: data.title,
       description: data.description,
@@ -48,10 +48,13 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
         month: "long",
         day: "numeric",
       }),
-      ctf: data.events?.title??"",
+      event: data.events?.title??"",
+      type: data.type,
+      thumbnail: data.thumbnail,
+      featured: data.featured,
     };
 
-    return NextResponse.json({ data: writeupDetails });
+    return NextResponse.json({ data: blogDetails });
   } catch (error) {
     if (error instanceof Error)
       console.error("Unexpected error:", error.message);

@@ -4,6 +4,23 @@ import  getBlogs  from "@/utils/getBlogs";
 import getTopics from "@/utils/getTopics";
 import getEvents from "@/utils/getEvents";
 import BlogHero from "./BlogHero";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Blogs",
+  description: "Read insightful blogs from Singapore Students Merger (SSM) covering cybersecurity, CTF strategies, ethical hacking, and tech trends. Stay updated with our community discussions and events.",
+  openGraph: {
+    type: "website",
+    locale: "en_SG",
+    title: "Blogs",
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/blogs`,
+    siteName: "Singapore Students Merger",
+    images: [`${process.env.NEXT_PUBLIC_SITE_URL}/backgrounds/home.png`],
+  },
+  keywords: ["SSM", "Singapore Students Merger", "CTF", "Cybersecurity", "Capture The Flag", "Singapore", "Students", "Merger", "CTF Team"
+    ,"Blogs","CTF Blogs"
+  ],
+};
 
 export const dynamic = "force-dynamic";
 

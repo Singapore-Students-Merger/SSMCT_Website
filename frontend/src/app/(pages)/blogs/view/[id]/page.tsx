@@ -8,20 +8,56 @@ import sanitizeFilePath from "@/utils/sanitizeFilePath";
 import { BlogDetails } from "@/types/blogs";
 import {auth} from "@/auth";
 import CommentsSection from "@/components/CommentsSection";
+import { cache } from 'react';
+const fetchBlogFromDatabase = cache(async (id: string) => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/blogs/view/${id}`);
+    console.log("Fetching blog from database");
+    if (!res.ok) {
+        throw new Error((await res.json()).message);
+        return {}
+    }
+
+    return (await res.json()).data;
+})
+export const generateMetadata = async ({ params }: { params: Promise<{id:string}> }) => {
+    const newParams = await params;
+    const id = newParams.id;
+    const post = await fetchBlogFromDatabase(id); 
+    return {
+        type:"article",
+      title: post.title,
+      description: post.description,
+      openGraph: {
+        title: post.title,
+        description: post.description,
+        url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/blogs/view/${id}`,
+        images: [{
+            url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/api/blogs/images/${post.thumbnail}`,
+        }]
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: post.title,
+        description: post.description,
+        images: [
+            {
+                url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/api/blogs/images/${post.thumbnail}`
+            }
+        ]
+      },
+      robots: 'index, follow',
+      keywords: ['SSM', 'Singapore Students Merger', 'CTF', 'Cybersecurity', 'Writeup', ...post.topics],
+    };
+  };
 
 export default async function BlogView({ params }: { params: Promise<{ id: string }> }) {
     const loggedIn = await auth()?true:false;
     const newParams = await params;
     const id = newParams.id;
-    let data;
+    let blogDetails: BlogDetails;
 
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/blogs/view/${id}`);
-        if (!response.ok) {
-            const error = (await response.json()).message;
-            return <div>{error}</div>;
-        }
-        data = await response.json();
+        blogDetails = await fetchBlogFromDatabase(id);
     } catch (error: unknown) {
         if (error instanceof Error) {
             console.error("Fetch Error:", error.message);
@@ -31,13 +67,11 @@ export default async function BlogView({ params }: { params: Promise<{ id: strin
         return <div>An error occurred while reading the markdown file.</div>;
     }
 
-    const blogDetails: BlogDetails = data.data;
     const basePath = path.resolve(process.cwd(), 'uploads/blogs/blog');
     const filename = blogDetails.contentFile;
     let content, estimatedReadTime;
 
     try {
-        console.log(basePath)
 
         const fullPath = sanitizeFilePath(basePath, filename, ["md", "markdown"]);
         if (!fullPath) {

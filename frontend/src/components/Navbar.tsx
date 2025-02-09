@@ -90,7 +90,7 @@ export default function Navbar() {
                             <Link href="/blogs" className={getLinkMenuClasses("/blogs")}>Blogs</Link>
                         </li>
                         <li className="w-full">
-                            <Link href="/gallery" className={getLinkMenuClasses("/achievements")}>Achievements</Link>
+                            <Link href="/achievements" className={getLinkMenuClasses("/achievements")}>Achievements</Link>
                         </li>
                         <li className="w-full">
                             <Link href="/gallery" className={getLinkMenuClasses("/gallery")}>Gallery</Link>

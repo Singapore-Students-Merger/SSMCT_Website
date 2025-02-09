@@ -3,6 +3,23 @@ import getWriteups from "@/utils/getWriteups";
 // import getTopics from "@/utils/getTopics";
 // import getEvents from "@/utils/getEvents";
 import Posts from "@/components/Posts";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Writeups",
+  description: "Explore detailed CTF writeups from Singapore Students Merger (SSM). Learn cybersecurity techniques, exploit analysis, and problem-solving strategies from past competitions.",
+  openGraph: {
+    type: "website",
+    locale: "en_SG",
+    title: "Writeups",
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/writeups`,
+    siteName: "Singapore Students Merger",
+    images: [`${process.env.NEXT_PUBLIC_SITE_URL}/backgrounds/home.png`],
+  },
+  keywords: ["SSM", "Singapore Students Merger", "CTF", "Cybersecurity", "Capture The Flag", "Singapore", "Students", "Merger", "CTF Team"
+    ,"Writeups","CTF Writeups"
+  ],
+};
 
 export const dynamic = "force-dynamic";
 
