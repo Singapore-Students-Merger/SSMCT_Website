@@ -14,7 +14,8 @@ export default async function getGalleryData(): Promise<Info[]> {
                 select: {
                     ctf: true
                 }
-            }
+            },
+            type: true
         },
     });
 
@@ -28,6 +29,6 @@ export default async function getGalleryData(): Promise<Info[]> {
             day: "2-digit",
         }),
         description: item.description??'',
-        category: item.events?.ctf ? "CTF" : "Bonding",
+        category: item.type as "Bonding" | "CTF" ?? "Bonding",
     }})
 }
