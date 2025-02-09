@@ -4,64 +4,64 @@ import SpecialMembersCard from "./SpecialMemberCard";
 import MemberCard from "./MemberCard";
 import { twMerge } from "tailwind-merge";
 import { getCachedMembers } from "@/utils/getMembers";
-
+import { Metadata } from "next";
 const admins: Members[] = [
-    {
-        title: "Twin No 1",
-        username: "Gr0undUp",
-        realName: "Chan Si Yu David",
-        image: "/member/david.png",
-        roles: ["admin"],
-    },
-    {
-      title: "Admin",
-      username: "P3RPL3X",
-      realName: "Ravin Nagpal",
-      image: "/member/ravin.png",
-      roles: ["admin"],
-    },
-    {
-      title: "Admin",
-      username: "Dakshthapar",
-      realName: "Dakshthapar",
+  {
+      title: "Twin No 1",
+      username: "Gr0undUp",
+      realName: "Chan Si Yu David",
       image: "/member/david.png",
       roles: ["admin"],
-    },
-    {
-        title: "Founder of SSMCT",
-        username: "gatari",
-        realName: "gatari",
-        image: "/member/gatari.png",
-        roles: ["admin"],
-    },
-    {
+  },
+  {
+    title: "Admin",
+    username: "P3RPL3X",
+    realName: "Ravin Nagpal",
+    image: "/member/ravin.png",
+    roles: ["admin"],
+  },
+  {
+    title: "Admin",
+    username: "Dakshthapar",
+    realName: "Dakshthapar",
+    image: "/member/daksh.png",
+    roles: ["admin"],
+  },
+  {
       title: "Founder of SSMCT",
-      username: "bo wen",
-      realName: "bo wen",
-      image: "/member/bowen.png",
+      username: "gatari",
+      realName: "gatari",
+      image: "/member/gatari.png",
       roles: ["admin"],
   },
-{
-  title: "yay!",
-  username: "yanganyi",
-  realName: "Yang An Yi",
-  image: "/member/annie.png",
-  roles: ["admin"],
+  {
+    title: "Founder of SSMCT",
+    username: "bo wen",
+    realName: "bo wen",
+    image: "/member/bowen.png",
+    roles: ["admin"],
 },
 {
-  title: "pwn star",
-  username: "blueplume (nyjc)",
-  realName: "greenplume",
-  image: "/member/greenplume.png",
-  roles: ["admin"],
+title: "yay!",
+username: "yanganyi",
+realName: "Yang An Yi",
+image: "/member/annie.png",
+roles: ["admin"],
+},
+{
+title: "pwn star",
+username: "blueplume (nyjc)",
+realName: "greenplume",
+image: "/member/greenplume.png",
+roles: ["admin"],
 },
 
 {
-  title: "re scrub",
-  username: "blueplume (np)",
-  realName: "greenplume",
-  image: "/member/greenplume.png",
-  roles: ["admin"],
+title: "re scrub",
+username: "blueplume (np)",
+realName: "greenplume",
+image: "/member/greenplume.png",
+roles: ["admin"],
 },
 ]
 const baba:Members = {
@@ -92,7 +92,22 @@ const webDevs: Members[] = [
     roles: ["Web Developer"],
   },
 ]
-export const revalidate = 3600;
+
+export const metadata: Metadata = {
+  title: "Members",
+  description: "Meet the talented members of Singapore Students Merger (SSM) – a community of cybersecurity enthusiasts, CTF players, and developers pushing the limits of ethical hacking and problem-solving.",
+  openGraph: {
+    type: "website",
+    locale: "en_SG",
+    title: "Members",
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/members`,
+    siteName: "Singapore Students Merger",
+    images: [`${process.env.NEXT_PUBLIC_SITE_URL}/backgrounds/members.png`],
+  },
+  keywords: ["SSM", "Singapore Students Merger", "CTF", "Cybersecurity", "Capture The Flag", "Singapore", "Students", "Merger", "CTF Team"
+    ,"Members"
+  ],
+};
 
 export default async function MembersPage() {
   const members = await getCachedMembers(); 

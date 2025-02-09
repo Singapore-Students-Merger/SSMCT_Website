@@ -17,6 +17,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     const data = await prisma.writeups.findUnique({
       where: { id },
       include: {
+        
         categories: true,
         topics: {
           include: {
@@ -49,6 +50,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
         day: "numeric",
       }),
       ctf: data.events?.title,
+      thumbnail: data.thumbnail,
     };
 
     return NextResponse.json({ data: writeupDetails });

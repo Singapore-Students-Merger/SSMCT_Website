@@ -10,7 +10,7 @@ type WriteupDetails = {
     date: string;
     ctf?: string;
     source?: string;
-    thumbnail?: string;
+    thumbnail?: string | null;
 }
 
 // BlogSummary is used to display all the different Blogs

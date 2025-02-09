@@ -28,16 +28,29 @@ export const generateMetadata = async ({ params }: { params: Promise<{id:string}
     const id = newParams.id;
     const post = await fetchWriteupFromDatabase(id); 
     return {
+        type:"article",
       title: post.title,
       description: post.description,
       openGraph: {
         title: post.title,
         description: post.description,
         url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/writeups/view/${id}`,
-        
+        images: [{
+            url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/api/writeups/images/${post.thumbnail}`,
+        }]
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: post.title,
+        description: post.description,
+        images: [
+            {
+                url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/api/writeups/images/${post.thumbnail}`
+            }
+        ]
       },
       robots: 'index, follow',
-      keywords: 'SSM, Singapore Students Merger, CTF, Cybersecurity, Writeup, ' + post.topics.join(', '),
+      keywords: ['SSM', 'Singapore Students Merger', 'CTF', 'Cybersecurity', 'Writeup', ...post.topics],
     };
   };
 

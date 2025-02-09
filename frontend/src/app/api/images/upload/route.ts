@@ -91,15 +91,15 @@ export const POST = async (req: NextRequest) => {
         imageName += path.extname(filename);
         //upload file
         await writeFile(filename, buffer);
-        if (!event.id){
-            const response = await prisma.events.create({
-                data: {
-                    title: event.title,
-                    userId: userId,
-                }
-            })
-            event.id = response.id;
-        }
+        const eventName = event.title.trim();
+        const eventId = (await prisma.events.upsert({
+            create: { userId, title: eventName, isCompetition: true },
+            update: { title: eventName },
+            where: { 
+            title: eventName,
+            },
+            select: { id: true },
+        })).id
         // Save information to the database
         await prisma.gallery.create({
             data: {
@@ -110,7 +110,7 @@ export const POST = async (req: NextRequest) => {
                 type: "CTF",
                 events: {
                     connect: {
-                        id: event.id
+                        id: eventId
                     }
                 },
                 user: {
