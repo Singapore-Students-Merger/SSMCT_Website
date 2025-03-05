@@ -3,7 +3,7 @@ import Link from 'next/link';
 interface CardProps {
     info: {
         link: string;
-        thumbnail?: string;
+        thumbnail?: string | null;
         category: string;
         title: string;
         description: string;

@@ -1,5 +1,10 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/(pages)/members/page": "app/(pages)/members/page.js"
+  "/icon.ico/route": "app/icon.ico/route.js",
+  "/api/blogs/images/[...path]/route": "app/api/blogs/images/[...path]/route.js",
+  "/(pages)/auth/signin/page": "app/(pages)/auth/signin/page.js",
+  "/(pages)/create/blog/page": "app/(pages)/create/blog/page.js",
+  "/(pages)/blogs/page": "app/(pages)/blogs/page.js",
+  "/(pages)/achievements/page": "app/(pages)/achievements/page.js",
+  "/(pages)/blogs/view/[id]/page": "app/(pages)/blogs/view/[id]/page.js"
 }

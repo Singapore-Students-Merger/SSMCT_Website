@@ -3,7 +3,7 @@ import sanitizeFilePath from "@/utils/sanitizeFilePath";
 import { promises as fs } from "fs";
 import { join } from "path";
 
-const baseDir = join(process.cwd(), "uploads/writeups/images");
+const baseDir = join(process.cwd(), "uploads/blogs/images");
 
 export async function GET(req: Request, { params }: { params: Promise<{ path: string[] }> }) {
     const newParams = await params;

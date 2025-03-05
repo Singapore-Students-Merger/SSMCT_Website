@@ -28,14 +28,14 @@ const admins: Members[] = [
     roles: ["admin"],
   },
   {
-      title: "Founder of SSMCT",
+      title: "Admin",
       username: "gatari",
       realName: "gatari",
       image: "/member/gatari.png",
       roles: ["admin"],
   },
   {
-    title: "Founder of SSMCT",
+    title: "Admin",
     username: "bo wen",
     realName: "bo wen",
     image: "/member/bowen.png",
@@ -108,6 +108,9 @@ export const metadata: Metadata = {
     ,"Members"
   ],
 };
+
+
+export const dynamic = "force-dynamic";
 
 export default async function MembersPage() {
   const members = await getCachedMembers(); 

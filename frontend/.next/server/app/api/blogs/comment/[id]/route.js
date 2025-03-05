@@ -1,1 +1,265 @@
-(()=>{var e={};e.id=7291,e.ids=[7291],e.modules={96330:e=>{"use strict";e.exports=require("@prisma/client")},10846:e=>{"use strict";e.exports=require("next/dist/compiled/next-server/app-page.runtime.prod.js")},44870:e=>{"use strict";e.exports=require("next/dist/compiled/next-server/app-route.runtime.prod.js")},3295:e=>{"use strict";e.exports=require("next/dist/server/app-render/after-task-async-storage.external.js")},29294:e=>{"use strict";e.exports=require("next/dist/server/app-render/work-async-storage.external.js")},63033:e=>{"use strict";e.exports=require("next/dist/server/app-render/work-unit-async-storage.external.js")},12412:e=>{"use strict";e.exports=require("assert")},79428:e=>{"use strict";e.exports=require("buffer")},55511:e=>{"use strict";e.exports=require("crypto")},94735:e=>{"use strict";e.exports=require("events")},81630:e=>{"use strict";e.exports=require("http")},55591:e=>{"use strict";e.exports=require("https")},11723:e=>{"use strict";e.exports=require("querystring")},79551:e=>{"use strict";e.exports=require("url")},28354:e=>{"use strict";e.exports=require("util")},74075:e=>{"use strict";e.exports=require("zlib")},67894:(e,r,s)=>{"use strict";s.r(r),s.d(r,{patchFetch:()=>v,routeModule:()=>g,serverHooks:()=>f,workAsyncStorage:()=>x,workUnitAsyncStorage:()=>h});var t={};s.r(t),s.d(t,{GET:()=>l,POST:()=>m});var o=s(42706),i=s(28203),n=s(45994),a=s(39187),u=s(84908),c=s(85562),d=s(30379);let p=d.z.object({content:d.z.string().min(1,"Comment cannot be empty").max(500,"Comment is too long")});async function l(e,{params:r}){try{let e=await r,s=parseInt(e.id);if(isNaN(s))return a.NextResponse.json({error:!0,message:"Invalid ID provided"},{status:400});let t=await u.A.comments.findMany({where:{blogId:s},include:{user:{select:{name:!0,image:!0}}},orderBy:{date:"desc"}});return a.NextResponse.json({data:t})}catch(e){return console.error("Unexpected error:",e instanceof Error?e.message:e),a.NextResponse.json({error:!0,message:"An unexpected error occurred"},{status:500})}}async function m(e,{params:r}){try{let s=await r,t=parseInt(s.id),o=await (0,c.j)();if(!o)return a.NextResponse.json({error:"Unauthorized. Please login."},{status:401});let i=o.user?.id;if(!i)return a.NextResponse.json({error:"Invalid session. User ID is missing."},{status:400});if(isNaN(t))return a.NextResponse.json({error:!0,message:"Invalid ID provided"},{status:400});let n=await e.json(),d=p.safeParse(n);if(!d.success)return a.NextResponse.json({error:!0,message:d.error.errors.map(e=>e.message).join(", ")},{status:400});let l=await u.A.comments.create({data:{blogId:t,comment:d.data.content,userId:i},include:{user:{select:{name:!0,image:!0}}}});return a.NextResponse.json({data:l})}catch(e){return console.error("Unexpected error:",e instanceof Error?e.message:e),a.NextResponse.json({error:!0,message:"An unexpected error occurred"},{status:500})}}let g=new o.AppRouteRouteModule({definition:{kind:i.RouteKind.APP_ROUTE,page:"/api/blogs/comment/[id]/route",pathname:"/api/blogs/comment/[id]",filename:"route",bundlePath:"app/api/blogs/comment/[id]/route"},resolvedPagePath:"C:\\Users\\czhon\\Documents\\GitHub\\SSMCT_Website\\frontend\\src\\app\\api\\blogs\\comment\\[id]\\route.ts",nextConfigOutput:"",userland:t}),{workAsyncStorage:x,workUnitAsyncStorage:h,serverHooks:f}=g;function v(){return(0,n.patchFetch)({workAsyncStorage:x,workUnitAsyncStorage:h})}},96487:()=>{},78335:()=>{},85562:(e,r,s)=>{"use strict";s.d(r,{$:()=>u,j:()=>c});var t=s(51825),o=s(64912),i=s(86259),n=s(84908);let a=async e=>{let r=process.env.DISCORD_GUILD_ID,s=await fetch("https://discord.com/api/v10/users/@me/guilds",{headers:{Authorization:`Bearer ${e}`}});if(!s.ok)throw console.error("Failed to fetch user's Discord guilds"),Error("Failed to fetch user's Discord guilds");return!!(await s.json()).some(e=>e.id===r)||(console.error("User is not in the required Discord guild"),!1)},u={adapter:(0,i.y)(n.A),pages:{signIn:"/",signOut:"/auth/signout",error:"/auth/signin",newUser:"/auth/new_user"},session:{strategy:"database"},providers:[(0,o.A)({clientId:process.env.DISCORD_CLIENT_ID,clientSecret:process.env.DISCORD_CLIENT_SECRET,authorization:{params:{scope:"identify guilds guilds.members.read"}},token:"https://discord.com/api/oauth2/token",userinfo:"https://discord.com/api/users/@me",profile:e=>({id:e.id,name:e.username,image:e.avatar?`https://cdn.discordapp.com/avatars/${e.id}/${e.avatar}.png`:null})})],callbacks:{async signIn({account:e,user:r}){if(!e||!r)return!1;if("discord"===e.provider){if(console.log(e),!e.access_token)return!1;if(!await a(e.access_token))throw Error("User is not in the required Discord guild")}return!0},session:async({session:e,user:r})=>(e?.user&&(e.user.id=r.id),e)}};function c(...e){return(0,t.getServerSession)(...e,u)}},84908:(e,r,s)=>{"use strict";s.d(r,{A:()=>o});var t=s(96330);let o=global.prisma||new t.PrismaClient({log:["query"]})}};var r=require("../../../../../webpack-runtime.js");r.C(e);var s=e=>r(r.s=e),t=r.X(0,[638,5452,6622,903],()=>s(67894));module.exports=t})();
+/*
+ * ATTENTION: An "eval-source-map" devtool has been used.
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file with attached SourceMaps in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
+(() => {
+var exports = {};
+exports.id = "app/api/blogs/comment/[id]/route";
+exports.ids = ["app/api/blogs/comment/[id]/route"];
+exports.modules = {
+
+/***/ "@prisma/client":
+/*!*********************************!*\
+  !*** external "@prisma/client" ***!
+  \*********************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("@prisma/client");
+
+/***/ }),
+
+/***/ "next/dist/compiled/next-server/app-page.runtime.dev.js":
+/*!*************************************************************************!*\
+  !*** external "next/dist/compiled/next-server/app-page.runtime.dev.js" ***!
+  \*************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("next/dist/compiled/next-server/app-page.runtime.dev.js");
+
+/***/ }),
+
+/***/ "next/dist/compiled/next-server/app-route.runtime.dev.js":
+/*!**************************************************************************!*\
+  !*** external "next/dist/compiled/next-server/app-route.runtime.dev.js" ***!
+  \**************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("next/dist/compiled/next-server/app-route.runtime.dev.js");
+
+/***/ }),
+
+/***/ "../app-render/after-task-async-storage.external":
+/*!***********************************************************************************!*\
+  !*** external "next/dist/server/app-render/after-task-async-storage.external.js" ***!
+  \***********************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("next/dist/server/app-render/after-task-async-storage.external.js");
+
+/***/ }),
+
+/***/ "../app-render/work-async-storage.external":
+/*!*****************************************************************************!*\
+  !*** external "next/dist/server/app-render/work-async-storage.external.js" ***!
+  \*****************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("next/dist/server/app-render/work-async-storage.external.js");
+
+/***/ }),
+
+/***/ "./work-unit-async-storage.external":
+/*!**********************************************************************************!*\
+  !*** external "next/dist/server/app-render/work-unit-async-storage.external.js" ***!
+  \**********************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("next/dist/server/app-render/work-unit-async-storage.external.js");
+
+/***/ }),
+
+/***/ "assert":
+/*!*************************!*\
+  !*** external "assert" ***!
+  \*************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("assert");
+
+/***/ }),
+
+/***/ "buffer":
+/*!*************************!*\
+  !*** external "buffer" ***!
+  \*************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("buffer");
+
+/***/ }),
+
+/***/ "crypto":
+/*!*************************!*\
+  !*** external "crypto" ***!
+  \*************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("crypto");
+
+/***/ }),
+
+/***/ "events":
+/*!*************************!*\
+  !*** external "events" ***!
+  \*************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("events");
+
+/***/ }),
+
+/***/ "http":
+/*!***********************!*\
+  !*** external "http" ***!
+  \***********************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("http");
+
+/***/ }),
+
+/***/ "https":
+/*!************************!*\
+  !*** external "https" ***!
+  \************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("https");
+
+/***/ }),
+
+/***/ "querystring":
+/*!******************************!*\
+  !*** external "querystring" ***!
+  \******************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("querystring");
+
+/***/ }),
+
+/***/ "url":
+/*!**********************!*\
+  !*** external "url" ***!
+  \**********************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("url");
+
+/***/ }),
+
+/***/ "util":
+/*!***********************!*\
+  !*** external "util" ***!
+  \***********************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("util");
+
+/***/ }),
+
+/***/ "zlib":
+/*!***********************!*\
+  !*** external "zlib" ***!
+  \***********************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("zlib");
+
+/***/ }),
+
+/***/ "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fblogs%2Fcomment%2F%5Bid%5D%2Froute&page=%2Fapi%2Fblogs%2Fcomment%2F%5Bid%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fblogs%2Fcomment%2F%5Bid%5D%2Froute.ts&appDir=C%3A%5CUsers%5Cczhon%5CDocuments%5CGitHub%5CSSMCT_Website%5Cfrontend%5Csrc%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=C%3A%5CUsers%5Cczhon%5CDocuments%5CGitHub%5CSSMCT_Website%5Cfrontend&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D!":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fblogs%2Fcomment%2F%5Bid%5D%2Froute&page=%2Fapi%2Fblogs%2Fcomment%2F%5Bid%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fblogs%2Fcomment%2F%5Bid%5D%2Froute.ts&appDir=C%3A%5CUsers%5Cczhon%5CDocuments%5CGitHub%5CSSMCT_Website%5Cfrontend%5Csrc%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=C%3A%5CUsers%5Cczhon%5CDocuments%5CGitHub%5CSSMCT_Website%5Cfrontend&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D! ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   patchFetch: () => (/* binding */ patchFetch),\n/* harmony export */   routeModule: () => (/* binding */ routeModule),\n/* harmony export */   serverHooks: () => (/* binding */ serverHooks),\n/* harmony export */   workAsyncStorage: () => (/* binding */ workAsyncStorage),\n/* harmony export */   workUnitAsyncStorage: () => (/* binding */ workUnitAsyncStorage)\n/* harmony export */ });\n/* harmony import */ var next_dist_server_route_modules_app_route_module_compiled__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! next/dist/server/route-modules/app-route/module.compiled */ \"(rsc)/./node_modules/next/dist/server/route-modules/app-route/module.compiled.js\");\n/* harmony import */ var next_dist_server_route_modules_app_route_module_compiled__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(next_dist_server_route_modules_app_route_module_compiled__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var next_dist_server_route_kind__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! next/dist/server/route-kind */ \"(rsc)/./node_modules/next/dist/server/route-kind.js\");\n/* harmony import */ var next_dist_server_lib_patch_fetch__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! next/dist/server/lib/patch-fetch */ \"(rsc)/./node_modules/next/dist/server/lib/patch-fetch.js\");\n/* harmony import */ var next_dist_server_lib_patch_fetch__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(next_dist_server_lib_patch_fetch__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var C_Users_czhon_Documents_GitHub_SSMCT_Website_frontend_src_app_api_blogs_comment_id_route_ts__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./src/app/api/blogs/comment/[id]/route.ts */ \"(rsc)/./src/app/api/blogs/comment/[id]/route.ts\");\n\n\n\n\n// We inject the nextConfigOutput here so that we can use them in the route\n// module.\nconst nextConfigOutput = \"\"\nconst routeModule = new next_dist_server_route_modules_app_route_module_compiled__WEBPACK_IMPORTED_MODULE_0__.AppRouteRouteModule({\n    definition: {\n        kind: next_dist_server_route_kind__WEBPACK_IMPORTED_MODULE_1__.RouteKind.APP_ROUTE,\n        page: \"/api/blogs/comment/[id]/route\",\n        pathname: \"/api/blogs/comment/[id]\",\n        filename: \"route\",\n        bundlePath: \"app/api/blogs/comment/[id]/route\"\n    },\n    resolvedPagePath: \"C:\\\\Users\\\\czhon\\\\Documents\\\\GitHub\\\\SSMCT_Website\\\\frontend\\\\src\\\\app\\\\api\\\\blogs\\\\comment\\\\[id]\\\\route.ts\",\n    nextConfigOutput,\n    userland: C_Users_czhon_Documents_GitHub_SSMCT_Website_frontend_src_app_api_blogs_comment_id_route_ts__WEBPACK_IMPORTED_MODULE_3__\n});\n// Pull out the exports that we need to expose from the module. This should\n// be eliminated when we've moved the other routes to the new format. These\n// are used to hook into the route.\nconst { workAsyncStorage, workUnitAsyncStorage, serverHooks } = routeModule;\nfunction patchFetch() {\n    return (0,next_dist_server_lib_patch_fetch__WEBPACK_IMPORTED_MODULE_2__.patchFetch)({\n        workAsyncStorage,\n        workUnitAsyncStorage\n    });\n}\n\n\n//# sourceMappingURL=app-route.js.map//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKHJzYykvLi9ub2RlX21vZHVsZXMvbmV4dC9kaXN0L2J1aWxkL3dlYnBhY2svbG9hZGVycy9uZXh0LWFwcC1sb2FkZXIvaW5kZXguanM/bmFtZT1hcHAlMkZhcGklMkZibG9ncyUyRmNvbW1lbnQlMkYlNUJpZCU1RCUyRnJvdXRlJnBhZ2U9JTJGYXBpJTJGYmxvZ3MlMkZjb21tZW50JTJGJTVCaWQlNUQlMkZyb3V0ZSZhcHBQYXRocz0mcGFnZVBhdGg9cHJpdmF0ZS1uZXh0LWFwcC1kaXIlMkZhcGklMkZibG9ncyUyRmNvbW1lbnQlMkYlNUJpZCU1RCUyRnJvdXRlLnRzJmFwcERpcj1DJTNBJTVDVXNlcnMlNUNjemhvbiU1Q0RvY3VtZW50cyU1Q0dpdEh1YiU1Q1NTTUNUX1dlYnNpdGUlNUNmcm9udGVuZCU1Q3NyYyU1Q2FwcCZwYWdlRXh0ZW5zaW9ucz10c3gmcGFnZUV4dGVuc2lvbnM9dHMmcGFnZUV4dGVuc2lvbnM9anN4JnBhZ2VFeHRlbnNpb25zPWpzJnJvb3REaXI9QyUzQSU1Q1VzZXJzJTVDY3pob24lNUNEb2N1bWVudHMlNUNHaXRIdWIlNUNTU01DVF9XZWJzaXRlJTVDZnJvbnRlbmQmaXNEZXY9dHJ1ZSZ0c2NvbmZpZ1BhdGg9dHNjb25maWcuanNvbiZiYXNlUGF0aD0mYXNzZXRQcmVmaXg9Jm5leHRDb25maWdPdXRwdXQ9JnByZWZlcnJlZFJlZ2lvbj0mbWlkZGxld2FyZUNvbmZpZz1lMzAlM0QhIiwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7O0FBQStGO0FBQ3ZDO0FBQ3FCO0FBQzJEO0FBQ3hJO0FBQ0E7QUFDQTtBQUNBLHdCQUF3Qix5R0FBbUI7QUFDM0M7QUFDQSxjQUFjLGtFQUFTO0FBQ3ZCO0FBQ0E7QUFDQTtBQUNBO0FBQ0EsS0FBSztBQUNMO0FBQ0E7QUFDQSxZQUFZO0FBQ1osQ0FBQztBQUNEO0FBQ0E7QUFDQTtBQUNBLFFBQVEsc0RBQXNEO0FBQzlEO0FBQ0EsV0FBVyw0RUFBVztBQUN0QjtBQUNBO0FBQ0EsS0FBSztBQUNMO0FBQzBGOztBQUUxRiIsInNvdXJjZXMiOlsiIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IEFwcFJvdXRlUm91dGVNb2R1bGUgfSBmcm9tIFwibmV4dC9kaXN0L3NlcnZlci9yb3V0ZS1tb2R1bGVzL2FwcC1yb3V0ZS9tb2R1bGUuY29tcGlsZWRcIjtcbmltcG9ydCB7IFJvdXRlS2luZCB9IGZyb20gXCJuZXh0L2Rpc3Qvc2VydmVyL3JvdXRlLWtpbmRcIjtcbmltcG9ydCB7IHBhdGNoRmV0Y2ggYXMgX3BhdGNoRmV0Y2ggfSBmcm9tIFwibmV4dC9kaXN0L3NlcnZlci9saWIvcGF0Y2gtZmV0Y2hcIjtcbmltcG9ydCAqIGFzIHVzZXJsYW5kIGZyb20gXCJDOlxcXFxVc2Vyc1xcXFxjemhvblxcXFxEb2N1bWVudHNcXFxcR2l0SHViXFxcXFNTTUNUX1dlYnNpdGVcXFxcZnJvbnRlbmRcXFxcc3JjXFxcXGFwcFxcXFxhcGlcXFxcYmxvZ3NcXFxcY29tbWVudFxcXFxbaWRdXFxcXHJvdXRlLnRzXCI7XG4vLyBXZSBpbmplY3QgdGhlIG5leHRDb25maWdPdXRwdXQgaGVyZSBzbyB0aGF0IHdlIGNhbiB1c2UgdGhlbSBpbiB0aGUgcm91dGVcbi8vIG1vZHVsZS5cbmNvbnN0IG5leHRDb25maWdPdXRwdXQgPSBcIlwiXG5jb25zdCByb3V0ZU1vZHVsZSA9IG5ldyBBcHBSb3V0ZVJvdXRlTW9kdWxlKHtcbiAgICBkZWZpbml0aW9uOiB7XG4gICAgICAgIGtpbmQ6IFJvdXRlS2luZC5BUFBfUk9VVEUsXG4gICAgICAgIHBhZ2U6IFwiL2FwaS9ibG9ncy9jb21tZW50L1tpZF0vcm91dGVcIixcbiAgICAgICAgcGF0aG5hbWU6IFwiL2FwaS9ibG9ncy9jb21tZW50L1tpZF1cIixcbiAgICAgICAgZmlsZW5hbWU6IFwicm91dGVcIixcbiAgICAgICAgYnVuZGxlUGF0aDogXCJhcHAvYXBpL2Jsb2dzL2NvbW1lbnQvW2lkXS9yb3V0ZVwiXG4gICAgfSxcbiAgICByZXNvbHZlZFBhZ2VQYXRoOiBcIkM6XFxcXFVzZXJzXFxcXGN6aG9uXFxcXERvY3VtZW50c1xcXFxHaXRIdWJcXFxcU1NNQ1RfV2Vic2l0ZVxcXFxmcm9udGVuZFxcXFxzcmNcXFxcYXBwXFxcXGFwaVxcXFxibG9nc1xcXFxjb21tZW50XFxcXFtpZF1cXFxccm91dGUudHNcIixcbiAgICBuZXh0Q29uZmlnT3V0cHV0LFxuICAgIHVzZXJsYW5kXG59KTtcbi8vIFB1bGwgb3V0IHRoZSBleHBvcnRzIHRoYXQgd2UgbmVlZCB0byBleHBvc2UgZnJvbSB0aGUgbW9kdWxlLiBUaGlzIHNob3VsZFxuLy8gYmUgZWxpbWluYXRlZCB3aGVuIHdlJ3ZlIG1vdmVkIHRoZSBvdGhlciByb3V0ZXMgdG8gdGhlIG5ldyBmb3JtYXQuIFRoZXNlXG4vLyBhcmUgdXNlZCB0byBob29rIGludG8gdGhlIHJvdXRlLlxuY29uc3QgeyB3b3JrQXN5bmNTdG9yYWdlLCB3b3JrVW5pdEFzeW5jU3RvcmFnZSwgc2VydmVySG9va3MgfSA9IHJvdXRlTW9kdWxlO1xuZnVuY3Rpb24gcGF0Y2hGZXRjaCgpIHtcbiAgICByZXR1cm4gX3BhdGNoRmV0Y2goe1xuICAgICAgICB3b3JrQXN5bmNTdG9yYWdlLFxuICAgICAgICB3b3JrVW5pdEFzeW5jU3RvcmFnZVxuICAgIH0pO1xufVxuZXhwb3J0IHsgcm91dGVNb2R1bGUsIHdvcmtBc3luY1N0b3JhZ2UsIHdvcmtVbml0QXN5bmNTdG9yYWdlLCBzZXJ2ZXJIb29rcywgcGF0Y2hGZXRjaCwgIH07XG5cbi8vIyBzb3VyY2VNYXBwaW5nVVJMPWFwcC1yb3V0ZS5qcy5tYXAiXSwibmFtZXMiOltdLCJpZ25vcmVMaXN0IjpbXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fblogs%2Fcomment%2F%5Bid%5D%2Froute&page=%2Fapi%2Fblogs%2Fcomment%2F%5Bid%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fblogs%2Fcomment%2F%5Bid%5D%2Froute.ts&appDir=C%3A%5CUsers%5Cczhon%5CDocuments%5CGitHub%5CSSMCT_Website%5Cfrontend%5Csrc%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=C%3A%5CUsers%5Cczhon%5CDocuments%5CGitHub%5CSSMCT_Website%5Cfrontend&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D!\n");
+
+/***/ }),
+
+/***/ "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-client-entry-loader.js?server=true!":
+/*!******************************************************************************************************!*\
+  !*** ./node_modules/next/dist/build/webpack/loaders/next-flight-client-entry-loader.js?server=true! ***!
+  \******************************************************************************************************/
+/***/ (() => {
+
+
+
+/***/ }),
+
+/***/ "(ssr)/./node_modules/next/dist/build/webpack/loaders/next-flight-client-entry-loader.js?server=true!":
+/*!******************************************************************************************************!*\
+  !*** ./node_modules/next/dist/build/webpack/loaders/next-flight-client-entry-loader.js?server=true! ***!
+  \******************************************************************************************************/
+/***/ (() => {
+
+
+
+/***/ }),
+
+/***/ "(rsc)/./src/app/api/blogs/comment/[id]/route.ts":
+/*!*************************************************!*\
+  !*** ./src/app/api/blogs/comment/[id]/route.ts ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   GET: () => (/* binding */ GET),\n/* harmony export */   POST: () => (/* binding */ POST)\n/* harmony export */ });\n/* harmony import */ var next_server__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! next/server */ \"(rsc)/./node_modules/next/dist/api/server.js\");\n/* harmony import */ var _lib_prisma__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/lib/prisma */ \"(rsc)/./src/lib/prisma.ts\");\n/* harmony import */ var _auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/auth */ \"(rsc)/./src/auth.ts\");\n/* harmony import */ var zod__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! zod */ \"(rsc)/./node_modules/zod/lib/index.mjs\");\n\n\n\n // Add schema validation\nconst commentSchema = zod__WEBPACK_IMPORTED_MODULE_3__.z.object({\n    content: zod__WEBPACK_IMPORTED_MODULE_3__.z.string().min(1, \"Comment cannot be empty\").max(500, \"Comment is too long\")\n});\nasync function GET(req, { params }) {\n    try {\n        const newParams = await params;\n        const id = parseInt(newParams.id);\n        if (isNaN(id)) {\n            return next_server__WEBPACK_IMPORTED_MODULE_0__.NextResponse.json({\n                error: true,\n                message: \"Invalid ID provided\"\n            }, {\n                status: 400\n            });\n        }\n        const comments = await _lib_prisma__WEBPACK_IMPORTED_MODULE_1__[\"default\"].comments.findMany({\n            where: {\n                blogId: id\n            },\n            include: {\n                user: {\n                    select: {\n                        name: true,\n                        image: true\n                    }\n                }\n            },\n            orderBy: {\n                date: \"desc\"\n            }\n        });\n        return next_server__WEBPACK_IMPORTED_MODULE_0__.NextResponse.json({\n            data: comments\n        });\n    } catch (error) {\n        console.error(\"Unexpected error:\", error instanceof Error ? error.message : error);\n        return next_server__WEBPACK_IMPORTED_MODULE_0__.NextResponse.json({\n            error: true,\n            message: \"An unexpected error occurred\"\n        }, {\n            status: 500\n        });\n    }\n}\nasync function POST(req, { params }) {\n    try {\n        const newParams = await params;\n        const id = parseInt(newParams.id);\n        const session = await (0,_auth__WEBPACK_IMPORTED_MODULE_2__.auth)();\n        if (!session) {\n            return next_server__WEBPACK_IMPORTED_MODULE_0__.NextResponse.json({\n                error: \"Unauthorized. Please login.\"\n            }, {\n                status: 401\n            });\n        }\n        const userId = session.user?.id;\n        if (!userId) {\n            return next_server__WEBPACK_IMPORTED_MODULE_0__.NextResponse.json({\n                error: \"Invalid session. User ID is missing.\"\n            }, {\n                status: 400\n            });\n        }\n        if (isNaN(id)) {\n            return next_server__WEBPACK_IMPORTED_MODULE_0__.NextResponse.json({\n                error: true,\n                message: \"Invalid ID provided\"\n            }, {\n                status: 400\n            });\n        }\n        const data = await req.json();\n        const parsedData = commentSchema.safeParse(data);\n        if (!parsedData.success) {\n            return next_server__WEBPACK_IMPORTED_MODULE_0__.NextResponse.json({\n                error: true,\n                message: parsedData.error.errors.map((e)=>e.message).join(\", \")\n            }, {\n                status: 400\n            });\n        }\n        const comment = await _lib_prisma__WEBPACK_IMPORTED_MODULE_1__[\"default\"].comments.create({\n            data: {\n                blogId: id,\n                comment: parsedData.data.content,\n                userId\n            },\n            include: {\n                user: {\n                    select: {\n                        name: true,\n                        image: true\n                    }\n                }\n            }\n        });\n        return next_server__WEBPACK_IMPORTED_MODULE_0__.NextResponse.json({\n            data: comment\n        });\n    } catch (error) {\n        console.error(\"Unexpected error:\", error instanceof Error ? error.message : error);\n        return next_server__WEBPACK_IMPORTED_MODULE_0__.NextResponse.json({\n            error: true,\n            message: \"An unexpected error occurred\"\n        }, {\n            status: 500\n        });\n    }\n}\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKHJzYykvLi9zcmMvYXBwL2FwaS9ibG9ncy9jb21tZW50L1tpZF0vcm91dGUudHMiLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7O0FBQTJDO0FBQ1Q7QUFDSjtBQUNOLENBQUMsd0JBQXdCO0FBRWpELE1BQU1JLGdCQUFnQkQsa0NBQUNBLENBQUNFLE1BQU0sQ0FBQztJQUMzQkMsU0FBU0gsa0NBQUNBLENBQUNJLE1BQU0sR0FBR0MsR0FBRyxDQUFDLEdBQUcsMkJBQTJCQyxHQUFHLENBQUMsS0FBSztBQUNuRTtBQUVPLGVBQWVDLElBQUlDLEdBQVksRUFBRSxFQUFFQyxNQUFNLEVBQXVDO0lBQ25GLElBQUk7UUFDQSxNQUFNQyxZQUFZLE1BQU1EO1FBQ3hCLE1BQU1FLEtBQUtDLFNBQVNGLFVBQVVDLEVBQUU7UUFFaEMsSUFBSUUsTUFBTUYsS0FBSztZQUNYLE9BQU9kLHFEQUFZQSxDQUFDaUIsSUFBSSxDQUNwQjtnQkFBRUMsT0FBTztnQkFBTUMsU0FBUztZQUFzQixHQUM5QztnQkFBRUMsUUFBUTtZQUFJO1FBRXRCO1FBRUEsTUFBTUMsV0FBVyxNQUFNcEIsbURBQU1BLENBQUNvQixRQUFRLENBQUNDLFFBQVEsQ0FBQztZQUM1Q0MsT0FBTztnQkFBRUMsUUFBUVY7WUFBRztZQUNwQlcsU0FBVTtnQkFBQ0MsTUFBTTtvQkFBQ0MsUUFBUTt3QkFBQ0MsTUFBTTt3QkFBTUMsT0FBTztvQkFBSTtnQkFBQztZQUFDO1lBQ3BEQyxTQUFTO2dCQUFFQyxNQUFNO1lBQU87UUFDNUI7UUFFQSxPQUFPL0IscURBQVlBLENBQUNpQixJQUFJLENBQUM7WUFBRWUsTUFBTVg7UUFBUztJQUM5QyxFQUFFLE9BQU9ILE9BQU87UUFDWmUsUUFBUWYsS0FBSyxDQUFDLHFCQUFxQkEsaUJBQWlCZ0IsUUFBUWhCLE1BQU1DLE9BQU8sR0FBR0Q7UUFDNUUsT0FBT2xCLHFEQUFZQSxDQUFDaUIsSUFBSSxDQUNwQjtZQUFFQyxPQUFPO1lBQU1DLFNBQVM7UUFBK0IsR0FDdkQ7WUFBRUMsUUFBUTtRQUFJO0lBRXRCO0FBQ0o7QUFLTyxlQUFlZSxLQUFLeEIsR0FBWSxFQUFFLEVBQUVDLE1BQU0sRUFBdUM7SUFDcEYsSUFBSTtRQUNBLE1BQU1DLFlBQVksTUFBTUQ7UUFDeEIsTUFBTUUsS0FBS0MsU0FBU0YsVUFBVUMsRUFBRTtRQUNoQyxNQUFNc0IsVUFBVSxNQUFNbEMsMkNBQUlBO1FBRTFCLElBQUksQ0FBQ2tDLFNBQVM7WUFDVixPQUFPcEMscURBQVlBLENBQUNpQixJQUFJLENBQUM7Z0JBQUVDLE9BQU87WUFBOEIsR0FBRztnQkFBRUUsUUFBUTtZQUFJO1FBQ3JGO1FBRUEsTUFBTWlCLFNBQVNELFFBQVFWLElBQUksRUFBRVo7UUFDN0IsSUFBSSxDQUFDdUIsUUFBUTtZQUNULE9BQU9yQyxxREFBWUEsQ0FBQ2lCLElBQUksQ0FBQztnQkFBRUMsT0FBTztZQUF1QyxHQUFHO2dCQUFFRSxRQUFRO1lBQUk7UUFDOUY7UUFFQSxJQUFJSixNQUFNRixLQUFLO1lBQ1gsT0FBT2QscURBQVlBLENBQUNpQixJQUFJLENBQ3BCO2dCQUFFQyxPQUFPO2dCQUFNQyxTQUFTO1lBQXNCLEdBQzlDO2dCQUFFQyxRQUFRO1lBQUk7UUFFdEI7UUFFQSxNQUFNWSxPQUFPLE1BQU1yQixJQUFJTSxJQUFJO1FBQzNCLE1BQU1xQixhQUFhbEMsY0FBY21DLFNBQVMsQ0FBQ1A7UUFFM0MsSUFBSSxDQUFDTSxXQUFXRSxPQUFPLEVBQUU7WUFDckIsT0FBT3hDLHFEQUFZQSxDQUFDaUIsSUFBSSxDQUNwQjtnQkFBRUMsT0FBTztnQkFBTUMsU0FBU21CLFdBQVdwQixLQUFLLENBQUN1QixNQUFNLENBQUNDLEdBQUcsQ0FBQyxDQUFDQyxJQUFNQSxFQUFFeEIsT0FBTyxFQUFFeUIsSUFBSSxDQUFDO1lBQU0sR0FDakY7Z0JBQUV4QixRQUFRO1lBQUk7UUFFdEI7UUFFQSxNQUFNeUIsVUFBVSxNQUFNNUMsbURBQU1BLENBQUNvQixRQUFRLENBQUN5QixNQUFNLENBQUM7WUFDekNkLE1BQU07Z0JBQ0ZSLFFBQVFWO2dCQUNSK0IsU0FBU1AsV0FBV04sSUFBSSxDQUFDMUIsT0FBTztnQkFDaEMrQjtZQUNKO1lBQ0FaLFNBQVM7Z0JBQUVDLE1BQU07b0JBQUVDLFFBQVE7d0JBQUVDLE1BQU07d0JBQU1DLE9BQU87b0JBQUs7Z0JBQUU7WUFBRTtRQUM3RDtRQUVBLE9BQU83QixxREFBWUEsQ0FBQ2lCLElBQUksQ0FBQztZQUFFZSxNQUFNYTtRQUFRO0lBQzdDLEVBQUUsT0FBTzNCLE9BQU87UUFDWmUsUUFBUWYsS0FBSyxDQUFDLHFCQUFxQkEsaUJBQWlCZ0IsUUFBUWhCLE1BQU1DLE9BQU8sR0FBR0Q7UUFDNUUsT0FBT2xCLHFEQUFZQSxDQUFDaUIsSUFBSSxDQUNwQjtZQUFFQyxPQUFPO1lBQU1DLFNBQVM7UUFBK0IsR0FDdkQ7WUFBRUMsUUFBUTtRQUFJO0lBRXRCO0FBQ0oiLCJzb3VyY2VzIjpbIkM6XFxVc2Vyc1xcY3pob25cXERvY3VtZW50c1xcR2l0SHViXFxTU01DVF9XZWJzaXRlXFxmcm9udGVuZFxcc3JjXFxhcHBcXGFwaVxcYmxvZ3NcXGNvbW1lbnRcXFtpZF1cXHJvdXRlLnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IE5leHRSZXNwb25zZSB9IGZyb20gXCJuZXh0L3NlcnZlclwiO1xyXG5pbXBvcnQgcHJpc21hIGZyb20gXCJAL2xpYi9wcmlzbWFcIjtcclxuaW1wb3J0IHsgYXV0aCB9IGZyb20gXCJAL2F1dGhcIjtcclxuaW1wb3J0IHsgeiB9IGZyb20gXCJ6b2RcIjsgLy8gQWRkIHNjaGVtYSB2YWxpZGF0aW9uXHJcblxyXG5jb25zdCBjb21tZW50U2NoZW1hID0gei5vYmplY3Qoe1xyXG4gICAgY29udGVudDogei5zdHJpbmcoKS5taW4oMSwgXCJDb21tZW50IGNhbm5vdCBiZSBlbXB0eVwiKS5tYXgoNTAwLCBcIkNvbW1lbnQgaXMgdG9vIGxvbmdcIiksXHJcbn0pO1xyXG5cclxuZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIEdFVChyZXE6IFJlcXVlc3QsIHsgcGFyYW1zIH06IHsgcGFyYW1zOiBQcm9taXNlPHsgaWQ6IHN0cmluZyB9PiB9KSB7XHJcbiAgICB0cnkge1xyXG4gICAgICAgIGNvbnN0IG5ld1BhcmFtcyA9IGF3YWl0IHBhcmFtcztcclxuICAgICAgICBjb25zdCBpZCA9IHBhcnNlSW50KG5ld1BhcmFtcy5pZCk7XHJcblxyXG4gICAgICAgIGlmIChpc05hTihpZCkpIHtcclxuICAgICAgICAgICAgcmV0dXJuIE5leHRSZXNwb25zZS5qc29uKFxyXG4gICAgICAgICAgICAgICAgeyBlcnJvcjogdHJ1ZSwgbWVzc2FnZTogXCJJbnZhbGlkIElEIHByb3ZpZGVkXCIgfSxcclxuICAgICAgICAgICAgICAgIHsgc3RhdHVzOiA0MDAgfVxyXG4gICAgICAgICAgICApO1xyXG4gICAgICAgIH1cclxuXHJcbiAgICAgICAgY29uc3QgY29tbWVudHMgPSBhd2FpdCBwcmlzbWEuY29tbWVudHMuZmluZE1hbnkoe1xyXG4gICAgICAgICAgICB3aGVyZTogeyBibG9nSWQ6IGlkIH0sXHJcbiAgICAgICAgICAgIGluY2x1ZGUgOiB7dXNlcjoge3NlbGVjdDoge25hbWU6IHRydWUsIGltYWdlOiB0cnVlfX19LFxyXG4gICAgICAgICAgICBvcmRlckJ5OiB7IGRhdGU6IFwiZGVzY1wiIH0sIC8vIEFkZCBvcmRlcmluZyBpZiBuZWNlc3NhcnlcclxuICAgICAgICB9KTtcclxuXHJcbiAgICAgICAgcmV0dXJuIE5leHRSZXNwb25zZS5qc29uKHsgZGF0YTogY29tbWVudHMgfSk7XHJcbiAgICB9IGNhdGNoIChlcnJvcikge1xyXG4gICAgICAgIGNvbnNvbGUuZXJyb3IoXCJVbmV4cGVjdGVkIGVycm9yOlwiLCBlcnJvciBpbnN0YW5jZW9mIEVycm9yID8gZXJyb3IubWVzc2FnZSA6IGVycm9yKTtcclxuICAgICAgICByZXR1cm4gTmV4dFJlc3BvbnNlLmpzb24oXHJcbiAgICAgICAgICAgIHsgZXJyb3I6IHRydWUsIG1lc3NhZ2U6IFwiQW4gdW5leHBlY3RlZCBlcnJvciBvY2N1cnJlZFwiIH0sXHJcbiAgICAgICAgICAgIHsgc3RhdHVzOiA1MDAgfVxyXG4gICAgICAgICk7XHJcbiAgICB9XHJcbn1cclxuXHJcblxyXG5cclxuXHJcbmV4cG9ydCBhc3luYyBmdW5jdGlvbiBQT1NUKHJlcTogUmVxdWVzdCwgeyBwYXJhbXMgfTogeyBwYXJhbXM6IFByb21pc2U8eyBpZDogc3RyaW5nIH0+IH0pIHtcclxuICAgIHRyeSB7XHJcbiAgICAgICAgY29uc3QgbmV3UGFyYW1zID0gYXdhaXQgcGFyYW1zO1xyXG4gICAgICAgIGNvbnN0IGlkID0gcGFyc2VJbnQobmV3UGFyYW1zLmlkKTtcclxuICAgICAgICBjb25zdCBzZXNzaW9uID0gYXdhaXQgYXV0aCgpO1xyXG5cclxuICAgICAgICBpZiAoIXNlc3Npb24pIHtcclxuICAgICAgICAgICAgcmV0dXJuIE5leHRSZXNwb25zZS5qc29uKHsgZXJyb3I6IFwiVW5hdXRob3JpemVkLiBQbGVhc2UgbG9naW4uXCIgfSwgeyBzdGF0dXM6IDQwMSB9KTtcclxuICAgICAgICB9XHJcblxyXG4gICAgICAgIGNvbnN0IHVzZXJJZCA9IHNlc3Npb24udXNlcj8uaWQ7XHJcbiAgICAgICAgaWYgKCF1c2VySWQpIHtcclxuICAgICAgICAgICAgcmV0dXJuIE5leHRSZXNwb25zZS5qc29uKHsgZXJyb3I6IFwiSW52YWxpZCBzZXNzaW9uLiBVc2VyIElEIGlzIG1pc3NpbmcuXCIgfSwgeyBzdGF0dXM6IDQwMCB9KTtcclxuICAgICAgICB9XHJcblxyXG4gICAgICAgIGlmIChpc05hTihpZCkpIHtcclxuICAgICAgICAgICAgcmV0dXJuIE5leHRSZXNwb25zZS5qc29uKFxyXG4gICAgICAgICAgICAgICAgeyBlcnJvcjogdHJ1ZSwgbWVzc2FnZTogXCJJbnZhbGlkIElEIHByb3ZpZGVkXCIgfSxcclxuICAgICAgICAgICAgICAgIHsgc3RhdHVzOiA0MDAgfVxyXG4gICAgICAgICAgICApO1xyXG4gICAgICAgIH1cclxuXHJcbiAgICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlcS5qc29uKCk7XHJcbiAgICAgICAgY29uc3QgcGFyc2VkRGF0YSA9IGNvbW1lbnRTY2hlbWEuc2FmZVBhcnNlKGRhdGEpO1xyXG5cclxuICAgICAgICBpZiAoIXBhcnNlZERhdGEuc3VjY2Vzcykge1xyXG4gICAgICAgICAgICByZXR1cm4gTmV4dFJlc3BvbnNlLmpzb24oXHJcbiAgICAgICAgICAgICAgICB7IGVycm9yOiB0cnVlLCBtZXNzYWdlOiBwYXJzZWREYXRhLmVycm9yLmVycm9ycy5tYXAoKGUpID0+IGUubWVzc2FnZSkuam9pbihcIiwgXCIpIH0sXHJcbiAgICAgICAgICAgICAgICB7IHN0YXR1czogNDAwIH1cclxuICAgICAgICAgICAgKTtcclxuICAgICAgICB9XHJcblxyXG4gICAgICAgIGNvbnN0IGNvbW1lbnQgPSBhd2FpdCBwcmlzbWEuY29tbWVudHMuY3JlYXRlKHtcclxuICAgICAgICAgICAgZGF0YToge1xyXG4gICAgICAgICAgICAgICAgYmxvZ0lkOiBpZCxcclxuICAgICAgICAgICAgICAgIGNvbW1lbnQ6IHBhcnNlZERhdGEuZGF0YS5jb250ZW50LFxyXG4gICAgICAgICAgICAgICAgdXNlcklkLFxyXG4gICAgICAgICAgICB9LFxyXG4gICAgICAgICAgICBpbmNsdWRlOiB7IHVzZXI6IHsgc2VsZWN0OiB7IG5hbWU6IHRydWUsIGltYWdlOiB0cnVlIH0gfSB9LFxyXG4gICAgICAgIH0pO1xyXG5cclxuICAgICAgICByZXR1cm4gTmV4dFJlc3BvbnNlLmpzb24oeyBkYXRhOiBjb21tZW50IH0pO1xyXG4gICAgfSBjYXRjaCAoZXJyb3IpIHtcclxuICAgICAgICBjb25zb2xlLmVycm9yKFwiVW5leHBlY3RlZCBlcnJvcjpcIiwgZXJyb3IgaW5zdGFuY2VvZiBFcnJvciA/IGVycm9yLm1lc3NhZ2UgOiBlcnJvcik7XHJcbiAgICAgICAgcmV0dXJuIE5leHRSZXNwb25zZS5qc29uKFxyXG4gICAgICAgICAgICB7IGVycm9yOiB0cnVlLCBtZXNzYWdlOiBcIkFuIHVuZXhwZWN0ZWQgZXJyb3Igb2NjdXJyZWRcIiB9LFxyXG4gICAgICAgICAgICB7IHN0YXR1czogNTAwIH1cclxuICAgICAgICApO1xyXG4gICAgfVxyXG59XHJcbiJdLCJuYW1lcyI6WyJOZXh0UmVzcG9uc2UiLCJwcmlzbWEiLCJhdXRoIiwieiIsImNvbW1lbnRTY2hlbWEiLCJvYmplY3QiLCJjb250ZW50Iiwic3RyaW5nIiwibWluIiwibWF4IiwiR0VUIiwicmVxIiwicGFyYW1zIiwibmV3UGFyYW1zIiwiaWQiLCJwYXJzZUludCIsImlzTmFOIiwianNvbiIsImVycm9yIiwibWVzc2FnZSIsInN0YXR1cyIsImNvbW1lbnRzIiwiZmluZE1hbnkiLCJ3aGVyZSIsImJsb2dJZCIsImluY2x1ZGUiLCJ1c2VyIiwic2VsZWN0IiwibmFtZSIsImltYWdlIiwib3JkZXJCeSIsImRhdGUiLCJkYXRhIiwiY29uc29sZSIsIkVycm9yIiwiUE9TVCIsInNlc3Npb24iLCJ1c2VySWQiLCJwYXJzZWREYXRhIiwic2FmZVBhcnNlIiwic3VjY2VzcyIsImVycm9ycyIsIm1hcCIsImUiLCJqb2luIiwiY29tbWVudCIsImNyZWF0ZSJdLCJpZ25vcmVMaXN0IjpbXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///(rsc)/./src/app/api/blogs/comment/[id]/route.ts\n");
+
+/***/ }),
+
+/***/ "(rsc)/./src/auth.ts":
+/*!*********************!*\
+  !*** ./src/auth.ts ***!
+  \*********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   auth: () => (/* binding */ auth),\n/* harmony export */   config: () => (/* binding */ config)\n/* harmony export */ });\n/* harmony import */ var next_auth__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! next-auth */ \"(rsc)/./node_modules/next-auth/index.js\");\n/* harmony import */ var next_auth__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(next_auth__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var next_auth_providers_discord__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! next-auth/providers/discord */ \"(rsc)/./node_modules/next-auth/providers/discord.js\");\n/* harmony import */ var _next_auth_prisma_adapter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @next-auth/prisma-adapter */ \"(rsc)/./node_modules/@next-auth/prisma-adapter/dist/index.js\");\n/* harmony import */ var _lib_prisma__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/lib/prisma */ \"(rsc)/./src/lib/prisma.ts\");\n\n\n\n\n// You'll need to import and pass this\n// to `NextAuth` in `app/api/auth/[...nextauth]/route.ts`\nconst userIsInSSM = async (access_token)=>{\n    const guildId = process.env.DISCORD_GUILD_ID; // Your Discord guild ID\n    const apiUrl = \"https://discord.com/api/v10/users/@me/guilds\";\n    // Fetch user's guilds\n    const response = await fetch(apiUrl, {\n        headers: {\n            Authorization: `Bearer ${access_token}`\n        }\n    });\n    if (!response.ok) {\n        console.error(\"Failed to fetch user's Discord guilds\");\n        throw new Error(\"Failed to fetch user's Discord guilds\");\n    }\n    const guilds = await response.json();\n    const isInGuild = guilds.some((guild)=>guild.id === guildId);\n    if (!isInGuild) {\n        console.error(\"User is not in the required Discord guild\");\n        return false;\n    }\n    return true;\n};\nconst config = {\n    adapter: (0,_next_auth_prisma_adapter__WEBPACK_IMPORTED_MODULE_2__.PrismaAdapter)(_lib_prisma__WEBPACK_IMPORTED_MODULE_3__[\"default\"]),\n    pages: {\n        signIn: '/',\n        signOut: '/auth/signout',\n        error: '/auth/signin',\n        newUser: '/auth/new_user' // New users will be directed here on first sign in (leave the property out if not of interest)\n    },\n    session: {\n        strategy: \"database\"\n    },\n    providers: [\n        (0,next_auth_providers_discord__WEBPACK_IMPORTED_MODULE_1__[\"default\"])({\n            clientId: process.env.DISCORD_CLIENT_ID,\n            clientSecret: process.env.DISCORD_CLIENT_SECRET,\n            authorization: {\n                params: {\n                    scope: 'identify guilds guilds.members.read'\n                }\n            },\n            token: \"https://discord.com/api/oauth2/token\",\n            userinfo: \"https://discord.com/api/users/@me\",\n            profile: (profile)=>{\n                return {\n                    id: profile.id,\n                    name: profile.username,\n                    image: profile.avatar ? `https://cdn.discordapp.com/avatars/${profile.id}/${profile.avatar}.png` : null\n                };\n            }\n        })\n    ],\n    callbacks: {\n        async signIn ({ account, user }) {\n            if (!account || !user) {\n                return false;\n            }\n            if (account.provider === \"discord\") {\n                console.log(account);\n                // const discordId = account.providerAccountId;\n                if (!account.access_token) {\n                    return false;\n                }\n                const fromSSM = await userIsInSSM(account.access_token);\n                if (!fromSSM) {\n                    throw new Error(\"User is not in the required Discord guild\");\n                }\n            // await prisma.user.update({\n            //   where: { id: user.id },\n            //   data: {\n            //     discordId,\n            //   },\n            // });\n            }\n            return true; // Allow sign-in\n        },\n        async session ({ session, user }) {\n            if (session?.user) {\n                session.user.id = user.id;\n            // session.user.discordId = user.discordId; // Include Discord ID in the session\n            }\n            return session;\n        }\n    }\n};\n// Use it in server contexts\nfunction auth(...args) {\n    return (0,next_auth__WEBPACK_IMPORTED_MODULE_0__.getServerSession)(...args, config);\n}\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKHJzYykvLi9zcmMvYXV0aC50cyIsIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7O0FBTWlFO0FBQ1A7QUFDQTtBQUN4QjtBQVVsQyxzQ0FBc0M7QUFDdEMseURBQXlEO0FBQ3pELE1BQU1JLGNBQWMsT0FBT0M7SUFDekIsTUFBTUMsVUFBVUMsUUFBUUMsR0FBRyxDQUFDQyxnQkFBZ0IsRUFBRSx3QkFBd0I7SUFDcEUsTUFBTUMsU0FBUztJQUVmLHNCQUFzQjtJQUN0QixNQUFNQyxXQUFXLE1BQU1DLE1BQU1GLFFBQVE7UUFDbkNHLFNBQVM7WUFDUEMsZUFBZSxDQUFDLE9BQU8sRUFBRVQsY0FBYztRQUN6QztJQUNGO0lBRUEsSUFBSSxDQUFDTSxTQUFTSSxFQUFFLEVBQUU7UUFDaEJDLFFBQVFDLEtBQUssQ0FBQztRQUNkLE1BQU0sSUFBSUMsTUFBTTtJQUNsQjtJQUtBLE1BQU1DLFNBQWtCLE1BQU1SLFNBQVNTLElBQUk7SUFDM0MsTUFBTUMsWUFBcUJGLE9BQU9HLElBQUksQ0FBQyxDQUFDQyxRQUFpQkEsTUFBTUMsRUFBRSxLQUFLbEI7SUFDdEUsSUFBSSxDQUFDZSxXQUFXO1FBQ2RMLFFBQVFDLEtBQUssQ0FBQztRQUNkLE9BQU87SUFDVDtJQUNBLE9BQU87QUFDWDtBQUdPLE1BQU1RLFNBQVM7SUFDcEJDLFNBQVN4Qix3RUFBYUEsQ0FBQ0MsbURBQU1BO0lBQzdCd0IsT0FBTztRQUNMQyxRQUFRO1FBQ1JDLFNBQVM7UUFDVFosT0FBTztRQUNQYSxTQUFTLGlCQUFpQiwrRkFBK0Y7SUFDM0g7SUFDQUMsU0FBUztRQUNQQyxVQUFVO0lBQ1o7SUFDQUMsV0FBVztRQUNUaEMsdUVBQWVBLENBQUM7WUFDZGlDLFVBQVUzQixRQUFRQyxHQUFHLENBQUMyQixpQkFBaUI7WUFDdkNDLGNBQWM3QixRQUFRQyxHQUFHLENBQUM2QixxQkFBcUI7WUFDL0NDLGVBQWU7Z0JBQUVDLFFBQVE7b0JBQUVDLE9BQU87Z0JBQXNDO1lBQUM7WUFDekVDLE9BQU87WUFDUEMsVUFBVTtZQUNWQyxTQUFTLENBQUNBO2dCQUNSLE9BQU87b0JBQ0xuQixJQUFJbUIsUUFBUW5CLEVBQUU7b0JBQ2RvQixNQUFNRCxRQUFRRSxRQUFRO29CQUN0QkMsT0FBT0gsUUFBUUksTUFBTSxHQUNqQixDQUFDLG1DQUFtQyxFQUFFSixRQUFRbkIsRUFBRSxDQUFDLENBQUMsRUFBRW1CLFFBQVFJLE1BQU0sQ0FBQyxJQUFJLENBQUMsR0FDeEU7Z0JBQ047WUFDRjtRQUNGO0tBQ0Q7SUFDREMsV0FBVztRQUNULE1BQU1wQixRQUFPLEVBQUVxQixPQUFPLEVBQUVDLElBQUksRUFBRTtZQUM1QixJQUFJLENBQUNELFdBQVcsQ0FBQ0MsTUFBTTtnQkFDckIsT0FBTztZQUNUO1lBQ0EsSUFBSUQsUUFBUUUsUUFBUSxLQUFLLFdBQVc7Z0JBQ2xDbkMsUUFBUW9DLEdBQUcsQ0FBQ0g7Z0JBQ1osK0NBQStDO2dCQUMvQyxJQUFJLENBQUNBLFFBQVE1QyxZQUFZLEVBQUU7b0JBQ3pCLE9BQU87Z0JBQ1Q7Z0JBQ0EsTUFBTWdELFVBQVUsTUFBTWpELFlBQVk2QyxRQUFRNUMsWUFBWTtnQkFDdEQsSUFBSSxDQUFDZ0QsU0FBUztvQkFDWixNQUFNLElBQUluQyxNQUFNO2dCQUNsQjtZQUNBLDZCQUE2QjtZQUM3Qiw0QkFBNEI7WUFDNUIsWUFBWTtZQUNaLGlCQUFpQjtZQUNqQixPQUFPO1lBQ1AsTUFBTTtZQUdSO1lBRUEsT0FBTyxNQUFNLGdCQUFnQjtRQUMvQjtRQUNBLE1BQU1hLFNBQVEsRUFBRUEsT0FBTyxFQUFFbUIsSUFBSSxFQUFFO1lBQzdCLElBQUluQixTQUFTbUIsTUFBTTtnQkFDakJuQixRQUFRbUIsSUFBSSxDQUFDMUIsRUFBRSxHQUFHMEIsS0FBSzFCLEVBQUU7WUFDekIsZ0ZBQWdGO1lBQ2xGO1lBQ0EsT0FBT087UUFDVDtJQUVGO0FBQ0YsRUFBMkI7QUFFM0IsNEJBQTRCO0FBQ3JCLFNBQVN1QixLQUNkLEdBQUdDLElBR0c7SUFFTixPQUFPdkQsMkRBQWdCQSxJQUFJdUQsTUFBTTlCO0FBQ25DIiwic291cmNlcyI6WyJDOlxcVXNlcnNcXGN6aG9uXFxEb2N1bWVudHNcXEdpdEh1YlxcU1NNQ1RfV2Vic2l0ZVxcZnJvbnRlbmRcXHNyY1xcYXV0aC50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgdHlwZSB7XHJcbiAgR2V0U2VydmVyU2lkZVByb3BzQ29udGV4dCxcclxuICBOZXh0QXBpUmVxdWVzdCxcclxuICBOZXh0QXBpUmVzcG9uc2UsXHJcbn0gZnJvbSBcIm5leHRcIlxyXG5pbXBvcnQgdHlwZSB7IE5leHRBdXRoT3B0aW9ucyB9IGZyb20gXCJuZXh0LWF1dGhcIlxyXG5pbXBvcnQgeyBnZXRTZXJ2ZXJTZXNzaW9uLCB0eXBlIERlZmF1bHRTZXNzaW9uIH0gZnJvbSBcIm5leHQtYXV0aFwiXHJcbmltcG9ydCBEaXNjb3JkUHJvdmlkZXIgZnJvbSBcIm5leHQtYXV0aC9wcm92aWRlcnMvZGlzY29yZFwiO1xyXG5pbXBvcnQgeyBQcmlzbWFBZGFwdGVyIH0gZnJvbSBcIkBuZXh0LWF1dGgvcHJpc21hLWFkYXB0ZXJcIjtcclxuaW1wb3J0IHByaXNtYSBmcm9tIFwiQC9saWIvcHJpc21hXCI7XHJcbmRlY2xhcmUgbW9kdWxlIFwibmV4dC1hdXRoXCIge1xyXG4gIGludGVyZmFjZSBTZXNzaW9uIHtcclxuICAgIHVzZXI6IHtcclxuICAgICAgaWQ6IHN0cmluZztcclxuICAgICAgZGlzY29yZElkPzogc3RyaW5nO1xyXG4gICAgfSAmIERlZmF1bHRTZXNzaW9uW1widXNlclwiXTtcclxuICB9XHJcbn1cclxuXHJcbi8vIFlvdSdsbCBuZWVkIHRvIGltcG9ydCBhbmQgcGFzcyB0aGlzXHJcbi8vIHRvIGBOZXh0QXV0aGAgaW4gYGFwcC9hcGkvYXV0aC9bLi4ubmV4dGF1dGhdL3JvdXRlLnRzYFxyXG5jb25zdCB1c2VySXNJblNTTSA9IGFzeW5jIChhY2Nlc3NfdG9rZW46IHN0cmluZykgPT4ge1xyXG4gIGNvbnN0IGd1aWxkSWQgPSBwcm9jZXNzLmVudi5ESVNDT1JEX0dVSUxEX0lEOyAvLyBZb3VyIERpc2NvcmQgZ3VpbGQgSURcclxuICAgIGNvbnN0IGFwaVVybCA9IFwiaHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvdjEwL3VzZXJzL0BtZS9ndWlsZHNcIjtcclxuXHJcbiAgICAvLyBGZXRjaCB1c2VyJ3MgZ3VpbGRzXHJcbiAgICBjb25zdCByZXNwb25zZSA9IGF3YWl0IGZldGNoKGFwaVVybCwge1xyXG4gICAgICBoZWFkZXJzOiB7XHJcbiAgICAgICAgQXV0aG9yaXphdGlvbjogYEJlYXJlciAke2FjY2Vzc190b2tlbn1gLFxyXG4gICAgICB9LFxyXG4gICAgfSk7XHJcblxyXG4gICAgaWYgKCFyZXNwb25zZS5vaykge1xyXG4gICAgICBjb25zb2xlLmVycm9yKFwiRmFpbGVkIHRvIGZldGNoIHVzZXIncyBEaXNjb3JkIGd1aWxkc1wiKTtcclxuICAgICAgdGhyb3cgbmV3IEVycm9yKFwiRmFpbGVkIHRvIGZldGNoIHVzZXIncyBEaXNjb3JkIGd1aWxkc1wiKTtcclxuICAgIH1cclxuICAgIGludGVyZmFjZSBHdWlsZCB7XHJcbiAgICAgIGlkOiBzdHJpbmc7XHJcbiAgICB9XHJcblxyXG4gICAgY29uc3QgZ3VpbGRzOiBHdWlsZFtdID0gYXdhaXQgcmVzcG9uc2UuanNvbigpO1xyXG4gICAgY29uc3QgaXNJbkd1aWxkOiBib29sZWFuID0gZ3VpbGRzLnNvbWUoKGd1aWxkOiBHdWlsZCkgPT4gZ3VpbGQuaWQgPT09IGd1aWxkSWQpO1xyXG4gICAgaWYgKCFpc0luR3VpbGQpIHtcclxuICAgICAgY29uc29sZS5lcnJvcihcIlVzZXIgaXMgbm90IGluIHRoZSByZXF1aXJlZCBEaXNjb3JkIGd1aWxkXCIpO1xyXG4gICAgICByZXR1cm4gZmFsc2VcclxuICAgIH1cclxuICAgIHJldHVybiB0cnVlO1xyXG59XHJcblxyXG5cclxuZXhwb3J0IGNvbnN0IGNvbmZpZyA9IHtcclxuICBhZGFwdGVyOiBQcmlzbWFBZGFwdGVyKHByaXNtYSksXHJcbiAgcGFnZXM6IHtcclxuICAgIHNpZ25JbjogJy8nLFxyXG4gICAgc2lnbk91dDogJy9hdXRoL3NpZ25vdXQnLFxyXG4gICAgZXJyb3I6ICcvYXV0aC9zaWduaW4nLCAvLyBFcnJvciBjb2RlIHBhc3NlZCBpbiBxdWVyeSBzdHJpbmcgYXMgP2Vycm9yPVxyXG4gICAgbmV3VXNlcjogJy9hdXRoL25ld191c2VyJyAvLyBOZXcgdXNlcnMgd2lsbCBiZSBkaXJlY3RlZCBoZXJlIG9uIGZpcnN0IHNpZ24gaW4gKGxlYXZlIHRoZSBwcm9wZXJ0eSBvdXQgaWYgbm90IG9mIGludGVyZXN0KVxyXG4gIH0sXHJcbiAgc2Vzc2lvbjoge1xyXG4gICAgc3RyYXRlZ3k6IFwiZGF0YWJhc2VcIlxyXG4gIH0sXHJcbiAgcHJvdmlkZXJzOiBbXHJcbiAgICBEaXNjb3JkUHJvdmlkZXIoe1xyXG4gICAgICBjbGllbnRJZDogcHJvY2Vzcy5lbnYuRElTQ09SRF9DTElFTlRfSUQhLFxyXG4gICAgICBjbGllbnRTZWNyZXQ6IHByb2Nlc3MuZW52LkRJU0NPUkRfQ0xJRU5UX1NFQ1JFVCEsXHJcbiAgICAgIGF1dGhvcml6YXRpb246IHsgcGFyYW1zOiB7IHNjb3BlOiAnaWRlbnRpZnkgZ3VpbGRzIGd1aWxkcy5tZW1iZXJzLnJlYWQnIH19LFxyXG4gICAgICB0b2tlbjogXCJodHRwczovL2Rpc2NvcmQuY29tL2FwaS9vYXV0aDIvdG9rZW5cIixcclxuICAgICAgdXNlcmluZm86IFwiaHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvdXNlcnMvQG1lXCIsXHJcbiAgICAgIHByb2ZpbGU6IChwcm9maWxlKSA9PiB7XHJcbiAgICAgICAgcmV0dXJuIHtcclxuICAgICAgICAgIGlkOiBwcm9maWxlLmlkLFxyXG4gICAgICAgICAgbmFtZTogcHJvZmlsZS51c2VybmFtZSxcclxuICAgICAgICAgIGltYWdlOiBwcm9maWxlLmF2YXRhclxyXG4gICAgICAgICAgICA/IGBodHRwczovL2Nkbi5kaXNjb3JkYXBwLmNvbS9hdmF0YXJzLyR7cHJvZmlsZS5pZH0vJHtwcm9maWxlLmF2YXRhcn0ucG5nYFxyXG4gICAgICAgICAgICA6IG51bGwsXHJcbiAgICAgICAgfVxyXG4gICAgICB9IFxyXG4gICAgfSksXHJcbiAgXSxcclxuICBjYWxsYmFja3M6IHtcclxuICAgIGFzeW5jIHNpZ25Jbih7IGFjY291bnQsIHVzZXIgfSkge1xyXG4gICAgICBpZiAoIWFjY291bnQgfHwgIXVzZXIpIHtcclxuICAgICAgICByZXR1cm4gZmFsc2U7XHJcbiAgICAgIH1cclxuICAgICAgaWYgKGFjY291bnQucHJvdmlkZXIgPT09IFwiZGlzY29yZFwiKSB7XHJcbiAgICAgICAgY29uc29sZS5sb2coYWNjb3VudClcclxuICAgICAgICAvLyBjb25zdCBkaXNjb3JkSWQgPSBhY2NvdW50LnByb3ZpZGVyQWNjb3VudElkO1xyXG4gICAgICAgIGlmICghYWNjb3VudC5hY2Nlc3NfdG9rZW4pIHtcclxuICAgICAgICAgIHJldHVybiBmYWxzZTtcclxuICAgICAgICB9XHJcbiAgICAgICAgY29uc3QgZnJvbVNTTSA9IGF3YWl0IHVzZXJJc0luU1NNKGFjY291bnQuYWNjZXNzX3Rva2VuKTtcclxuICAgICAgICBpZiAoIWZyb21TU00pIHtcclxuICAgICAgICAgIHRocm93IG5ldyBFcnJvcihcIlVzZXIgaXMgbm90IGluIHRoZSByZXF1aXJlZCBEaXNjb3JkIGd1aWxkXCIpO1xyXG4gICAgICAgIH1cclxuICAgICAgICAvLyBhd2FpdCBwcmlzbWEudXNlci51cGRhdGUoe1xyXG4gICAgICAgIC8vICAgd2hlcmU6IHsgaWQ6IHVzZXIuaWQgfSxcclxuICAgICAgICAvLyAgIGRhdGE6IHtcclxuICAgICAgICAvLyAgICAgZGlzY29yZElkLFxyXG4gICAgICAgIC8vICAgfSxcclxuICAgICAgICAvLyB9KTtcclxuICAgICAgICBcclxuXHJcbiAgICAgIH1cclxuXHJcbiAgICAgIHJldHVybiB0cnVlOyAvLyBBbGxvdyBzaWduLWluXHJcbiAgICB9LFxyXG4gICAgYXN5bmMgc2Vzc2lvbih7IHNlc3Npb24sIHVzZXIgfSkge1xyXG4gICAgICBpZiAoc2Vzc2lvbj8udXNlcikge1xyXG4gICAgICAgIHNlc3Npb24udXNlci5pZCA9IHVzZXIuaWQ7XHJcbiAgICAgICAgLy8gc2Vzc2lvbi51c2VyLmRpc2NvcmRJZCA9IHVzZXIuZGlzY29yZElkOyAvLyBJbmNsdWRlIERpc2NvcmQgSUQgaW4gdGhlIHNlc3Npb25cclxuICAgICAgfVxyXG4gICAgICByZXR1cm4gc2Vzc2lvbjtcclxuICAgIH0sXHJcbiAgICBcclxuICB9LFxyXG59IHNhdGlzZmllcyBOZXh0QXV0aE9wdGlvbnNcclxuXHJcbi8vIFVzZSBpdCBpbiBzZXJ2ZXIgY29udGV4dHNcclxuZXhwb3J0IGZ1bmN0aW9uIGF1dGgoXHJcbiAgLi4uYXJnczpcclxuICAgIHwgW0dldFNlcnZlclNpZGVQcm9wc0NvbnRleHRbXCJyZXFcIl0sIEdldFNlcnZlclNpZGVQcm9wc0NvbnRleHRbXCJyZXNcIl1dXHJcbiAgICB8IFtOZXh0QXBpUmVxdWVzdCwgTmV4dEFwaVJlc3BvbnNlXVxyXG4gICAgfCBbXVxyXG4pIHtcclxuICByZXR1cm4gZ2V0U2VydmVyU2Vzc2lvbiguLi5hcmdzLCBjb25maWcpXHJcbn0iXSwibmFtZXMiOlsiZ2V0U2VydmVyU2Vzc2lvbiIsIkRpc2NvcmRQcm92aWRlciIsIlByaXNtYUFkYXB0ZXIiLCJwcmlzbWEiLCJ1c2VySXNJblNTTSIsImFjY2Vzc190b2tlbiIsImd1aWxkSWQiLCJwcm9jZXNzIiwiZW52IiwiRElTQ09SRF9HVUlMRF9JRCIsImFwaVVybCIsInJlc3BvbnNlIiwiZmV0Y2giLCJoZWFkZXJzIiwiQXV0aG9yaXphdGlvbiIsIm9rIiwiY29uc29sZSIsImVycm9yIiwiRXJyb3IiLCJndWlsZHMiLCJqc29uIiwiaXNJbkd1aWxkIiwic29tZSIsImd1aWxkIiwiaWQiLCJjb25maWciLCJhZGFwdGVyIiwicGFnZXMiLCJzaWduSW4iLCJzaWduT3V0IiwibmV3VXNlciIsInNlc3Npb24iLCJzdHJhdGVneSIsInByb3ZpZGVycyIsImNsaWVudElkIiwiRElTQ09SRF9DTElFTlRfSUQiLCJjbGllbnRTZWNyZXQiLCJESVNDT1JEX0NMSUVOVF9TRUNSRVQiLCJhdXRob3JpemF0aW9uIiwicGFyYW1zIiwic2NvcGUiLCJ0b2tlbiIsInVzZXJpbmZvIiwicHJvZmlsZSIsIm5hbWUiLCJ1c2VybmFtZSIsImltYWdlIiwiYXZhdGFyIiwiY2FsbGJhY2tzIiwiYWNjb3VudCIsInVzZXIiLCJwcm92aWRlciIsImxvZyIsImZyb21TU00iLCJhdXRoIiwiYXJncyJdLCJpZ25vcmVMaXN0IjpbXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///(rsc)/./src/auth.ts\n");
+
+/***/ }),
+
+/***/ "(rsc)/./src/lib/prisma.ts":
+/*!***************************!*\
+  !*** ./src/lib/prisma.ts ***!
+  \***************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__),\n/* harmony export */   prisma: () => (/* binding */ prisma)\n/* harmony export */ });\n/* harmony import */ var _prisma_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @prisma/client */ \"@prisma/client\");\n/* harmony import */ var _prisma_client__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_prisma_client__WEBPACK_IMPORTED_MODULE_0__);\n\nconst globalForPrisma = global;\nconst prisma = globalForPrisma.prisma || new _prisma_client__WEBPACK_IMPORTED_MODULE_0__.PrismaClient({\n    log: [\n        \"query\"\n    ]\n});\nif (true) globalForPrisma.prisma = prisma;\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (prisma);\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKHJzYykvLi9zcmMvbGliL3ByaXNtYS50cyIsIm1hcHBpbmdzIjoiOzs7Ozs7O0FBQThDO0FBRTlDLE1BQU1DLGtCQUFrQkM7QUFFakIsTUFBTUMsU0FDWEYsZ0JBQWdCRSxNQUFNLElBQ3RCLElBQUlILHdEQUFZQSxDQUFDO0lBQ2ZJLEtBQUs7UUFBQztLQUFRO0FBQ2hCLEdBQUc7QUFFTCxJQUFJQyxJQUFxQyxFQUFFSixnQkFBZ0JFLE1BQU0sR0FBR0E7QUFFcEUsaUVBQWVBLE1BQU1BLEVBQUMiLCJzb3VyY2VzIjpbIkM6XFxVc2Vyc1xcY3pob25cXERvY3VtZW50c1xcR2l0SHViXFxTU01DVF9XZWJzaXRlXFxmcm9udGVuZFxcc3JjXFxsaWJcXHByaXNtYS50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBQcmlzbWFDbGllbnQgfSBmcm9tIFwiQHByaXNtYS9jbGllbnRcIjtcclxuXHJcbmNvbnN0IGdsb2JhbEZvclByaXNtYSA9IGdsb2JhbCBhcyB1bmtub3duIGFzIHsgcHJpc21hOiBQcmlzbWFDbGllbnQgfTtcclxuXHJcbmV4cG9ydCBjb25zdCBwcmlzbWEgPVxyXG4gIGdsb2JhbEZvclByaXNtYS5wcmlzbWEgfHxcclxuICBuZXcgUHJpc21hQ2xpZW50KHtcclxuICAgIGxvZzogW1wicXVlcnlcIl0sXHJcbiAgfSk7XHJcblxyXG5pZiAocHJvY2Vzcy5lbnYuTk9ERV9FTlYgIT09IFwicHJvZHVjdGlvblwiKSBnbG9iYWxGb3JQcmlzbWEucHJpc21hID0gcHJpc21hO1xyXG5cclxuZXhwb3J0IGRlZmF1bHQgcHJpc21hO1xyXG4iXSwibmFtZXMiOlsiUHJpc21hQ2xpZW50IiwiZ2xvYmFsRm9yUHJpc21hIiwiZ2xvYmFsIiwicHJpc21hIiwibG9nIiwicHJvY2VzcyJdLCJpZ25vcmVMaXN0IjpbXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///(rsc)/./src/lib/prisma.ts\n");
+
+/***/ })
+
+};
+;
+
+// load runtime
+var __webpack_require__ = require("../../../../../webpack-runtime.js");
+__webpack_require__.C(exports);
+var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
+var __webpack_exports__ = __webpack_require__.X(0, ["vendor-chunks/next","vendor-chunks/next-auth","vendor-chunks/@babel","vendor-chunks/jose","vendor-chunks/openid-client","vendor-chunks/oauth","vendor-chunks/preact","vendor-chunks/uuid","vendor-chunks/@next-auth","vendor-chunks/yallist","vendor-chunks/preact-render-to-string","vendor-chunks/cookie","vendor-chunks/oidc-token-hash","vendor-chunks/@panva","vendor-chunks/zod"], () => (__webpack_exec__("(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fblogs%2Fcomment%2F%5Bid%5D%2Froute&page=%2Fapi%2Fblogs%2Fcomment%2F%5Bid%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fblogs%2Fcomment%2F%5Bid%5D%2Froute.ts&appDir=C%3A%5CUsers%5Cczhon%5CDocuments%5CGitHub%5CSSMCT_Website%5Cfrontend%5Csrc%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=C%3A%5CUsers%5Cczhon%5CDocuments%5CGitHub%5CSSMCT_Website%5Cfrontend&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D!")));
+module.exports = __webpack_exports__;
+
+})();
