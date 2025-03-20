@@ -16,28 +16,28 @@ export default function Home() {
 
   const sections = [
     {
-      title: "About",
+      title: "About SSMCT",
       text: <>
-      SSM is a <strong>merger team</strong> with players from many CTF teams <strong>across Singapore</strong> with a goal to support and provide opportunities for students that are interested in cybersecurity, to <strong>network</strong> and share knowledge with one another.
+      The Singapore Students Merger (SSMCT) is a <strong>Singaporean CTF team</strong> with players from many CTF teams <strong>across Singapore</strong>. <br/> <br/> We have a goal to support and provide opportunities for students that are interested in cybersecurity, to <strong>network</strong> and share knowledge with one another.
       </>,
       imgSrc: "/assets/home/about1.png",
-      imgAlt: "About Us",
-      description:"SSM meeting up at the Greyhats Summit 2024"
+      imgAlt: "About SSMCT",
+      description:"SSMCT meeting up at the Greyhats Summit 2024"
     },
     {
       title: "Our Mission",
-      text: <>We learn from each other under an informal setting and we welcome new and <strong>passionate</strong> people into the team!</>,
+      text: <>SSMCT's mission is to foster a <strong>collaborative environment</strong> where members from <strong>diverse backgrounds</strong> can enhance their cybersecurity skills through <strong>shared learning and participation</strong> in CTF competitions. <br/> <br/> We welcome <strong>new and passionate</strong> individuals to join us in advancing Singapore's cybersecurity landscape.</>,
       imgSrc: "/assets/home/about2.png",
       imgAlt: "Our Mission",
-      description:"Our Selected SSM Team taking a photo after the Greyhats CTF 2024 Finals, where we obtained 11th place."
+      description:"Our Selected SSMCT Team taking a photo after the Greyhats CTF 2024 Finals, where we obtained 11th place."
     },
     {
       title: "Active CTF Players",
-      text: <>We compete in CTFs <strong>almost every weekend</strong>, motivating each other to compete internationally. Some
+      text: <>SSMCT competes in CTFs <strong>almost every weekend</strong>, motivating each other to compete internationally. <br/> <br/>Some
           of us <strong>organize local CTFs</strong>, and we strengthen our team through regular bonding sessions.</>,
       imgSrc: "/assets/home/about3.png",
       imgAlt: "Active Players",
-      description:"SSM members taking a photo after successfully organising YBNCTF 2024"
+      description:"SSMCT members taking a photo after successfully organising YBNCTF 2024"
     },
   ];
 
@@ -118,21 +118,21 @@ const Accomplishments = () => {
   });
   const imageInfo = [{
       src: "/assets/home/acheivement1.png",
-      alt: "downunderctf 2024",
+      alt: "One of our SSMCT teams gets top 10% placing in downunderctf 2024",
       className: `hidden md:block lg:w-full !animate-delay-2000 ${inView?"!animate-fadeIn-bottom":"opacity-0"}`,
-      description: "One of our teams gets top 10% placing in downunderctf 2024"
+      description: "One of our SSMCT teams gets top 10% placing in downunderctf 2024"
     },
     {
       src: "/assets/home/acheivement2.png",
-      alt: `SSM getting 6th place in BCACTF 5.0`,
+      alt: `SSMCT getting 6th place in BCACTF 5.0`,
       className: `lg:w-full !animate-delay-1700 ${inView?"!animate-fadeIn-bottom":"opacity-0"}`,
-      description: "SSM getting 6th place in BCACTF 5.0"
+      description: "SSMCT getting 6th place in BCACTF 5.0"
     },
     {
       src: "/assets/home/acheivement3.png",
-      alt: "SSM getting 2nd place in BTCTF 2024",
+      alt: "SSMCT getting 2nd place in BTCTF 2024",
       className: `hidden md:block lg:w-full !animate-delay-1500 ${inView?"!animate-fadeIn-bottom":"opacity-0"}`,
-      description: "SSM obtains 2nd place in BTCTF 2024"
+      description: "SSMCT obtains 2nd place in BTCTF 2024"
     }
   ]
   return (
@@ -188,7 +188,7 @@ const CallToAction = () => {
         {/* Call to Action Section */}
         <div className="text-center lg:text-left lg:w-1/2 pb-10">
             <p className={`text-xl lg:text-2xl mb-8 text-center ${inView?"animate-fadeIn-right":"opacity-0"}`}>
-                Whether you&rsquo;re just starting out or already a seasoned pro, there&apos;s a place for you here.
+                Whether you&rsquo;re just starting out or already a seasoned pro, there&apos;s a place for you here in the <strong>Singapore Students Merger CTF Team</strong>.
             </p>
             <Link href = "https://discord.gg/SWAwuFVQ6M">
               <Button version="primary" className={`text-xl w-64 ${inView?"animate-fadeIn-bottom":"opacity-0"} animate-delay-1000 m-auto`}>Join Us</Button>

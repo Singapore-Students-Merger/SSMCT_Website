@@ -2,6 +2,8 @@
 # SSMCT Website
 Website to advertise SSMCT and showcase its past achievements.
 
+[Visit the Website](https://ssmct.org)
+
 ## Table of Contents
 - [Introduction](#introduction)
 - [Planned Features/Pages](#planned-featurespages)
