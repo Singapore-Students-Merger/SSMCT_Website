@@ -11,10 +11,10 @@ export default function Detail({ title, children, icon, className }: ChallengeDe
     const isString = typeof children === 'string';
   return (
     <div className={twMerge(`flex flex-col`,className)}>
-      <h3 className="text-lg font-bold text-white my-2">{title}</h3>
+      <h2 className="text-lg font-bold text-white my-2">{title}</h2>
       <div className="flex gap-4 text-lg text-[#8db7de] font-semibold">
       {icon}
-        {isString ? <p>{children}</p> : children}
+        {isString ? <h3>{children}</h3> : children}
       </div>
     </div>
   );
