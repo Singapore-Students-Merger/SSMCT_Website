@@ -25,12 +25,15 @@ export const generateMetadata = async ({ params }: { params: Promise<{id:string}
     const newParams = await params;
     const id = newParams.id;
     const post = await fetchWriteupFromDatabase(id); 
+    const postTitle = `${post.ctf} Writeup | ${post.title}`
     return {
         type:"article",
-      title: post.title,
+      title: {
+        absolute: postTitle
+      },
       description: post.description,
       openGraph: {
-        title: post.title,
+        title: postTitle,
         description: post.description,
         url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/writeups/view/${id}`,
         images: [{
@@ -39,7 +42,7 @@ export const generateMetadata = async ({ params }: { params: Promise<{id:string}
       },
       twitter: {
         card: 'summary_large_image',
-        title: post.title,
+        title: postTitle,
         description: post.description,
         images: [
             {
@@ -104,13 +107,15 @@ export default async function WriteupView({ params }: { params: Promise<{id:stri
         commentError = true;
     }
 
+    const postTitle = `${writeupDetails.ctf} Writeup | ${writeupDetails.title}`
+    
     return (
         <>
             <ArticleJsonLd
             useAppDir={true}
             type="Article"
             url={`${process.env.NEXT_PUBLIC_WEBSITE_URL}/writeups/view/${id}`}
-            title={writeupDetails.title}
+            title={postTitle}
             description={writeupDetails.description}
             images={[`${process.env.NEXT_PUBLIC_WEBSITE_URL}/uploads/writeups/images/${writeupDetails.thumbnail}`]}
             datePublished={writeupDetails.date}
