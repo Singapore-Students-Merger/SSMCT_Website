@@ -117,7 +117,7 @@ export default async function WriteupView({ params }: { params: Promise<{id:stri
             url={`${process.env.NEXT_PUBLIC_WEBSITE_URL}/writeups/view/${id}`}
             title={postTitle}
             description={writeupDetails.description}
-            images={[`${process.env.NEXT_PUBLIC_WEBSITE_URL}/uploads/writeups/images/${writeupDetails.thumbnail}`]}
+            images={[`${process.env.NEXT_PUBLIC_API_URL}/uploads/writeups/images/${writeupDetails.thumbnail}`]}
             datePublished={writeupDetails.date}
             authorName={writeupDetails.author}
             publisherName="SSM Team"

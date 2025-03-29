@@ -1,0 +1,66 @@
+/* SVG container styling */
+.loading svg {
+    width: 100%;
+    height: auto;
+}
+
+/* Path animations */
+.outer-path,
+.inner-path {
+    stroke-dasharray: 10000; /* Length large enough for paths */
+    stroke-dashoffset: 300; /* Start hidden */
+    animation: drawAndUndraw 10s linear 1, colorChange 5s linear 1;
+    stroke-linecap: round; /* Smooth ends */
+    filter: drop-shadow(0 0 6px #ffffff); /* Glow effect */
+}
+
+/* Text animation for "Loading..." */
+.loading-text-path {
+    stroke-dasharray: 80; /* Adjust length for the text */
+    stroke-dashoffset: 80; /* Start hidden */
+    animation: drawAndUndraw2 5s ease-in-out 1, colorChange 5s linear 1;
+    stroke-linecap: round; /* Smooth ends */
+    stroke-width: 0.5;
+}
+
+/* Keyframes for path drawing and undrawing */
+@keyframes drawAndUndraw {
+   to{
+    stroke-dashoffset: 4000;
+   }
+}
+
+/* Keyframes for text drawing and undrawing */
+@keyframes drawAndUndraw2 {
+    0% {
+        stroke-dashoffset: 80; /* Hidden */
+    }
+    30% {
+        stroke-dashoffset: 0; /* Fully drawn */
+    }
+    70% {
+        stroke-dashoffset: 0; /* Fully drawn */
+    }
+    100% {
+        stroke-dashoffset: 80; /* Hidden */
+    }
+}
+
+/* Dynamic stroke color changes */
+@keyframes colorChange {
+    0% {
+        stroke: #e4442c; /* Red */
+    }
+    25% {
+        stroke: #ffa500; /* Orange */
+    }
+    50% {
+        stroke: #ffff00; /* Yellow */
+    }
+    75% {
+        stroke: #00ff00; /* Green */
+    }
+    100% {
+        stroke: #e4442c; /* Loop back to red */
+    }
+}
