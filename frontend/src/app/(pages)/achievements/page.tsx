@@ -5,14 +5,14 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Achievements",
-  description: "Discover the milestones and accolades of Singapore Students Merger (SSM). Explore our achievements in ethical hacking and competitive problem-solving.",
+  description: "Discover the milestones and accolades of Singapore Students Merger CTF Team (SSMCT). Explore our achievements in ethical hacking and competitive problem-solving.",
   openGraph: {
     type: "website",
     locale: "en_SG",
     title: "Achievements",
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/achievements`,
+    url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/achievements`,
     siteName: "Singapore Students Merger",
-    images: [`${process.env.NEXT_PUBLIC_SITE_URL}/backgrounds/acheivements.jpg`],
+    images: [`${process.env.NEXT_PUBLIC_WEBSITE_URL}/backgrounds/acheivements.jpg`],
   },
   keywords: ["SSM", "Singapore Students Merger", "CTF", "Cybersecurity", "Capture The Flag", "Singapore", "Students", "Merger", "CTF Team"
     ,"Achievements"

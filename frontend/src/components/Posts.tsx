@@ -7,6 +7,7 @@ import { Card } from "@/components/Card";
 import { useMemo } from "react";
 import { BlogSummary } from "@/types/blogs";
 import { WriteupSummary } from "@/types/writeups";
+import generatePostSlug from "@/utils/generatePostSlug";
 interface SortOption {
     label: string;
     value: string;
@@ -140,7 +141,7 @@ export default function Posts({type, data, categories, topics, events}: PostProp
                 <FilterOption setSelected = {eventHandler}  value = {filters["events"]} label = {`Filter ${type == "blog"?"Event":"CTF"}`} options = {formattedEvents} searchable={false} multiSelect={true}/>
             </FilterOptions>}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-10/12 m-auto mb-8">
-                {sortedData.map((post) => <Card info={{...post,link:`/${type == "blog"?"blogs":"writeups"}/view/${post.id}`}} key={`post_${post.id}`}/>)}
+                {sortedData.map((post) => <Card info={{...post,link:`/${type == "blog"?"blogs":"writeups"}/view/${generatePostSlug(post.title,post.id)}`}} key={`post_${post.id}`}/>)}
             </div>
         </GradientBg>
     )

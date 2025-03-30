@@ -15,7 +15,7 @@ export default function DetailsSection({ details, estimatedReadTime }: DetailsSe
 
     return (
         <GradientBg className="py-8 px-10 md:px-16" gradientPosition="bottom">
-            <h1 className="text-white text-5xl font-bold text-center">{details.title}</h1>
+            <h1 className="text-white text-5xl font-bold text-center">{isWriteup(details)?`${details.ctf} |`:""}  {details.title}</h1>
             <p className="text-center text-white mt-4 mb-2 text-lg">Published on: {details.date}</p>
             <p className="text-center text-lg">
                 {estimatedReadTime} min read · Posted by {details.author}
