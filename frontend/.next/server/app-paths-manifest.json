@@ -1,10 +1,6 @@
 {
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/icon.ico/route": "app/icon.ico/route.js",
-  "/api/blogs/images/[...path]/route": "app/api/blogs/images/[...path]/route.js",
-  "/(pages)/auth/signin/page": "app/(pages)/auth/signin/page.js",
-  "/(pages)/create/blog/page": "app/(pages)/create/blog/page.js",
+  "/(pages)/writeups/page": "app/(pages)/writeups/page.js",
   "/(pages)/blogs/page": "app/(pages)/blogs/page.js",
-  "/(pages)/achievements/page": "app/(pages)/achievements/page.js",
-  "/(pages)/blogs/view/[id]/page": "app/(pages)/blogs/view/[id]/page.js"
+  "/(pages)/blogs/view/[id]/page": "app/(pages)/blogs/view/[id]/page.js",
+  "/(pages)/writeups/view/[id]/page": "app/(pages)/writeups/view/[id]/page.js"
 }
