@@ -19,22 +19,22 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Singapore Students Merger - Singapore's Biggest CTF Team",
-    template: "%s | Singapore Students Merger",
+    default: "Singapore Students Merger CTF Team | SSMCT",
+    template: "%s | SSMCT",
   },
-  description: "Singapore Students Merger (SSM) is a team of passionate students from across Singapore who love cybersecurity. We compete in CTFs, organize events, and create a welcoming space to learn, grow, and connect with others who share our enthusiasm.",
+  description: "Singapore Students Merger (SSMCT) is a student-led cybersecurity team that competes in CTFs, hosts events, and builds a vibrant community for learning and collaboration.",
   icons: {
     icon: "/icon.ico",
   },
   openGraph: {
     type: "website",
-    title: "Home",
+    title: "SSMCT Home",
     locale: "en_SG",
-    url: process.env.NEXT_PUBLIC_SITE_URL,
-    siteName: "Singapore Students Merger",
-    images: [`${process.env.NEXT_PUBLIC_SITE_URL}/assets/backgrounds/home.png`],
+    url: process.env.NEXT_PUBLIC_WEBSITE_URL,
+    siteName: "Singapore Students Merger CTF Team",
+    images: [`${process.env.NEXT_PUBLIC_WEBSITE_URL}/assets/home/about1.png`],
   },
-  keywords: "SSM, Singapore Students Merger, CTF, Cybersecurity, Capture The Flag, Singapore, Students, Merger, CTF Team",
+  keywords: "SSMCT, Singapore Students Merger, CTF, Cybersecurity, Capture The Flag, Singapore, Students, Merger, CTF Team",
 };
 
 export default function RootLayout({

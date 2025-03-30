@@ -10,9 +10,9 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_SG",
     title: "Gallery",
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/gallery`,
+    url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/gallery`,
     siteName: "Singapore Students Merger",
-    images: [`${process.env.NEXT_PUBLIC_SITE_URL}/backgrounds/gallery.jpg`],
+    images: [`${process.env.NEXT_PUBLIC_WEBSITE_URL}/backgrounds/gallery.jpg`],
   },
   keywords: ["SSM", "Singapore Students Merger", "CTF", "Cybersecurity", "Capture The Flag", "Singapore", "Students", "Merger", "CTF Team"
     ,"Gallery","CTF Gallery"
