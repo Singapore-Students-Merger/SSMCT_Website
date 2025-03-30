@@ -3,6 +3,7 @@ import Button from "@/components/Button";
 import { BlogSummary } from "@/types/blogs";
 import Image from "next/image";
 import Link from "next/link";
+import generatePostSlug from "@/utils/generatePostSlug";
 interface BlogHeroProps {
     featured: BlogSummary;
 }
@@ -20,7 +21,7 @@ export default function BlogHero({featured}: BlogHeroProps) {
                 <p className="mb-2 hidden md:block">{featured.type}</p>
                 <h1 className="text-5xl font-bold text-white hidden md:block">{featured.title}</h1>
                 <p className="text-lg text-white">{featured.description}</p>
-                <Link href={`/blogs/view/${featured.id}`} className="mx-auto lg:mx-0 block">
+                <Link href={`/blogs/view/${generatePostSlug(featured.title, featured.id)}`} className="mx-auto lg:mx-0 block">
                 <Button version = "secondary" className="mt-2 px-12  ">Read the Article</Button>
                 </Link>
             </div>

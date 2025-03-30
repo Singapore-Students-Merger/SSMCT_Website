@@ -11,6 +11,7 @@ import { Toaster } from 'react-hot-toast';
 import { auth } from "@/auth";
 import { ArticleJsonLd } from "next-seo";
 import { cache } from 'react';
+import generatePostSlug from "@/utils/generatePostSlug";
 const fetchWriteupFromDatabase = cache(async (id: string) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/writeups/view/${id}`);
     console.log("Fetching writeup from database");
@@ -23,9 +24,13 @@ const fetchWriteupFromDatabase = cache(async (id: string) => {
 })
 export const generateMetadata = async ({ params }: { params: Promise<{id:string}> }) => {
     const newParams = await params;
-    const id = newParams.id;
+    // split by - and take the last part
+    const id = newParams.id.split("-").slice(-1)[0].trim();
+    console.log(`ID Is ${id}`)
     const post = await fetchWriteupFromDatabase(id); 
     const postTitle = `${post.ctf} Writeup | ${post.title}`
+    const postSlug = generatePostSlug(post.title, id);
+
     return {
         type:"article",
       title: {
@@ -35,7 +40,7 @@ export const generateMetadata = async ({ params }: { params: Promise<{id:string}
       openGraph: {
         title: postTitle,
         description: post.description,
-        url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/writeups/view/${id}`,
+        url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/writeups/view/${postSlug}`,
         images: [{
             url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/api/writeups/images/${post.thumbnail}`,
         }]
@@ -59,7 +64,8 @@ export const generateMetadata = async ({ params }: { params: Promise<{id:string}
 export default async function WriteupView({ params }: { params: Promise<{id:string}> }) {
     const loggedIn = await auth()?true:false;
     const newParams = await params;
-    const id = newParams.id;
+    const id = newParams.id.split("-").slice(-1)[0].trim();
+
     let writeupDetails: WriteupDetails;
 
     try {
@@ -108,16 +114,17 @@ export default async function WriteupView({ params }: { params: Promise<{id:stri
     }
 
     const postTitle = `${writeupDetails.ctf} Writeup | ${writeupDetails.title}`
-    
+    const postSlug = generatePostSlug(writeupDetails.title, id);
+
     return (
         <>
             <ArticleJsonLd
             useAppDir={true}
             type="Article"
-            url={`${process.env.NEXT_PUBLIC_WEBSITE_URL}/writeups/view/${id}`}
+            url={`${process.env.NEXT_PUBLIC_WEBSITE_URL}/writeups/view/${postSlug}`}
             title={postTitle}
             description={writeupDetails.description}
-            images={[`${process.env.NEXT_PUBLIC_API_URL}/uploads/writeups/images/${writeupDetails.thumbnail}`]}
+            images={[`${process.env.NEXT_PUBLIC_API_URL}/writeups/images/${writeupDetails.thumbnail}`]}
             datePublished={writeupDetails.date}
             authorName={writeupDetails.author}
             publisherName="SSM Team"

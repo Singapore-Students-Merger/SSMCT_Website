@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    title: "Home",
+    title: "SSMCT Home",
     locale: "en_SG",
     url: process.env.NEXT_PUBLIC_WEBSITE_URL,
     siteName: "Singapore Students Merger CTF Team",

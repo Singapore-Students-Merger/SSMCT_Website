@@ -9,6 +9,8 @@ import { BlogDetails } from "@/types/blogs";
 import {auth} from "@/auth";
 import CommentsSection from "@/components/CommentsSection";
 import { cache } from 'react';
+import { ArticleJsonLd } from "next-seo";
+import generatePostSlug from "@/utils/generatePostSlug";
 const fetchBlogFromDatabase = cache(async (id: string) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/blogs/view/${id}`);
     console.log("Fetching blog from database");
@@ -21,8 +23,9 @@ const fetchBlogFromDatabase = cache(async (id: string) => {
 })
 export const generateMetadata = async ({ params }: { params: Promise<{id:string}> }) => {
     const newParams = await params;
-    const id = newParams.id;
+    const id = newParams.id.split("-").slice(-1)[0];
     const post = await fetchBlogFromDatabase(id); 
+    const postSlug = generatePostSlug(post.title, id);
     return {
         type:"article",
       title: post.title,
@@ -30,7 +33,7 @@ export const generateMetadata = async ({ params }: { params: Promise<{id:string}
       openGraph: {
         title: post.title,
         description: post.description,
-        url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/blogs/view/${id}`,
+        url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/blogs/view/${postSlug}`,
         images: [{
             url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/api/blogs/images/${post.thumbnail}`,
         }]
@@ -53,7 +56,7 @@ export const generateMetadata = async ({ params }: { params: Promise<{id:string}
 export default async function BlogView({ params }: { params: Promise<{ id: string }> }) {
     const loggedIn = await auth()?true:false;
     const newParams = await params;
-    const id = newParams.id;
+    const id = newParams.id.split("-").slice(-1)[0];
     let blogDetails: BlogDetails;
 
     try {
@@ -102,9 +105,24 @@ export default async function BlogView({ params }: { params: Promise<{ id: strin
         console.error("Fetch Error:", error instanceof Error ? error.message : error);
         commentError = true;
     }
-
+    const postTitle = blogDetails.title;
+    const postSlug = generatePostSlug(postTitle, id);
     return (
         <>
+            <ArticleJsonLd
+            useAppDir={true}
+            type="Article"
+            url={`${process.env.NEXT_PUBLIC_WEBSITE_URL}/blogs/view/${postSlug}`}
+            title={postTitle}
+            description={blogDetails.description}
+            images={[`${process.env.NEXT_PUBLIC_API_URL}/blogs/images/${blogDetails.thumbnail}`]}
+            datePublished={blogDetails.date}
+            authorName={blogDetails.author}
+            publisherName="SSM Team"
+            publisherLogo={`${process.env.NEXT_PUBLIC_WEBSITE_URL}/logo.png`}
+            isAccessibleForFree={true}
+
+            />
             <ChallengeDetailSection details={blogDetails} estimatedReadTime={estimatedReadTime} />
             <section>
                 <h2 className="text-3xl font-bold text-white border-b-2 border-tertiary mx-10 md:mx-16 my-4">Writeup</h2>
