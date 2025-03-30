@@ -11,6 +11,8 @@ import CommentsSection from "@/components/CommentsSection";
 import { cache } from 'react';
 import { ArticleJsonLd } from "next-seo";
 import generatePostSlug from "@/utils/generatePostSlug";
+export const dynamic = 'force-static'; // Writeup is static
+
 const fetchBlogFromDatabase = cache(async (id: string) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/blogs/view/${id}`);
     console.log("Fetching blog from database");
@@ -92,19 +94,6 @@ export default async function BlogView({ params }: { params: Promise<{ id: strin
         return <div>An error occurred while reading the markdown file.</div>;
     }
 
-    let comments = []
-    let commentError = false;
-    try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/blogs/comment/${id}`);
-        if (!response.ok) {
-            const error = (await response.json()).message;
-            return <div>{error}</div>;
-        }
-        comments = (await response.json()).data;
-    } catch (error: unknown) {
-        console.error("Fetch Error:", error instanceof Error ? error.message : error);
-        commentError = true;
-    }
     const postTitle = blogDetails.title;
     const postSlug = generatePostSlug(postTitle, id);
     return (
@@ -130,7 +119,7 @@ export default async function BlogView({ params }: { params: Promise<{ id: strin
                     className="prose max-w-none mx-auto px-10 md:px-32 my-8 custom-code-container"
                     dangerouslySetInnerHTML={{ __html: content.toString() }}>
                 </div>
-                <CommentsSection commentsError = {commentError} comments = {comments} id={id} type="blogs" loggedIn={loggedIn} />
+                <CommentsSection id={id} type="blogs" loggedIn={loggedIn} />
             </section>
         </>
     );

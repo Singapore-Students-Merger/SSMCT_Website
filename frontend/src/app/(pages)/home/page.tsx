@@ -28,7 +28,7 @@ export default function Home() {
     },
     {
       title: "SSMCT's Mission",
-      text: <>Our mission is to foster a <strong>collaborative environment</strong> where members from <strong>diverse backgrounds</strong> can enhance their cybersecurity skills through <strong>shared learning and participation</strong> in CTF competitions. <br /> <br /> We welcome <strong>new and passionate</strong> individuals to join us in advancing Singapore's cybersecurity landscape.</>,
+      text: <>Our mission is to foster a <strong>collaborative environment</strong> where members from <strong>diverse backgrounds</strong> can enhance their cybersecurity skills through <strong>shared learning and participation</strong> in CTF competitions. <br /> <br /> We welcome <strong>new and passionate</strong> individuals to join us in advancing Singapore&apos;s cybersecurity landscape.</>,
       imgSrc: "/assets/home/about2.png",
       imgAlt: "Our Mission",
       description: "Our Selected SSMCT Team taking a photo after the Greyhats CTF 2024 Finals, where we obtained 11th place."
