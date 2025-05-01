@@ -12,50 +12,50 @@ const categories: Category[] = [
     {
         name:"Web",
         description:"Web-based challenges that test your understanding of web technologies.",
-        image:"/logos/web.png",
+        image:"/ctf/logos/web.png",
         link:"/categories/web"
     },
     {
         name:"Pwn",
         description:"Binary exploitation challenges that test your understanding of low-level programming.",
-        image:"/logos/pwn.png",
+        image:"/ctf/logos/pwn.png",
         link:"/categories/pwn"
     },
     {
         name:"Rev",
         description:"Reverse engineering challenges that test your understanding of compiled code.",
-        image:"/logos/rev.png",
+        image:"/ctf/logos/rev.png",
         link:"/categories/re"
     },
     {
         name:"Crypto",
         description:"Cryptography challenges that test your understanding of encryption and decryption.",
-        image:"/logos/crypto.png",
+        image:"/ctf/logos/crypto.png",
         link:"/categories/crypto"
     },
     {
         name: "Forens",
         description: "Forensics challenges that test your understanding of digital forensics.",
-        image: "/logos/forens.png",
+        image: "/ctf/logos/forens.png",
         link: "/categories/forens"
     },
     {
         name: "Programming",
         description: "Programming challenges that test your understanding of algorithms and data structures.",
-        image: "/logos/programming.png",
+        image: "/ctf/logos/programming.png",
         link: "/categories/prog"
     },
 
     {
         name: "OSINT",
         description: "Open Source Intelligence challenges that test your understanding of information gathering.",
-        image: "/logos/osint.png",
+        image: "/ctf/logos/osint.png",
         link: "/categories/osint"
     },
     {
         name: "Misc",
         description: "Miscellaneous challenges that test your understanding of various topics, like AI.",
-        image: "/logos/misc.png",
+        image: "/ctf/logos/misc.png",
         link: "/categories/misc"
     }
 ]

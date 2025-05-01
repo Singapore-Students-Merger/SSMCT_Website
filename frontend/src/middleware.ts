@@ -4,7 +4,7 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const hostname = request.headers.get("host") || "localhost:3000";
 
-  if (hostname === "localhost:3001") {
+  if (hostname === "ctf.ssmct.org") {
     // Rewrite to /ctf-prefixed path
     const newUrl = request.nextUrl.clone();
     newUrl.pathname = `/ctf${pathname}`;

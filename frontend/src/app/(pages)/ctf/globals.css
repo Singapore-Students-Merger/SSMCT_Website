@@ -1,43 +1,63 @@
+@import 'tailwindcss';
+
 @config "../../../../tailwind.config.ts";
-@import "tailwindcss";
-@utility animation-delay-none {
-    animation-delay: 0s;
-}
-@utility animation-delay-inherit {
-    animation-delay: inherit;
-}
-@utility animation-delay-initial {
-    animation-delay: initial;
-}
-@utility animation-delay-revert {
-    animation-delay: revert;
-}
-@utility animation-delay-revert-layer {
-    animation-delay: revert-layer;
-}
-@utility animation-delay-unset {
-    animation-delay: unset;
-}
-@utility animation-delay-* {
-    animation-delay: --value([*]);
-    animation-delay: calc(--value(integer) * 1ms);
-}
-
-@utility animation-duration-* {
-  animation-duration: --value([*]);
-  animation-duration: calc(--value(integer) * 1ms);
-}
-
-:root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-}
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-kode: var(--font-kode-mono);
   --font-mono: var(--font-kode-mono);
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@utility animation-delay-none {
+  animation-delay: 0s;
+}
+@utility animation-delay-inherit {
+  animation-delay: inherit;
+}
+@utility animation-delay-initial {
+  animation-delay: initial;
+}
+@utility animation-delay-revert {
+  animation-delay: revert;
+}
+@utility animation-delay-revert-layer {
+  animation-delay: revert-layer;
+}
+@utility animation-delay-unset {
+  animation-delay: unset;
+}
+@utility animation-delay-* {
+  animation-delay: --value([ *]);
+  animation-delay: calc(--value(integer) * 1ms);
+}
+
+@utility animation-duration-* {
+  animation-duration: --value([ *]);
+  animation-duration: calc(--value(integer) * 1ms);
+}
+
+:root {
+  --background: #0a0a0a;
+  --foreground: #ededed;
 }
 
 

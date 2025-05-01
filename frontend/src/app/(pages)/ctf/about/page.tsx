@@ -12,7 +12,7 @@ const aboutUs = {
             The Singapore Students Merger Capture the Flag Competition (SSMCTF) is a <b>36 hour beginner-friendly</b> Cybersecurity Capture the Flag (CTF) competition organised by the <b>Singapore Students Merger CTF Team (SSMCT)</b>
         </>
     ),
-    imageSrc: "/images/ssmctf.png",
+    imageSrc: "/ctf/images/ssmctf.png",
     imageAlt: "About SSMCTF",
     reverse: false,
     buttonText: "Learn More about SSMCT",
@@ -24,7 +24,7 @@ const lookingForATeam = {
     description: <>
         Join our <b>Discord server</b> using the link below! We provide a <b>supportive environment</b> to help you connect with teammates and form your ideal squad.
     </>,
-    imageSrc: "/images/team.jpg",
+    imageSrc: "/ctf/images/team.jpg",
     imageAlt: "Looking for a team?",
     reverse: true,
     href: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
@@ -38,7 +38,7 @@ const justStarted = {
             <br />
             New to CTF or looking to improve? Check out our Resources!
         </>),
-    imageSrc: "/images/beginner.jpeg",
+    imageSrc: "/ctf/images/beginner.jpeg",
     imageAlt: "Just Started?",
     reverse: false,
     href: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
@@ -52,7 +52,7 @@ const organisers = {
         <>
             The <b>organisers</b> and <b>challenge creators</b> behind SSMCTF have created challenges in several CTFs, such as <b>YBNCTF</b> and <b>ISC2CTF</b>.
         </>),
-    imageSrc: "/images/organisers.webp",
+    imageSrc: "/ctf/images/organisers.webp",
     imageAlt: "Organisers",
     href: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
     buttonText: "Learn more about the team",
@@ -65,7 +65,7 @@ const writeups = {
         <>
             Participants are <b>heavily encouraged</b> to create writeups on challenges they find interesting. Good writeups may also be posted onto the official <Link className='text-blue-500 underline font-bold' href="https://ssmct.org">SSMCT website</Link>
         </>),
-    imageSrc: "/images/writeups.png",
+    imageSrc: "/ctf/images/writeups.png",
     imageAlt: "Writeups",
     reverse: true,
 }
@@ -78,7 +78,7 @@ const finals = {
         <>
             The top 10 teams will be invited to the finals of the <b>SSMCTF</b>, where new challenges will be presented for participants to solve. 
         </>),
-    imageSrc: "/images/finals.jpg",
+    imageSrc: "/ctf/images/finals.jpg",
     imageAlt: "Finals",
     reverse: true,
 }
