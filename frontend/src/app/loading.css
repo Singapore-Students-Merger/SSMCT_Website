@@ -5,8 +5,8 @@
 }
 
 /* Path animations */
-.outer-path,
-.inner-path {
+.loading .outer-path,
+.loading .inner-path {
     stroke-dasharray: 1000; /* Length large enough for paths */
     stroke-dashoffset: 0; /* Start hidden */
     animation: drawAndUndraw 10s linear infinite, colorChange 5s linear infinite;
@@ -15,7 +15,7 @@
 }
 
 /* Text animation for "Loading..." */
-.loading-text-path {
+.loading .loading-text-path {
     stroke-dasharray: 80; /* Adjust length for the text */
     stroke-dashoffset: 80; /* Start hidden */
     animation: drawAndUndraw2 5s ease-in-out infinite, colorChange 5s linear infinite;
