@@ -162,19 +162,19 @@ const Accomplishments = () => {
   const imageInfo = [{
     src: "/assets/home/acheivement1.png",
     alt: "One of our SSMCT teams gets top 10% placing in downunderctf 2024",
-    className: `hidden md:block lg:w-full !animate-delay-2000 ${inView ? "!animate-fadeIn-bottom" : "opacity-0"}`,
+    className: `hidden md:block lg:w-full !animation-delay-2000 ${inView ? "!animate-fadeIn-bottom" : "opacity-0"}`,
     description: "One of our SSMCT teams gets top 10% placing in downunderctf 2024"
   },
   {
     src: "/assets/home/acheivement2.png",
     alt: `SSMCT getting 6th place in BCACTF 5.0`,
-    className: `lg:w-full !animate-delay-1700 ${inView ? "!animate-fadeIn-bottom" : "opacity-0"}`,
+    className: `lg:w-full !animation-delay-1700 ${inView ? "!animation-fadeIn-bottom" : "opacity-0"}`,
     description: "SSMCT getting 6th place in BCACTF 5.0"
   },
   {
     src: "/assets/home/acheivement3.png",
     alt: "SSMCT getting 2nd place in BTCTF 2024",
-    className: `hidden md:block lg:w-full !animate-delay-1500 ${inView ? "!animate-fadeIn-bottom" : "opacity-0"}`,
+    className: `hidden md:block lg:w-full !animation-delay-1500 ${inView ? "!animate-fadeIn-bottom" : "opacity-0"}`,
     description: "SSMCT obtains 2nd place in BTCTF 2024"
   }
   ]
@@ -188,13 +188,13 @@ const Accomplishments = () => {
           <div className="text-4xl md:text-6xl font-bold text-white">100</div>
           <p className="text-lg">Members</p>
         </div>
-        <div className={`flex flex-col items-center gap-4 animate-delay-200 ${inView ? "animate-fadeIn-bottom" : "opacity-0"}`}>
+        <div className={`flex flex-col items-center gap-4 animation-delay-200 ${inView ? "animate-fadeIn-bottom" : "opacity-0"}`}>
           <Image className="w-16 h-16 md:w-24 md:h-24" src="/assets/home/ctfs.svg" alt="50 CTFs" width={100} height={100} />
 
           <div className="text-4xl lg:text-6xl font-bold text-white">50</div>
           <p className="text-lg">CTFs Played</p>
         </div>
-        <div className={`col-span-2 md:col-span-1 flex flex-col items-center gap-4 animate-delay-500 ${inView ? "animate-fadeIn-bottom" : "opacity-0"}`}>
+        <div className={`col-span-2 md:col-span-1 flex flex-col items-center gap-4 animation-delay-500 ${inView ? "animate-fadeIn-bottom" : "opacity-0"}`}>
           <Image className="w-16 h-16 md:w-24 md:h-24" src="/assets/home/placings.svg" alt="10 Top Placings" width={100} height={100} />
           <div className="text-4xl lg:text-6xl font-bold text-white">10</div>
           <p className="text-lg">Top Placings Obtained</p>
@@ -234,7 +234,7 @@ const CallToAction = () => {
             Whether you&rsquo;re just starting out or already a seasoned pro, there&apos;s a place for you here in the <strong>Singapore Students Merger CTF Team</strong>.
           </p>
           <Link href="https://discord.gg/SWAwuFVQ6M">
-            <Button version="primary" className={`text-xl w-64 ${inView ? "animate-fadeIn-bottom" : "opacity-0"} animate-delay-1000 m-auto`}>Join Us</Button>
+            <Button version="primary" className={`text-xl w-64 ${inView ? "animate-fadeIn-bottom" : "opacity-0"} animation-delay-1000 m-auto`}>Join Us</Button>
           </Link>
         </div>
       </section>

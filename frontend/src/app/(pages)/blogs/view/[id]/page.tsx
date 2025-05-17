@@ -55,7 +55,6 @@ export const generateMetadata = async ({ params }: { params: Promise<{id:string}
     };
   };
 
-export const dynamic = "force-dynamic"
 
 export default async function BlogView({ params }: { params: Promise<{ id: string }> }) {
     const loggedIn = await auth()?true:false;

@@ -69,7 +69,7 @@ const CategoryItem = ({ category, glow }: { category: Category, glow: boolean })
                 hover hover:backdrop-brightness-200 ${clicked?"backdrop-brightness-200":""} 
                 py-4 px-4 transition-all duration-150 rounded-xl`}>
         <div className={`relative flex justify-center items-center special-border-sm border-2! aspect-square w-40 rounded-xl ${glow?"fade-in-special-border":"remove-special-border"}`}>
-        <Image src={category.image} alt={category.name} fill={true} className='rounded-xl' />
+        <Image src={category.image} alt={category.name} fill={true} sizes = "100%" className='rounded-xl' />
             <div className={`text-sm md:text-md rounded-md text-center 
             ${clicked?"opacity-100":""}
             opacity-0 group-hover:opacity-100 transition-opacity duration-300 

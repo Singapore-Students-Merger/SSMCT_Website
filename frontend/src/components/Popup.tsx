@@ -22,7 +22,7 @@ const Popup: React.FC<PopupProps> = ({children, onClose}) => {
     }, [])
     return (
         <>
-        <div className={`fixed top-0 left-0 w-screen h-screen z-50 animate-duration-500 ${closed ? 'animate-fadeOut opacity-0' : 'animate-fadeIn'}`}>
+        <div className={`fixed top-0 left-0 w-screen h-screen z-50 animation-duration-500 ${closed ? 'animate-fadeOut opacity-0' : 'animate-fadeIn'}`}>
             <div className="absolute inset-0 bg-black bg-opacity-80 w-screen h-screen top-0 left-0" onClick = {closeHandler}>
                 
             </div>

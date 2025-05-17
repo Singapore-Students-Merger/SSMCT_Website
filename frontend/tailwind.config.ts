@@ -1,29 +1,6 @@
 import type { Config } from "tailwindcss";
 import plugin from 'tailwindcss/plugin';
-import { PluginCreator } from 'tailwindcss/types/config';
 import typographPlugin from '@tailwindcss/typography';
-
-const addAnimationDelayPlugin: PluginCreator = ({ addUtilities, theme }) => {
-  const delays = theme('animationDelay') as Record<string, string>;
-
-  const utilities = Object.entries(delays).reduce((acc, [key, value]) => {
-    acc[`.animate-delay-${key}`] = { 'animation-delay': value };
-    return acc;
-  }, {} as Record<string, Record<string, string>>);
-
-  addUtilities(utilities, { respectPrefix: false, respectImportant: false });
-};
-
-const addAnimationDurationPlugin: PluginCreator = ({ addUtilities, theme }) => {
-  const durations = theme('animationDuration') as Record<string, string>;
-
-  const utilities = Object.entries(durations).reduce((acc, [key, value]) => {
-    acc[`.animate-duration-${key}`] = { 'animation-duration': value };
-    return acc;
-  }, {} as Record<string, Record<string, string>>);
-
-  addUtilities(utilities, { respectPrefix: false, respectImportant: false });
-}
 
 const radialGradientPlugin = plugin(
   function ({ matchUtilities, theme }) {
@@ -198,5 +175,5 @@ export default {
       },
     },
   },
-  plugins: [radialGradientPlugin,addAnimationDelayPlugin, typographPlugin, addAnimationDurationPlugin],
+  plugins: [radialGradientPlugin, typographPlugin],
 } satisfies Config;

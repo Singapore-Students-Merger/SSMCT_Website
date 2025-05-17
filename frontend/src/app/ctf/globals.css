@@ -1,0 +1,475 @@
+@import 'tailwindcss';
+
+@config "../../../tailwind.config.ts";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-kode: var(--font-kode-mono);
+  --font-mono: var(--font-kode-mono);
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+
+
+:root {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
+
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-kode-mono), monospace;
+  width:100%;
+
+
+}
+
+.special-border {
+  border: 5px solid white;
+  position: relative;
+  border-radius: 0.5rem;
+}
+
+.special-border::before {
+  content: "";
+  position: absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  box-shadow: 0px 0px 1.5rem #E4432F,0px 0px 1.5rem #E4432F,0px 0px 1.5rem #E4432F inset;
+  border-radius: 0.5rem;
+  z-index: -1;
+  clip-path: inset(-3rem 50% -3rem -3rem);
+
+}
+
+.special-border::after {
+  content: "";
+  position: absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  box-shadow: 0px 0px 1.5rem #007BB7 inset,0px 0px 1.5rem #007BB7 inset,0px 0px 1.5rem #007BB7,0px 0px 1.5rem #007BB7,0px 0px 1.5rem #007BB7,0px 0px 1.5rem #007BB7;
+  border-radius: 0.5rem;
+  z-index: -1;
+  clip-path: inset(-3rem -3rem -3rem 50%);
+
+}
+
+.special-border-sm {
+  border: 5px solid white;
+  position: relative;
+  border-radius: 0.5rem;
+}
+
+.special-border-sm::before {
+  content: "";
+  position: absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  box-shadow: 0px 0px 1rem #E4432F,0px 0px 1rem #E4432F,0px 0px 1rem #E4432F inset;
+  border-radius: 0.5rem;
+  z-index: -1;
+  clip-path: inset(-3rem 50% -3rem -3rem);
+
+}
+
+.special-border-sm::after {
+  content: "";
+  position: absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  box-shadow: 0px 0px 1rem #007BB7 inset,0px 0px 1rem #007BB7 inset,0px 0px 1rem #007BB7,0px 0px 1rem #007BB7,0px 0px 1rem #007BB7,0px 0px 1rem #007BB7;
+  border-radius: 0.5rem;
+  z-index: -1;
+  clip-path: inset(-3rem -3rem -3rem 50%);
+
+}
+
+.text-shadow-color {
+  text-shadow: 0px 4px 4px #E4432F, 0px -4px 4px #007BB7;
+}
+
+.text-border{
+  text-shadow:
+  -1px -1px 0 #fff,
+   0   -1px 0 #fff,
+   1px -1px 0 #fff,
+   1px  0   0 #fff,
+   1px  1px 0 #fff,
+   0    1px 0 #fff,
+  -1px  1px 0 #fff,
+  -1px  0   0 #fff;
+  color: black;
+}
+
+.text-border-color{
+  -webkit-text-stroke: 1px white;
+  paint-order: stroke fill;
+   color: transparent;
+  filter: drop-shadow(0px 2px 2px #E4432F) drop-shadow(0px -2px 2px #007BB7) drop-shadow(0px 2px 2px #E4432F) drop-shadow(0px -2px 2px #007BB7);
+}
+  .header-border-color {
+  -webkit-text-stroke: 2px white;
+  color:black;
+  paint-order: stroke fill;
+  text-shadow: 0 4px 4px #ff003375,
+  0 -4px 4px #00aeffd6; 
+}
+
+.header-border{
+  -webkit-text-stroke: 2px white;
+  color:black;
+  paint-order: stroke fill;
+}
+
+@keyframes fade-in-special-border{
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fade-in-text-border{
+  from {
+    filter:none;
+  }
+}
+
+.fade-in-special-border::before,
+.fade-in-special-border::after {
+  animation: fade-in-special-border 1s ease-in-out forwards;
+}
+
+.remove-special-border::before,
+.remove-special-border::after {
+  opacity: 0;
+}
+
+.fade-in-text-border {
+  animation: fade-in-text-border 1s ease-in-out both;
+  animation-delay: 0.2s;
+}
+
+.remove-text-border {
+  filter: none;
+}
+
+.first-place{
+  -webkit-text-stroke: 1px white;
+  paint-order: stroke fill;
+   color: transparent;
+   animation-delay: 1.5s !important;
+  filter: drop-shadow(0px 2px 2px #FFD700) drop-shadow(0px -2px 2px #FFD700);
+}
+
+.second-place{
+  animation-delay: 2s !important;
+  -webkit-text-stroke: 1px white;
+  paint-order: stroke fill;
+   color: transparent;
+  filter: drop-shadow(0px 2px 2px #D3D3D3) drop-shadow(0px -2px 2px #D3D3D3);
+}
+
+.third-place{
+  animation-delay: 3s !important;
+  -webkit-text-stroke: 1px white;
+  paint-order: stroke fill;
+   color: transparent;
+  filter: drop-shadow(0px 2px 2px #CD7F32) drop-shadow(0px -2px 2px #CD7F32);
+}
+
+.triangle-decor-top {
+  width:100%;
+  height:100%;
+  clip-path: polygon(0% calc(100% - 4px),0% 100%, 100% 100%, 100% 0%);
+  background: white;  
+  position: absolute;
+  top: 0;
+  left: 0;
+
+}
+
+.timeline-top {
+  clip-path: polygon(0% 100%, 0% -1000%, 100% -1000%, 100% 4px);
+  width:100%;
+  height:100%;
+  position:absolute;
+  top:0;
+  left:0;
+}
+
+.triangle-decor-bottom {
+  width:100%;
+  height:100%;
+  clip-path: polygon(0% 100%, 0% 0%, 100% 0%,100% 4px);
+  background: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+}
+
+.glow {
+    filter: drop-shadow(0px 1px 1px #E4432F) drop-shadow(0px -1px 1px #007BB7);
+
+}
+.timeline-bottom {
+  position:absolute;
+  top:0;
+  left:0;
+  clip-path: polygon(0% calc(100% - 4px), 0% 1000%, 100% 1000%, 100% 0%);
+  width:100%;
+  height:100%;
+}
+
+.timeline{
+  animation: timeline-animation 1s both;
+}
+.timeline .timeline-item-top{
+  animation: timeline-item-animation-top 2s ease both;
+  transform-origin: 100% 100%;
+}
+
+.timeline .timeline-item-bottom{
+  animation: timeline-item-animation-bottom 2s ease both;
+  transform-origin: 100% 0%;
+}
+
+.timeline-decor-mobile{
+  background: white;
+  clip-path:polygon(0 0, 100% 100%, 0 100%) ;
+}
+.timeline-mobile {
+  clip-path: polygon(0 18px, calc(100% - 4px) calc(100% - 4px), 0 calc(100% - 4px), 0 100%,100vw 100%, 100vw 0, 0 0);
+}
+
+.timeline-item-mobile {
+  animation: timeline-item-animation-mobile 2s ease both;
+  transform-origin: 100% 0%;
+}
+
+@keyframes timeline-item-animation-mobile {
+  from {
+    opacity: 0;
+    transform: translateX(3rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes timeline-item-animation-bottom {
+  0% { 
+    transform: rotate(-10deg);
+    opacity: 0;
+  }
+  25% {
+    transform: rotate(-15deg);
+  }
+  70% {
+    transform: rotate(-15deg);
+  }
+  100% {
+    transform: rotate(0);
+    opacity: 1;
+  }
+}
+
+@keyframes timeline-item-animation-top {
+  0% { 
+    transform: rotate(10deg);
+    opacity: 0;
+  }
+  25% {
+    transform: rotate(15deg);
+  }
+  70% {
+    transform: rotate(15deg);
+  }
+  100% {
+    transform: rotate(0);
+    opacity: 1;
+  }
+}
+
+@keyframes timeline-animation {
+  from{
+    width: 0;
+  }
+  to {
+    width:100%;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.fadeIn {
+  animation: fadeIn 1.5s ease-in-out forwards;
+  animation-delay: 3s;
+}
+
+/* SVG container styling */
+.loading svg {
+  width: 100%;
+  height: auto;
+}
+
+/* Path animations */
+.outer-path,
+.inner-path {
+  stroke-dasharray: 1000; /* Length large enough for paths */
+  stroke-dashoffset: 0; /* Start hidden */
+  animation: drawAndUndraw 3s ease-in-out forwards;
+  stroke-linecap: round; /* Smooth ends */
+}
+
+/* Text animation for "Loading..." */
+.loading-text-path {
+  stroke-dasharray: 201; /* Adjust length for the text */
+  stroke-dashoffset: 0; /* Start hidden */
+  animation: drawAndUndraw2 3s ease-in-out forwards, colorChange 5s linear;
+  stroke-linecap: round; /* Smooth ends */
+  stroke-width: 0.5;
+}
+
+/* Keyframes for path drawing and undrawing */
+@keyframes drawAndUndraw {
+ 0%{
+  stroke-dashoffset: 1000;
+ }
+ 30%{
+  stroke-dashoffset: 0;
+ }
+ 60%{
+  stroke-dashoffset: 0;
+ }
+ 100%{
+  stroke-dashoffset:1000;
+ }
+}
+
+/* Keyframes for text drawing and undrawing */
+@keyframes drawAndUndraw2 {
+  0% {
+      stroke-dashoffset: 201; /* Hidden */
+  }
+  30%{
+    stroke-dashoffset:0;
+  }
+  60%{
+    stroke-dashoffset:0;
+  }
+  100% {
+      stroke-dashoffset: 201; /* Hidden */
+  }
+}
+
+
+@property --angle{
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+.color-changing{
+  position:relative
+
+}
+.color-changing::after{
+  width:100%;
+  height:100%;
+  position:absolute;
+  content:'';
+  left:0;
+  top:0;
+  z-index: 1;
+  border-radius: 0.2em;
+  border: 3px solid white 
+}
+.color-changing::before{
+  width:100%;
+  height:100%;
+  position:absolute;
+  content:'';
+  left:50%;
+  top:50%;
+  transform: translate(-50%,-50%);
+  box-sizing: content-box;
+  z-index: -1;
+  border-radius: 0.2em;
+  filter: blur(0.2em);
+  padding: 0.1em;
+  background-image: conic-gradient(from var(--angle), #E4432F 0deg, #E4432F 180deg, #007BB7 180deg, #007BB7 360deg) ;
+}
+
+.color-changing-animation::before{
+  animation: 15s spinColor linear infinite;
+}
+@keyframes spinColor {
+  0% {
+    --angle: 0deg;
+  }
+  100% {
+    --angle: 360deg;
+  }
+}
+
+
+.timeline-animation {
+  animation: timelineDraw 1s ease-in-out forwards;
+}
+
+@keyframes timelineDraw {
+  0% {
+      width:0;
+  }
+  100% {
+      width:100%;
+  }
+}
+

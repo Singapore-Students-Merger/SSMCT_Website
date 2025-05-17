@@ -1,6 +1,5 @@
 {
-  "/(pages)/writeups/page": "app/(pages)/writeups/page.js",
-  "/(pages)/blogs/page": "app/(pages)/blogs/page.js",
-  "/(pages)/blogs/view/[id]/page": "app/(pages)/blogs/view/[id]/page.js",
-  "/(pages)/writeups/view/[id]/page": "app/(pages)/writeups/view/[id]/page.js"
+  "/ctf/page": "app/ctf/page.js",
+  "/ctf/resources/page": "app/ctf/resources/page.js",
+  "/ctf/organisers/page": "app/ctf/organisers/page.js"
 }
